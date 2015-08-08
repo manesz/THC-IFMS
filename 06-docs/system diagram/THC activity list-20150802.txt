@@ -1,0 +1,100 @@
+#Work load
+	- view workload
+	- create workload
+	- update workload
+	- delete workload
+	- create job
+	- update job
+	- delete job
+
+#Quotation
+	- view quotation
+	- create quotation
+	- update quotation
+	- clone quotation
+	- delete quotation
+
+
+#Item
+	- view item
+	- create item
+	- update item
+	- clone item
+	- delete item
+	- send item to Lab
+	- update calibrate to item
+	- update certification No. to item
+	- update invoice No. to item
+
+#Contact review
+	- view contact review
+	- create contact review
+	- update contact review
+	- delete contact review
+
+#Report
+	- workload report
+	- quotation report
+	- item report
+	- contact review report
+	- customer report
+	- member report
+	- income report
+
+#Render Graph
+	- workload graph
+	- quotation graph
+	- item graph
+	- contact review graph
+	- customer graph
+	- income graph
+
+#Print Paper
+	- print quotation description
+	- print item description
+	- print sricker
+
+#Generate Auto No.
+	- generate quotation No.
+	- generate Lot No. from quotation No.
+	- generate item No.
+
+#Barcode
+	- generate barcode
+	- read barcode
+
+#Customer
+	- view customer
+	- create customer
+	- update customer
+	- delete customer
+#Member
+	- view member
+	- create member
+	- update member
+	- delete member
+	- update permission
+
+#Lab
+	- view lab
+	- create lab
+	- update lab
+	- delete lab
+
+#Log
+	- insert log
+
+#User Permission
+	- Sale
+	- Store
+	- Lab
+	- Certification
+	- Accouting
+	- Management
+	- Administrator
+
+#Authentication
+	- Login
+	- Logout
+	- Show menu by permission
+
