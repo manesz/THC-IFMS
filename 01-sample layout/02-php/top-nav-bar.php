@@ -154,9 +154,20 @@
         </ul>
         <!--  notification end -->
     </div>
-    <div class="top-menu">
+    <div class="nav top-menu profile-menu">
         <ul class="nav pull-right top-menu">
-            <li><a class="logout" href="login.php">Logout</a></li>
+<!--            <li><a class="logout" href="login.php">Logout</a></li>-->
+            <li id="profile-img" class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#" style="border: none;">
+                    <img src="libs/img/friends/fr-06.jpg" class="img-circle" width="32">
+                </a>
+                <ul id="dropdown-profile" class="dropdown-menu" role="menu">
+                    <li><a href="#">แก้ไขข้อมูลส่วนตัว <i class="fa fa-user"></i></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" style="color: red;">ออกจากระบบ <i class="fa fa-power-off"></i></a></li>
+                </ul>
+
+            </li>
         </ul>
     </div>
 </header>
