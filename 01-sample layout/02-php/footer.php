@@ -10,16 +10,27 @@
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="libs/js/jquery.js"></script>
 <script src="libs/js/jquery-1.8.3.min.js"></script>
+<script src="libs/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="libs/js/bootstrap.min.js"></script>
 <script class="include" type="text/javascript" src="libs/js/jquery.dcjqaccordion.2.7.js"></script>
 <script src="libs/js/jquery.scrollTo.min.js"></script>
 <script src="libs/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="libs/js/jquery.sparkline.js"></script>
 
+<!--custom switch-->
+<script src="libs/js/bootstrap-switch.js"></script>
+<!--custom tagsinput-->
+<script src="libs/js/jquery.tagsinput.js"></script>
+<!--custom checkbox & radio-->
+<!--<script type="text/javascript" src="libs/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>-->
+<!--<script type="text/javascript" src="libs/js/bootstrap-daterangepicker/date.js"></script>-->
+<!--<script type="text/javascript" src="libs/js/bootstrap-daterangepicker/daterangepicker.js"></script>-->
+<!--<script type="text/javascript" src="libs/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>-->
+<script src="libs/js/form-component.js"></script>
+
 
 <!--common script for all pages-->
 <script src="libs/js/common-scripts.js"></script>
-
 <script type="text/javascript" src="libs/js/gritter/js/jquery.gritter.js"></script>
 <script type="text/javascript" src="libs/js/gritter-conf.js"></script>
 
@@ -31,29 +42,9 @@
 </script>
 
 <!--script for this page-->
+<script src="libs/js/chart-master/Chart.js"></script>
 <script src="libs/js/sparkline-chart.js"></script>
 <script src="libs/js/zabuto_calendar.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var unique_id = $.gritter.add({
-            // (string | mandatory) the heading of the notification
-            title: 'Welcome to Dashgum!',
-            // (string | mandatory) the text inside the notification
-            text: 'Hover me to enable the Close Button. You can hide the left sidebar clicking on the button next to the logo. Free version for <a href="http://blacktie.co" target="_blank" style="color:#ffd777">BlackTie.co</a>.',
-            // (string | optional) the image to display on the left
-            image: 'libs/img/ui-sam.jpg',
-            // (bool | optional) if you want it to fade out on its own or just sit there
-            sticky: true,
-            // (int | optional) the time you want it to be alive for before fading out
-            time: '',
-            // (string | optional) the class name you want to apply to that specific message
-            class_name: 'my-sticky-class'
-        });
-
-        return false;
-    });
-</script>
 
 <script type="application/javascript">
     $(document).ready(function () {
@@ -71,12 +62,12 @@
                 return myNavFunction(this.id);
             },
             ajax: {
-                url: "show_data.php?action=1",
-                modal: true
+//                url: "show_data.php?action=1",
+//                modal: true
             },
             legend: [
                 {type: "text", label: "Special event", badge: "00"},
-                {type: "block", label: "Regular event", }
+                {type: "block", label: "Regular event", badge: "00"}
             ]
         });
     });
@@ -88,6 +79,20 @@
         var to = $("#" + id).data("to");
         console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
     }
+</script>
+
+<script>
+    var doughnutData = [
+        {
+            value: 70,
+            color:"#68dff0"
+        },
+        {
+            value : 30,
+            color : "#fdfdfd"
+        }
+    ];
+//    var myDoughnut = new Chart(document.getElementById("serverstatus01").getContext("2d")).Doughnut(doughnutData);
 </script>
 
 

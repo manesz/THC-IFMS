@@ -20,7 +20,9 @@
     <!-- Bootstrap core CSS -->
     <link href="libs/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
+    <link href="libs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="libs/lineicons/style.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="libs/css/style.css" rel="stylesheet">
@@ -31,6 +33,11 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+        .dataTables_filter{ float: right; }
+    </style>
 </head>
 
 <body>
+<?php include_once("define.php"); ?>

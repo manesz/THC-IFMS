@@ -1747,7 +1747,7 @@ label {
 }
 
 .form-horizontal.style-form .form-group {
-	border-bottom: 1px solid #eff2f7;
+	/*border-bottom: 1px solid #eff2f7;*/
 	padding-bottom: 15px;
 	margin-bottom: 15px;
 }
@@ -1782,7 +1782,7 @@ label {
 /* TOGGLE CONFIGURATION */
 .has-switch {
     border-radius: 30px;
-    -webkit-border-radius: 30px;
+    -webkit-border-radius: 15px; /* default - 30px*/
     display: inline-block;
     cursor: pointer;
     line-height: 1.231;
@@ -1790,6 +1790,7 @@ label {
     position: relative;
     text-align: left;
     width: 80px;
+    height: 30px;
     -webkit-mask: url('../img/mask.png') 0 0 no-repeat;
     mask: url('../img/mask.png') 0 0 no-repeat;
     -webkit-user-select: none;

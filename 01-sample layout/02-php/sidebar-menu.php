@@ -73,7 +73,9 @@ MAIN SIDEBAR MENU
                 </a>
                 <ul class="sub">
                     <li><a  href="#"><i class="fa fa-circle-o"></i> workload</a></li>
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> member</a></li>
+                    <li><a  href="member-list.php"><i class="fa fa-circle-o"></i> member</a></li>
+                    <li><a  href="department-list.php"><i class="fa fa-circle-o"></i> department</a></li>
+                    <li><a  href="position-list.php"><i class="fa fa-circle-o"></i> position</a></li>
                     <li><a  href="#"><i class="fa fa-circle-o"></i> customer</a></li>
                     <li><a  href="#"><i class="fa fa-circle-o"></i> lab</a></li>
                     <li><a  href="#"><i class="fa fa-circle-o"></i> logs</a></li>
