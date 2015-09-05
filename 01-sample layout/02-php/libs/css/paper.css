@@ -1,0 +1,77 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+body{ font-size: 14px; }
+/*---------- Tag ID style ----------*/
+#itemDescription{
+    margin: 0 auto;
+}
+
+/*---------- Table style ----------*/
+.table{
+    font-size: 12px;
+}
+.table_border{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.table_border td{
+    border: 1px solid black;
+    min-height: 20px;
+}
+.table_no_border td{
+    border: 0px solid black;
+    min-height: 20px;
+}
+.table_border th{
+    border: 1px solid black;
+    min-height: 20px;
+}
+.table_no_border th{
+    border: 0px solid black;
+    min-height: 20px;
+}
+
+/*---------- List style ----------*/
+.list-style-none {
+    list-style: none;
+    padding: 0;
+}
+.list-style-none li {
+    height: 20px;
+}
+.list-style-none .child{
+    padding-left: 30px;
+}
+
+/*---------- Header & P style ----------*/
+h2 {
+    -webkit-margin-before: .5em;
+    -webkit-margin-after: .5em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+h4 {
+    -webkit-margin-before: .5em;
+    -webkit-margin-after: .5em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+p {
+    display: block;
+    -webkit-margin-before: .5em;
+    -webkit-margin-after: .5em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+/*---------- Other style class ----------*/
+.seperator { vertical-align: bottom; padding-top: 0px; display: block;  border-bottom: 1px dotted #000; }
+.bg-f0f0f0 { background: #f0f0f0 }
+.bg-fafafa { background: #fafafa }
+.height-30{ height: 30px;}
+.height-50{ height: 50px;}
+.text-center {text-align: center;}
+.text-left {text-align: left;}
+
