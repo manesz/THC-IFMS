@@ -27,6 +27,7 @@
     <!-- Custom styles for this template -->
     <link href="libs/css/style.css" rel="stylesheet">
     <link href="libs/css/style-responsive.css" rel="stylesheet">
+    <link href="libs/js/fancybox/jquery.fancybox.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -36,6 +37,10 @@
 
     <style>
         .dataTables_filter{ float: right; }
+        #profile-img a { border: none !important; }
+        #dropdown-profile { left: -120px !important; text-align: right;}
+        .profile-menu{ margin: 10px 0 0 0; }
+        li.
     </style>
 </head>
 

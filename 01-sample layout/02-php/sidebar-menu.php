@@ -15,13 +15,13 @@ MAIN SIDEBAR MENU
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
 
-            <p class="centered"><a href="profile.html"><img src="libs/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-            <h5 class="centered">Marcel Newman</h5>
+<!--            <p class="centered"><a href="profile.html"><img src="libs/img/ui-sam.jpg" class="img-circle" width="60"></a></p>-->
+<!--            <h5 class="centered">Marcel Newman</h5>-->
 
             <li class="mt">
                 <a class="active" href="index.html">
                     <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
+                    <span>DASHBOARD</span>
                 </a>
             </li>
 
@@ -35,25 +35,54 @@ MAIN SIDEBAR MENU
                     <li><a  href="#"><i class="fa fa-circle-o"></i> create items</a></li>
                 </ul>
             </li>
-
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-money"></i>
-                    <span>QUOTATION</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> list</a></li>
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> create quotation</a></li>
-                </ul>
-            </li>
             <li class="sub-menu">
                 <a href="javascript:;" >
                     <i class="fa fa-cube"></i>
                     <span>ITEM</span>
                 </a>
                 <ul class="sub">
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> list</a></li>
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> create item</a></li>
+                    <li><a  href="item-list.php"><i class="fa fa-circle-o"></i> list</a></li>
+                    <li><a  href="item-add.php"><i class="fa fa-circle-o"></i> create item</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-money"></i>
+                    <span>REQUEST QUOTATION</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="request-quotation-list.php"><i class="fa fa-circle-o"></i> list</a></li>
+                    <li><a  href="request-quotation-add.php"><i class="fa fa-circle-o"></i> create quotation</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-money"></i>
+                    <span>CALIBRATE SERVICE</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="calibrate-service-list.php"><i class="fa fa-circle-o"></i> list</a></li>
+                    <li><a  href="calibrate-service-add.php"><i class="fa fa-circle-o"></i> create quotation</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-cube"></i>
+                    <span>CERTIFICATION</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="certification-list.php"><i class="fa fa-circle-o"></i> list</a></li>
+                    <li><a  href="certification-add.php"><i class="fa fa-circle-o"></i> create item</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-cube"></i>
+                    <span>INVOICE</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="invoice-list.php"><i class="fa fa-circle-o"></i> list</a></li>
+                    <li><a  href="invoice-add.php"><i class="fa fa-circle-o"></i> create item</a></li>
                 </ul>
             </li>
             <li class="sub-menu">
@@ -74,10 +103,9 @@ MAIN SIDEBAR MENU
                 <ul class="sub">
                     <li><a  href="#"><i class="fa fa-circle-o"></i> workload</a></li>
                     <li><a  href="member-list.php"><i class="fa fa-circle-o"></i> member</a></li>
-                    <li><a  href="department-list.php"><i class="fa fa-circle-o"></i> department</a></li>
+                    <li><a  href="department-list.php-list.php"><i class="fa fa-circle-o"></i> department</a></li>
                     <li><a  href="position-list.php"><i class="fa fa-circle-o"></i> position</a></li>
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> customer</a></li>
-                    <li><a  href="#"><i class="fa fa-circle-o"></i> lab</a></li>
+                    <li><a  href="customer-list.php"><i class="fa fa-circle-o"></i> customer</a></li>
                     <li><a  href="#"><i class="fa fa-circle-o"></i> logs</a></li>
                 </ul>
             </li>

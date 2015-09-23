@@ -16,6 +16,7 @@
 <script src="libs/js/jquery.scrollTo.min.js"></script>
 <script src="libs/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="libs/js/jquery.sparkline.js"></script>
+<script src="libs/js/fancybox/jquery.fancybox.js"></script>
 
 <!--custom switch-->
 <script src="libs/js/bootstrap-switch.js"></script>
@@ -28,6 +29,10 @@
 <!--<script type="text/javascript" src="libs/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>-->
 <script src="libs/js/form-component.js"></script>
 
+<!-- select2 box -->
+<link href="plugins/select2/select2-bootstrap.css" rel="stylesheet">
+<link href="plugins/select2/select2.css" rel="stylesheet">
+<script src="plugins/select2/select2.min.js"></script>
 
 <!--common script for all pages-->
 <script src="libs/js/common-scripts.js"></script>
@@ -47,6 +52,15 @@
 <script src="libs/js/zabuto_calendar.js"></script>
 
 <script type="application/javascript">
+    $(document).ready(function() {
+        $(".selectBox").select2();
+    });
+
+    $(function() {
+        //    fancybox
+        jQuery(".fancybox").fancybox();
+    });
+
     $(document).ready(function () {
         $("#date-popover").popover({html: true, trigger: "manual"});
         $("#date-popover").hide();

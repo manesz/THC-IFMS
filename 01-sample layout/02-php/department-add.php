@@ -18,9 +18,15 @@ include_once("header.php");
     ?>
     <section id="main-content">
         <section class="wrapper">
+            <div class="row" style=";">
+                <div class="col-lg-12">
+                    <div class="content-panel col-lg-12">
+                        <h3><i class="fa fa-angle-right"></i> <a href="department-list.php">รายการแผนก</a> <i class="fa fa-angle-right"></i> สร้างแผนกใหม่</h3>
+                    </div>
+                </div>
+            </div>
 
-            <h3><i class="fa fa-angle-right"></i> สร้างแผนกใหม่</h3>
-            <div class="row">
+            <div class="row" style=";">
                 <div class="col-lg-12">
                     <div class="content-panel col-lg-12">
                         <h4 class="mb"></h4>
@@ -42,16 +48,21 @@ include_once("header.php");
                                     <textarea class="form-control" rows="10"></textarea>
                                 </div>
                             </div>
-                            <div class="clearfix"></div><hr/>
-
-                            <div class="form-group col-sm-12 col-md-12">
-                                <button type="button" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
-                                <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
-                            </div>
 
                     </div><!-- /content-panel -->
                 </div><!-- /col-lg-12 -->
             </div><!-- /row -->
+
+            <div class="row" style=";">
+                <div class="col-lg-12">
+                    <div class="content-panel col-lg-12">
+                        <div class="form-group col-lg-12">
+                            <button type="button" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
+                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </section><!-- /wrapper -->
     </section><!-- /main-content -->

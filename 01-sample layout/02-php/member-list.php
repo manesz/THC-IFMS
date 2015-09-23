@@ -18,13 +18,23 @@ TOP BAR CONTENT & NOTIFICATIONS
     ?>
     <section id="main-content">
         <section class="wrapper">
-
-            <h3><i class="fa fa-angle-right"></i> รายชื่อพนักงาน</h3>
-            <div class="row">
+            <div class="row" style=""><!-- row title -->
                 <div class="col-lg-12">
                     <div class="content-panel col-lg-12">
-                        <h4 class="mb"><i class="fa fa-angle-right"></i> ค้นหาข้อมูล : </h4>
+                        <div class="col-lg-6" style="float: left;">
+                            <h3><i class="fa fa-angle-right"></i> รายการผู้ใช้งาน</h3>
+                        </div>
+                        <div class="col-lg-6" style="float: right; text-align: right;">
+                            <a href="member-add.php"> <button class="btn btn-success">เพิ่มผู้ใช้งาน</button> </a>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- END : row title -->
 
+            <div class="row" style=""><!-- row search  -->
+                <div class="col-lg-12">
+                    <div class="content-panel col-lg-12">
+                        <p class="mb"><i class="fa fa-angle-right"></i> ค้นหาข้อมูล : </p>
                         <form class="form-horizontal style-form" method="get">
                             <div class="form-group col-sm-12 col-md-6">
                                 <label class="col-sm-12 col-md-3 control-label">ชื่อ - นามสกุล</label>
@@ -72,9 +82,14 @@ TOP BAR CONTENT & NOTIFICATIONS
                                 <button type="button" class="btn btn-primary btn-lg col-md-12" style="float: right; margin: 0 5px 0 5px;">ค้นหาข้อมูล</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div><!-- END : row search -->
 
-                        <div class="clearfix"></div><hr/>
-                        <table id="customerList" class="table table-bordered table-striped">
+            <div class="row"><!-- END : row table content -->
+                <div class="col-lg-12">
+                    <div class="content-panel col-lg-12">
+                        <table id="customerList" class="table table-bordered table-striped" style="width: 100%;">
                             <thead>
                                 <td width="100">#</td>
                                 <td width="200">ชื่อ - นามสกุล</td>
@@ -84,8 +99,9 @@ TOP BAR CONTENT & NOTIFICATIONS
                                 <td width="100">last updated</td>
                                 <td width="50">edit</td>
                             </thead>
+                            <?php for($i=1;$i<=100;$i++ ):?>
                             <tr>
-                                <td>a</td>
+                                <td><?php echo $i; ?></td>
                                 <td>a</td>
                                 <td>a</td>
                                 <td>a</td>
@@ -105,19 +121,11 @@ TOP BAR CONTENT & NOTIFICATIONS
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>c</td>
-                                <td>c</td>
-                                <td>c</td>
-                                <td>c</td>
-                                <td>c</td>
-                                <td>c</td>
-                                <td>c</td>
-                            </tr>
+                            <?php endfor; ?>
                         </table>
                     </div><!-- /content-panel -->
                 </div><!-- /col-lg-12 -->
-            </div><!-- /row -->
+            </div><!-- END : row table content -->
 
         </section><!-- /wrapper -->
     </section><!-- /main-content -->

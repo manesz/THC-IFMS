@@ -113,12 +113,11 @@
                     <td class="text-center height-50 bg-fafafa" style="width: 80px;">หมายเลขเครื่อง<br/>S/N or ID No.</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Range</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 60px;">จำนวน<br/>Quantity</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">In Lab</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">On Site</td>
+                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">Status</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 80px;">ISO 17025<br/>Accredited</td>
                 </tr>
                 <tbody>
-                    <?php for($i=0;$i<=10;$i++):?>
+                    <?php for($i=1;$i<=13;$i++):?>
                     <tr style="text-align: center;">
                         <td class="height-30"> <?php echo $i; ?> </td>
                         <td class="height-30"> - </td>
@@ -128,13 +127,13 @@
                         <td class="height-30"> - </td>
                         <td class="height-30"> - </td>
                         <td class="height-30"> - </td>
-                        <td class="height-30"> - </td>
-                        <td class="height-30"> - </td>
+                        <td class="height-30"> In Lab / On Site </td>
                         <td class="height-30"> - </td>
                     </tr>
                     <?php endfor; ?>
                 </tbody>
             </table><!-- END : item content -->
+            <p style="text-align: right;">จำนวนหน้า 1/5</p>
             <p style="color: red;">หมายเหตุ : กรุณาใส่ข้อมูลให้ครบถ้วน โดยเฉพาะอย่างยิ่งช่องที่มีเครื่องหมาย * เพื่อประโยชน์ในการประเมินงานสอบเทียบ</p>
         </td>
     </tr><!-- END : table content -->

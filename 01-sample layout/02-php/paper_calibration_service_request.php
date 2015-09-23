@@ -44,23 +44,33 @@
         <td>
 
             <div style="width: 200px; float: left;"><img src="libs/img/sample_logo.png"/></div>
-            <div style="width: 800px; float: left; text-align: center;">
+            <div style="width: 700px; float: left; text-align: center;">
                 <h2>THAI HEART CALIBRATION CO.,LTD.</h2>
                 <p style="width: 100%; text-align: center;">2299/12-13  หมู่ที่ 4 ต.เทพารักษ์ อ.เมือง จ.สมุทรปราการ 10270 เบอร์โทรศัพท์: 0-2394-2162, 0-2757-8435, 0-2757-9496 เบอร์แฟ๊ก: 0-2757-8507</p>
                 <p style="width: 100%; text-align: center;">2299/12-13 Moo4, Thepharak, Muang, Samut Prakan 10270 Tel: 0-2394-2162, 0-2757-8435, 0-2757-9496 Fax: 0-2757-8507</p>
             </div>
-            <div style="width: 300px; float: right; margin: 25px 0 0 0;">
+            <div style="width: 400px; float: right; margin: 25px 0 0 0;">
                 <table class="table table_border" style="float: right; margin: 0 0 0 0;">
                     <tr>
-                        <td colspan="4" style="padding: 5px;">
-                            <span style="border-bottom: none; float: left;">CSR No. : </span><span class="seperator" style="width: 230px; float: left; text-align: center;">&nbsp;</span>
+                        <td colspan="4" style="padding: 5px; text-align: center;">
+                            <span style="border-bottom: none; float: left;">CSR No. : </span>
+                            <span class="seperator" style="width: 330px; float: left; text-align: center; font-size: 12px;">NO.00807/15</span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-center" style="width: 60px; padding: 5px;">In-Lab</td>
-                        <td class="text-center" style="width: 60px; padding: 5px;">On-Site</td>
-                        <td class="text-center" style="width: 100px; padding: 5px;"><span style="border-bottom: none; float: left;">Lab : </span><span class="seperator" style="width: 50px; float: left; text-align: center;">THE-00</span></td>
-                        <td class="text-center" style="width: 80px; padding: 5px;">Page: 2/99</td>
+                        <td class="text-center" style="width: 90px; padding: 5px;">In-Lab<br/>On-Site</td>
+                        <td class="text-center" style="width: 100px; padding: 5px;">
+                            <span style="border-bottom: none; float: left;">Lab : </span>
+                            <span class="seperator" style="width: 50px; float: left; text-align: center;">THE-00</span>
+                        </td>
+                        <td class="text-center" style="width: 110px; padding: 5px;">
+                            <span style="width: 40px; border-bottom: none; float: left;">จำนวน : </span>
+                            <span class="seperator" style="width: 50px; float: left; text-align: center;">999</span>
+                        </td>
+                        <td class="text-center" style="width: 100px; padding: 5px;">
+                            <span style="width: 40px; border-bottom: none; float: left;">หน้า : </span>
+                            <span class="seperator" style="width: 50px; float: left; text-align: center;">2/99</span>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -74,7 +84,7 @@
         <td>
 
             <h2 style="text-align: center; margin: 10px 0 10px 0;">ใบขอรับบริการสอบเทียบ / CALIBRATION SERVICE REUEST</h2>
-            <table class="table " style="margin: 0 0 10px 0;"><!-- customer content -->
+            <table class="table " style="margin: 30px 0 10px 0;"><!-- customer content -->
                 <tr>
                     <td width="700px"><b>1) รายละเอียดลูกค้า</b></td>
                     <td width="600px">
@@ -133,36 +143,28 @@
                     </td>
                 </tr>
             </table><!-- END : customer content -->
-            <table class="table " style="margin: 0 0 10px 0;"><!-- item summary content -->
+            <table class="table " style="margin: 30px 0 10px 0;"><!-- item summary content -->
                 <tr>
                     <td width="150px"><b>2) รายละเอียดเครื่องมือ : </b></td>
-                    <td width="900px">
-                        <span style="width: 100px; border-bottom: none; float: left;">รายการ Lot No. : </span>
-                        <span class="seperator" style="width: 755px; float: left; text-align: left;">NO.00807/15, NO.00808/15, NO.00825/15, NO.00901/15</span>
-                    </td>
-                    <td width="250px">
-                        <span style="width: 80px; border-bottom: none; float: left;">จำนวนทั้งหมด : </span>
-                        <span class="seperator" style="width: 165px; float: left; text-align: center;">10&nbsp; Items</span>
-                    </td>
+                    <td width="900px"></td>
+                    <td width="250px"></td>
                 </tr>
             </table><!-- END : item summary content -->
             <table class="table table_border" style="width: 1330px; margin: 10px 0 10px 0;"><!-- item content -->
                 <thead>
-                        <th>No.</th>
-                        <th>Description</th>
-                        <th>Manufacturer</th>
-                        <th>Model</th>
-                        <th>Serial No.</th>
-                        <th>ID No.</th>
-                        <th>Calibration Point</th>
-                        <th>Cert No.</th>
-                        <th>Quotation</th>
-                        <th>Inv. No.</th>
-                        <th>Lot No.</th>
-                        <th>Barcode</th>
+                        <th style="width: 30px;">No.</th>
+                        <th style="width: 300px;">Description</th>
+                        <th style="width: 100px;">Manufacturer</th>
+                        <th style="width: 100px;">Model</th>
+                        <th style="width: 100px;">Serial No.</th>
+                        <th style="width: 100px;">ID No.</th>
+                        <th style="width: 300px;">Calibration Point</th>
+                        <th style="width: 100px;">Cert No.</th>
+                        <th style="width: 100px;">Quotation</th>
+                        <th style="width: 100px;">Barcode</th>
                 </thead>
                 <tbody>
-                    <?php for($i=0;$i<=10;$i++):?>
+                    <?php for($i=1;$i<=10;$i++):?>
                     <tr style="text-align: center;">
                         <td><?php echo $i; ?></td><!-- NO. -->
                         <td>Steel Ruler</td><!-- description -->
@@ -170,66 +172,82 @@
                         <td>-</td><!-- model -->
                         <td>n/a</td><!-- serial no. -->
                         <td>01</td><!-- id no. -->
-                        <td>0-2000 mm. (CAL 2ด้าน)</td><!-- calibrate point -->
+                        <td>0-2000 mm. </td><!-- calibrate point -->
                         <td>THD-00109/15</td><!-- cert no. -->
                         <td>27-1510034</td><!-- quotation no. -->
-                        <td>-</td><!-- inv no. -->
-                        <td>NO.00807/15</td><!-- lot no. -->
                         <td style="text-align: center;"><img src="libs/img/sample-barcode.png" style="width: 120px; height: auto;"/> </td><!-- barcode -->
                     </tr>
                     <?php endfor; ?>
                 </tbody>
             </table><!-- END : customer content -->
-            <table class="table table_border" style="width: 1330px; margin: 0 0 0 0;"><!-- footer content -->
+            <table class="table table_border" style="width: 100%; margin: 0; float: right;">
                 <tr>
-                    <td style="width: 15%; vertical-align: top;" rowspan="2">
-                        <h4>ลุกค้าผู้ส่งเครื่องมือ</h4>
-                        <p>ข้าพเข้าขอยืนยันว่าข้อความข้างต้นในเอกสารฉบับนี้ถูกต้องสมบรูณ์ และเป็นไปตามที่ข้าพเจ้าต้องการ</p><br/><br/><br/>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
+                    <td style="width: 75%; padding: 10px;">
+                        <h4>ลูกค้ารับเครื่องมือ</h4>
+                        <p>ข้าพเจ้าขอยืนยันว่าได้รับการตรวจรับเครื่องมือตามรายการข้างต้นทั้งหมดว่าครบถ้วนและอยู่ในสภาพเรียบร้อย</p>
                     </td>
-                    <td style="width: 10%; font-size: 12px;" colspan="5">
-                        <h4>หมายเหตุ : <span>1. อุปกรณ์เสริมของเครื่องมือ และ 2. การบรรจุหีบห่อเครื่องมือจากลูกค้า</span></h4>
+                    <td style="width: 25%; padding: 10px;">
                         <p>
-                           1.1)สายไฟ, Probe/Sensor, Data Link  1.2)สาย Adapter, หม้อแปลงไฟฟ้า  1.3)ขั้วต่อเครื่องมือ  1.4)คู่มือการใช้งาน  1.5)Battery Charger  1.6)อื่นๆ(โปรดระบุ)<br/><br/>
-                           2.1)กล่องเครื่องมือ/ซองใส่เครื่องมือ  2.2)กล่องกระดาษ  2.3)หุ้มด้วยพลาสติกกันกระแทก  2.4)อื่นๆ(โปรดระบุ)<br/><br/>
+                            <span style="border-bottom: none; float: left; width: 50px;">ลงชื่อ</span>
+                            <span class="seperator" style="width: 200px; float: left; text-align: center; font-size: 12px;">&nbsp;</span>
+                        </p>
+                        <p style="clear: both; margin-top: 30px;">
+                            <span style="border-bottom: none; float: left; width: 50px;">วันที่</span>
+                            <span class="seperator" style="width: 200px; float: left; text-align: center; font-size: 12px;"><?php echo date("d-m-Y")?></span>
                         </p>
                     </td>
-                    <td style="width: 15%; vertical-align: top;" rowspan="2">
-                        <h4>ลูกค้ารับเครื่องมือ</h4>
-                        <p>ข้าพเจ้าขอยืนยันว่าได้รับการตรวจรับเครื่องมือตามรายการข้างต้นทั้งหมดว่าครบถ้วนและอยู่ในสภาพเรียบร้อย</p><br/><br/>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
                 </tr>
-                <tr>
-                    <td style="width: 10%">
-                        <h4>เจ้าหน้าที่รับเครื่องมือ</h4>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
-                    <td style="width: 10%">
-                        <h4>เจ้าหน้าที่สอบเทียบ</h4>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
-                    <td style="width: 10%">
-                        <h4>เจ้าหน้าที่ออกใบ Cert.</h4>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
-                    <td style="width: 10%">
-                        <h4>เจ้าหน้าที่การเงิน</h4>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
-                    <td style="width: 10%">
-                        <h4>เจ้าหน้าทส่งเครื่องมือ</h4>
-                        <p>ลงชื่อ</p>
-                        <p>วันที่</p>
-                    </td>
-                </tr>
-            </table><!-- END : footer content -->
+            </table>
+<!--            <table class="table table_border" style="width: 1330px; margin: 0 0 0 0;"><!-- footer content -->
+<!--                <tr>-->
+<!--                    <td style="width: 15%; vertical-align: top;" rowspan="2">-->
+<!--                        <h4>ลุกค้าผู้ส่งเครื่องมือ</h4>-->
+<!--                        <p>ข้าพเข้าขอยืนยันว่าข้อความข้างต้นในเอกสารฉบับนี้ถูกต้องสมบรูณ์ และเป็นไปตามที่ข้าพเจ้าต้องการ</p><br/><br/><br/>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 10%; font-size: 12px;" colspan="5">-->
+<!--                        <h4>หมายเหตุ : <span>1. อุปกรณ์เสริมของเครื่องมือ และ 2. การบรรจุหีบห่อเครื่องมือจากลูกค้า</span></h4>-->
+<!--                        <p>-->
+<!--                           1.1)สายไฟ, Probe/Sensor, Data Link  1.2)สาย Adapter, หม้อแปลงไฟฟ้า  1.3)ขั้วต่อเครื่องมือ  1.4)คู่มือการใช้งาน  1.5)Battery Charger  1.6)อื่นๆ(โปรดระบุ)<br/><br/>-->
+<!--                           2.1)กล่องเครื่องมือ/ซองใส่เครื่องมือ  2.2)กล่องกระดาษ  2.3)หุ้มด้วยพลาสติกกันกระแทก  2.4)อื่นๆ(โปรดระบุ)<br/><br/>-->
+<!--                        </p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 15%; vertical-align: top;" rowspan="2">-->
+<!--                        <h4>ลูกค้ารับเครื่องมือ</h4>-->
+<!--                        <p>ข้าพเจ้าขอยืนยันว่าได้รับการตรวจรับเครื่องมือตามรายการข้างต้นทั้งหมดว่าครบถ้วนและอยู่ในสภาพเรียบร้อย</p><br/><br/>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td style="width: 10%">-->
+<!--                        <h4>เจ้าหน้าที่รับเครื่องมือ</h4>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 10%">-->
+<!--                        <h4>เจ้าหน้าที่สอบเทียบ</h4>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 10%">-->
+<!--                        <h4>เจ้าหน้าที่ออกใบ Cert.</h4>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 10%">-->
+<!--                        <h4>เจ้าหน้าที่การเงิน</h4>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                    <td style="width: 10%">-->
+<!--                        <h4>เจ้าหน้าทส่งเครื่องมือ</h4>-->
+<!--                        <p>ลงชื่อ</p>-->
+<!--                        <p>วันที่</p>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table><!-- END : footer content -->
 
         </td>
     </tr><!-- END table content -->

@@ -7,7 +7,7 @@ Premium: http://www.gridgum.com
 */
 
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+/*@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);*/
 
 /* BASIC THEME CONFIGURATION */
 body {
@@ -92,8 +92,10 @@ a, a:hover, a:focus {
 
 .btn-theme {
   color: #fff;
-  background-color: #68dff0;
-  border-color: #48bcb4;
+  /*background-color: #68dff0;*/
+  /*border-color: #48bcb4;*/
+  background-color: #ffd777;
+  border-color: #c9aa5f;
 }
 .btn-theme:hover,
 .btn-theme:focus,
@@ -101,8 +103,11 @@ a, a:hover, a:focus {
 .btn-theme.active,
 .open .dropdown-toggle.btn-theme {
   color: #fff;
-  background-color: #48bcb4;
-  border-color: #48bcb4;
+  /*background-color: #48bcb4;*/
+  /*border-color: #48bcb4;*/
+    background: #f0ad4e;
+  border-color: #c9aa5f;
+  -moz-border-corner-image-transform: 0.5;
 }
 
 .btn-theme02 {
@@ -1156,7 +1161,8 @@ PANELS CONFIGURATIONS
 	background: #ffffff;
 	box-shadow: 0px 3px 2px #aab2bd;
 	padding-top: 15px;
-	padding-bottom: 5px;
+	padding-bottom: 15px;
+    min-height: 35px;
 }
 .content-panel h4 {
 	margin-left: 10px;
@@ -1937,7 +1943,8 @@ label {
 	margin: 0;
 	padding: 25px 20px;
 	text-align: center;
-	background: #68dff0;
+	/*background: #68dff0;*/
+    background: #ffd777;
 	border-radius: 5px 5px 0 0;
 	-webkit-border-radius: 5px 5px 0 0;
 	color: #fff;
@@ -2240,5 +2247,7 @@ label {
 .site-min-height {
     min-height: 900px;
 }
+.dataTables_length > label {float: left;}
+table { background: #fff; }
 
 
