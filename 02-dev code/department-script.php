@@ -11,6 +11,14 @@ if ($action=='add') {
 	
 	$title=addslashes($_POST['title']);
 	$description=addslashes($_POST['description']);
+	
+	$is_in_lab=$_POST['is_in_lab'];
+	$is_on_site=$_POST['is_on_site'];
+	
+	$in_lab = ($is_in_lab=='1' ? '1' : '');
+	$on_site = ($is_on_site=='1' ? '1' : '');
+	
+	
 	$publish='1';	
 	$create_person=$_SESSION['ss_member_id'];
 	
@@ -22,9 +30,9 @@ if ($action=='add') {
 		$error="103";
 	} else { 
 		$sql="	INSERT INTO "._TB_DEPARTMENT." 
-					(id, title, description, create_dttm, update_dttm, publish, create_person) 
+					(id, title, description, is_in_lab, is_on_site, create_dttm, update_dttm, publish, create_person) 
 					VALUES (
-						NULL, '$title', '$description', NOW(), NOW(), '$publish', '$create_person'
+						NULL, '$title', '$description', '$in_lab', '$on_site', NOW(), NOW(), '$publish', '$create_person'
 					) ";
 		if (!$db->query($sql)) {
 			$error="101";
@@ -40,6 +48,12 @@ if ($action=='edit') {
 	$current_title=trim(addslashes($_POST['current_title'])); 	
 	$description=addslashes($_POST['description']);
 	
+	$is_in_lab=$_POST['is_in_lab'];
+	$is_on_site=$_POST['is_on_site'];
+	
+	$in_lab = ($is_in_lab=='1' ? '1' : '');
+	$on_site = ($is_on_site=='1' ? '1' : '');
+	
 	$create_person=$_SESSION['ss_member_id'];
 	
 	
@@ -50,6 +64,8 @@ if ($action=='edit') {
 			$SQL="UPDATE  "._TB_DEPARTMENT." 
 					SET  	title = '$title', 
 							description='$description',
+							is_in_lab='$in_lab',
+							is_on_site='$on_site',
 							update_dttm=NOW(),
 							create_person='$create_person'
 					WHERE id='$id' 

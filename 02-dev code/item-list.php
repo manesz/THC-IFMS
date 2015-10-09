@@ -7,7 +7,56 @@
  */
 include("check-permission.php");
 
+$content='';
 
+
+$SQL="	SELECT id, equipment_name, model, serial_no, id_no, customer_id,  update_dttm 
+			FROM "._TB_ITEM." WHERE publish='1' ";
+
+$re=mysql_query($SQL);
+$num=mysql_num_rows($re);
+
+if ($num>0) {
+	while ($rs=mysql_fetch_array($re)) {
+		$id=$rs['id'];
+		$equipment_name=stripslashes($rs['equipment_name']);
+		$model=stripslashes($rs['model']);
+		$serial_no=stripslashes($rs['serial_no']);
+		$id_no=stripslashes($rs['id_no']);
+		$customer_id=stripslashes($rs['customer_id']);		
+		$latest_update=$rs['update_dttm'];
+		
+		$customer_name=$db->customer_name($customer_id);
+		
+		$content.='
+			     <tr>
+					<td>'.$id.'</td>
+					<td>'.$equipment_name.' </td>
+					<td>'.$model.'</td>
+					<td>'.$serial_no.'</td>
+					<td> '.$id_no.' </td>
+					<td> - </td>
+					<td>'.$customer_name.'</td>
+					<td> - </td>
+					<td>'.$latest_update.'</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								จัดการ
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+								<li><a href="paper_item_description.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
+								<li><a href="item-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
+								<li><a href="#" onclick="delete_item(\''.$id.'\',\''.htmlspecialchars("$equipment_name").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+		';
+		
+	} //end whiel
+}
 
 include_once("header.php");
 ?>
@@ -88,33 +137,9 @@ include_once("header.php");
                                 <th class="text-center" width="50">last updated</th>
                                 <th class="text-center" width="50">edit</th>
                             </thead>
-                            <?php for($i=1;$i<=100;$i++):?>
-                            <tr>
-                                <td><?php echo $i; ?></td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>Certification</td>
-                                <td><?php echo date("d-m-Y"); ?></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <i class="fa fa-cog"> จัดการ</i>
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<!--                                            <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
-                                            <li><a class="fancybox" href="paper_item_description.php" target="_blank"><i class="fa fa-eye">ดู</i></a></li>
-                                            <li><a href="#"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
-                                            <li><a href="#"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endfor; ?>
+                           <tbody>
+                    	       <?php echo $content; ?>
+                           </tbody>
                         </table>
                     </div><!-- /content-panel -->
                 </div><!-- /col-md-12 -->
@@ -135,4 +160,13 @@ include_once("footer.php");
         $('#departmentList').DataTable();
 //        $("#departmentList_filter").add
     } );
+	
+		function delete_item(id, title) {
+	var chk=confirm("โปรดยืนยันการลบข้อมูล "+title+" !!");
+		if (chk) {
+			$.post("item-script.php",{'act':'delete','id':id},function(data) {
+				window.location.href="item-list.php";
+			});
+		} else { return false; }
+	}
 </script>

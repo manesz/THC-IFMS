@@ -69,12 +69,12 @@ function DateNumberEN2TH($date_eng) {
 	//eng format yyyy-mm-dd
 	//change to thai format dd-mm-yyyy
 	
-	//date thai format = 2011-12-01 to  01-12-2554
+	//date thai format = 2011-12-01 to  01/12/2554
 	$dd=date("d",strtotime($date_eng));
 	$mm=date("m",strtotime($date_eng));
 	$yy=date("Y",strtotime($date_eng));
 	//$yy=(int)(substr($date_eng,0,4))+543;
-	$th_date=$dd.'-'.$mm.'-'.($yy+543);			
+	$th_date=$dd.'/'.$mm.'/'.($yy+543);			
 	return $th_date;
 }
 
@@ -106,6 +106,7 @@ global $ShortMonthTh;
 	$ThaiDateTime=$dd.' '.$ShortMonthTh[$mm-1].' '.substr(($yy+543),2,2).$time;
 	return $ThaiDateTime;	
 }
+
 
 function datetime2short($fulldatetime) { //date is timestamp
 	$date=date("Y-m-d H:i",strtotime($fulldatetime));

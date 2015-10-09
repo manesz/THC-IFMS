@@ -49,6 +49,15 @@ include_once("header.php");
                                     <textarea class="form-control" rows="10" name="description" id="description"></textarea>
                                 </div>
                             </div>
+                            
+                             <div class="form-group col-sm-12 col-md-12">
+								 <label class="col-sm-12 col-md-3 control-label">&nbsp;</label>
+                                	<div class="col-sm-12 col-md-9">
+                                        <input type="checkbox" name="is_in_lab" id="is_in_lab" value="1" /> In LAB<br />
+                                        <input type="checkbox" name="is_on_site" id="is_on_site" value="1" /> On Site
+                                    </div>
+                            </div>
+                            
                             <div class="clearfix"></div><hr/>
 
                             <div class="form-group col-sm-12 col-md-12">

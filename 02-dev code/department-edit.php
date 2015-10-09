@@ -16,17 +16,30 @@ $re=mysql_query($SQL);
 $num=mysql_num_rows($re);
 
 if ($num>0) {
-	while ($rs=mysql_fetch_array($re)) {
+	$rs=mysql_fetch_array($re);
 		$id=$rs['id'];
 		$title=stripslashes($rs['title']);
 		$description=stripslashes($rs['description']);
+		$is_in_lab=$rs['is_in_lab'];
+		$is_on_site=$rs['is_on_site'];
+		
+		$chk_is_in_lab='';
+		$chk_is_on_site='';
+				
+		if ($is_in_lab=='1') {
+			$chk_is_in_lab=' checked ';	
+		}
+		if ($is_on_site=='1') {
+			$chk_is_on_site=' checked ';	
+		}
+		
 		
 		$create_dttm=$rs['create_dttm'];
 		$latest_update=$rs['update_dttm'];
 		$publish=$rs['publish'];
 		$create_person=$rs['create_person'];
 		
-	} //end whiel
+	
 }
 
 include_once("header.php");
@@ -73,6 +86,17 @@ include_once("header.php");
                                     <textarea class="form-control" rows="10" name="description" id="description"><?php echo $description; ?></textarea>
                                 </div>
                             </div>
+                            
+                            
+                                 <div class="form-group col-sm-12 col-md-12">
+								 <label class="col-sm-12 col-md-3 control-label">&nbsp;</label>
+                                	<div class="col-sm-12 col-md-9">
+                                        <input type="checkbox" name="is_in_lab" id="is_in_lab" value="1" <?php echo $chk_is_in_lab; ?> /> In LAB<br />
+                                        <input type="checkbox" name="is_on_site" id="is_on_site" value="1" <?php echo $chk_is_on_site; ?> /> On Site
+                                    </div>
+                            </div>
+                            
+                            
                             <div class="clearfix"></div><hr/>
 
                             <div class="form-group col-sm-12 col-md-12">

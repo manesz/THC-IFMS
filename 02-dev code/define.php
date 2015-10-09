@@ -15,6 +15,7 @@ define("_TB_POSITION","position");
 define("_TB_PERMISSION","permission");
 
 define("_TB_CUSTOMER","customer");
+define("_TB_ITEM","item");
 
 define("_UPLOAD_FOLDER","uploads");
 define("_IMG_PROFILE_PATH",_UPLOAD_FOLDER."/profile");
