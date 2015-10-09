@@ -6,9 +6,9 @@
  * Time: 22:51 น.
  */
 include("define.php"); 
-include('class/db_connect.php');
-include('class/db_class.php');
-include("class/public-function.php");
+include('libs/class/db_connect.php');
+include('libs/class/db_class.php');
+include("libs/class/public-function.php");
 
 $db = new db_class();
  ?>

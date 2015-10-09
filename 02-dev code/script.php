@@ -1,8 +1,8 @@
 <?php
 session_start();
 include('define.php');
-include('class/db_connect.php');
-include('class/db_class.php');
+include('libs/class/db_connect.php');
+include('libs/class/db_class.php');
 
 $db = new db_class();
 

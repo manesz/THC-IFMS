@@ -178,10 +178,9 @@ include_once("header.php");
                             <div class="clearfix"></div><hr/>
 
                             <div class="form-group col-sm-12 col-md-12">
-	                             <input type="hidden" name="act" id="act" value="add" />
-                                    <button type="submit" id="btn_save" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
-                                    <button type="reset" class="btn btn-default btn-lg col-md-3"  style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
-                                     
+	                            <input type="hidden" name="act" id="act" value="add" />
+                                <button type="submit" id="btn_save" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
+                                <button type="reset" class="btn btn-default btn-lg col-md-3"  style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>                                     
                             </div>
                             
                        </form>

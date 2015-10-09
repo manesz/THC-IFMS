@@ -8,9 +8,9 @@ if (!$_SESSION['ss_login'] && $_SESSION['ss_login']!='1') {
 }
 
 include("define.php"); 
-include('class/db_connect.php');
-include('class/db_class.php');
-include("class/public-function.php");
+include('libs/class/db_connect.php');
+include('libs/class/db_class.php');
+include("libs/class/public-function.php");
 
 $db = new db_class();
 
