@@ -5,6 +5,7 @@ $db = new db_class();
 $action=$_POST['act'];
 
 $error=""; //no-error
+$PDF_PATH  = _PDF_ITEM_PATH."/";
 
 if ($action=='get_customer_info') {
 		$id=$_POST['id'];	
@@ -169,46 +170,113 @@ if ($action=='edit') {
 	$inv_no=addslashes($_POST['inv_no']);
 	$update_dttm=date("Y-m-d H:i:s");
 	
+	$SQL_PDF='';
+	if ($change_pdf=='1') { //เปลี่ยนภาพ
+				if($_FILES["cer_pdf"]["size"]>0){
+								if(!file_exists($PDF_PATH)) mkdir($PDF_PATH); //สร้าง Folder ปลายทางเมื่อไม่พบ
+								
+								if(isPDF($_FILES["cer_pdf"])){ //ตรวจสอบว่าเป็นไฟล์รูปภาพ
+								
+										//เรียกฟังก์ชั่น Resize
+										$pdf_name=$_FILES['cer_pdf']['name'];
+										
+										$path=$PDF_PATH.$pdf_name;
+											
+										if( copy($_FILES['cer_pdf']['tmp_name'], $path)) {														
+														$SQL="UPDATE  "._TB_ITEM." 
+																	SET  				
+																			equipment_name = '$equipment_name', 
+																			department_id = '$department_id',
+																			model = '$model',
+																			resolution = '$resolution',
+																			calibration_range = '$calibration_range',
+																			serial_no = '$serial_no',
+																			id_no = '$id_no',
+																			attb1_1 = '$attb1_1',
+																			attb1_2 = '$attb1_2',
+																			attb1_3 = '$attb1_3',
+																			attb1_4 = '$attb1_4',
+																			attb1_5 = '$attb1_5',
+																			attb1_6 = '$attb1_6',
+																			attb1_6_other = '$attb1_6_other',
+																			attb2_1 = '$attb2_1',
+																			attb2_2 = '$attb2_2',
+																			attb2_3 = '$attb2_3',
+																			attb2_4 = '$attb2_4',
+																			attb2_4_other = '$attb2_4_other',
+																			calibrate_result = '$calibrate_result',
+																			iso017025 = '$iso017025',
+																			manufacturer = '$manufacturer',
+																			cert_no = '$cert_no',
+																			cer_pdf='$pdf_name',
+																			inv_no = '$inv_no',
+																			note = '$note',
+																			status = '$status',
+																			qty = '$qty',						
+																			update_dttm = '$update_dttm',
+																			customer_id ='$customer_id',
+																			create_person='$create_person'
+																	WHERE id='$id' 
+																	LIMIT 1; ";
+														$re=$db->query($SQL);
+														if (!$re) {
+															$error='102';	
+														}
+										} else {
+												//echo 'ไม่สามารถอัพโหลดได้';
+												$error='103';
+										}
+								}else{
+										//echo 'กรุณาใช้ไฟล์ PDF
+										$error='104';
+								}
+				} else{
+						//echo 'ท่านยังไม่ได้อัพโหลดไฟล์';
+						$error='105';
+				}							
+	} else {
+		$SQL="UPDATE  "._TB_ITEM." 
+					SET  				
+							equipment_name = '$equipment_name', 
+							department_id = '$department_id',
+							model = '$model',
+							resolution = '$resolution',
+							calibration_range = '$calibration_range',
+							serial_no = '$serial_no',
+							id_no = '$id_no',
+							attb1_1 = '$attb1_1',
+							attb1_2 = '$attb1_2',
+							attb1_3 = '$attb1_3',
+							attb1_4 = '$attb1_4',
+							attb1_5 = '$attb1_5',
+							attb1_6 = '$attb1_6',
+							attb1_6_other = '$attb1_6_other',
+							attb2_1 = '$attb2_1',
+							attb2_2 = '$attb2_2',
+							attb2_3 = '$attb2_3',
+							attb2_4 = '$attb2_4',
+							attb2_4_other = '$attb2_4_other',
+							calibrate_result = '$calibrate_result',
+							iso017025 = '$iso017025',
+							manufacturer = '$manufacturer',
+							cert_no = '$cert_no',
+							cer_pdf = '$cer_pdf',
+							inv_no = '$inv_no',
+							note = '$note',
+							status = '$status',
+							qty = '$qty',						
+							update_dttm = '$update_dttm',
+							customer_id ='$customer_id',
+							create_person='$create_person'
+					WHERE id='$id' 
+					LIMIT 1; ";
+		$re=$db->query($SQL);
+		if (!$re) {
+			$error='102';	
+		}
+	}
+
 	
-	$SQL="UPDATE  "._TB_ITEM." 
-				SET  				
-						equipment_name = '$equipment_name', 
-						department_id = '$department_id',
-						model = '$model',
-						resolution = '$resolution',
-						calibration_range = '$calibration_range',
-						serial_no = '$serial_no',
-						id_no = '$id_no',
-						attb1_1 = '$attb1_1',
-						attb1_2 = '$attb1_2',
-						attb1_3 = '$attb1_3',
-						attb1_4 = '$attb1_4',
-						attb1_5 = '$attb1_5',
-						attb1_6 = '$attb1_6',
-						attb1_6_other = '$attb1_6_other',
-						attb2_1 = '$attb2_1',
-						attb2_2 = '$attb2_2',
-						attb2_3 = '$attb2_3',
-						attb2_4 = '$attb2_4',
-						attb2_4_other = '$attb2_4_other',
-						calibrate_result = '$calibrate_result',
-						iso017025 = '$iso017025',
-						manufacturer = '$manufacturer',
-						cert_no = '$cert_no',
-						cer_pdf = '$cer_pdf',
-						inv_no = '$inv_no',
-						note = '$note',
-						status = '$status',
-						qty = '$qty',						
-						update_dttm = '$update_dttm',
-						customer_id ='$customer_id',
-						create_person='$create_person'
-				WHERE id='$id' 
-				LIMIT 1; ";
-	$re=$db->query($SQL);
-	if (!$re) {
-		$error='102';	
-	} 
 	echo $error;		
 
 }

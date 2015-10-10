@@ -19,6 +19,8 @@ define("_TB_ITEM","item");
 
 define("_UPLOAD_FOLDER","uploads");
 define("_IMG_PROFILE_PATH",_UPLOAD_FOLDER."/profile");
+define("_IMG_ITEM_PATH",_UPLOAD_FOLDER."/items/images");
+define("_PDF_ITEM_PATH",_UPLOAD_FOLDER."/items/pdf");
 
 
 

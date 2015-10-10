@@ -355,6 +355,12 @@ function isImage($file_obj){
 	return(in_array($file_type, $IMG_TYPE));
 }
 
+function isPDF($file_obj){
+	$PDF_TYPE = array('application/pdf');
+	$file_type = $file_obj['type'];
+	return(in_array($file_type, $PDF_TYPE));
+}
+
 
 /**
 * ฟั่งชั่น resize รูปภาพโดยกำหนด ความกว้าง,สูง สูงสุด

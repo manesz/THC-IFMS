@@ -67,7 +67,15 @@ if ($num>0) {
 		
 		$manufacturer=stripslashes($rs['manufacturer']);	
 		$cert_no=stripslashes($rs['cert_no']);	
+		
 		$cer_pdf=$rs['cer_pdf'];	
+		if ($cer_pdf!="") {
+			$certificate_pdf='<a href="'._PDF_ITEM_PATH.'/'.$cer_pdf.'" target="_blank">View Certification click here.</a><br>';
+		} else {
+			$certificate_pdf='';	
+		}		
+		$hidden_pdf_name='<input type="hidden" name="old_cer_pdf" id="old_cer_pdf" value="'.$cer_pdf.'" />';
+		
 		
 		$inv_no=$rs['inv_no'];	
 		$invoice=($inv_no!="" ? $inv_no : ' - ');
@@ -118,7 +126,7 @@ include_once("header.php");
             <div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
 			      
                                 <!-- Tab -->                                
-                                <ul class="nav nav-tabs" role="tablist" id="pro_tab" style="margin-top:20px;">
+                                <ul class="nav nav-tabs" role="tablist" id="item_tab" style="margin-top:20px;">
                                   	<li role="presentation" class="active"><a href="#tab_general" role="tab" data-toggle="tab" class="bg-info"><h5>ข้อมูลทั่วไป</h5></a></li>     
                                     <li role="presentation"><a href="#tab_description" role="tab" data-toggle="tab" class="bg-info"><h5>รายละเอียดอุปกรณ์</h5></a></li>
                                     <li role="presentation"><a href="#tab_image" role="tab" data-toggle="tab" class="bg-info"><h5>รูปภาพ</h5></a></li>
@@ -382,6 +390,8 @@ include_once("header.php");
                                                                     <div class="clearfix form-group col-sm-12 col-md-6">
                                                                         <label class="col-sm-12 col-md-3 control-label">Certification PDF File.</label>
                                                                         <div class="col-sm-12 col-md-9">
+                                                                        	<?php echo $certificate_pdf; ?>
+                                                                             <input type="checkbox" name="change_pdf" id="change_pdf" value="1" /> เปลี่ยนไฟล์ใหม่
                                                                             <input type="file" class="form-control" name="cer_pdf" id="cer_pdf" value="<?php echo $cer_pdf; ?>">
                                                                         </div>
                                                                     </div><!-- /Certification No -->
@@ -445,6 +455,16 @@ include_once("header.php");
 		
 		change_customer("<?php echo $customer_id; ?>");
 		
+		$("#cer_pdf").attr("disabled",true);		
+		$("#change_pdf").click(function() {
+			var chk=$("#change_pdf").attr("checked");
+				if (chk=='checked') {
+					$("#cer_pdf").attr("disabled",false);	
+				} else {
+					$("#cer_pdf").attr("disabled",true);	
+				}
+		});
+		
 		$('#frm').ajaxForm( 
 		{ 
 				beforeSubmit: validate,
@@ -456,11 +476,27 @@ include_once("header.php");
 							} else if (result=='102') { //save ไม่ได้
 									$(".alert-danger").html("<b>เกิดข้อผิดพลาด!!</b><br> "+result);
 									$(".alert-danger").fadeIn();	
-									go_anchor("anchor1");							
+									go_anchor("anchor1");		
+							} else if (result=='103') { //save ไม่ได้
+									$(".alert-danger").html("<b>เกิดข้อผิดพลาด!!</b><br>ไม่สามารถอัพโหลดไฟล์ pdf ได้ ");
+									$(".alert-danger").fadeIn();										
+									go_anchor("anchor1");		
+									$('#item_tab li:eq(4) a').tab('show')
+							} else if (result=='104') { //เลือกไฟล์ pdf
+									$(".alert-danger").html("<b>เกิดข้อผิดพลาด!!</b><br>กรุณาเลือกไฟล์ .pdf เท่านั้น ");
+									$(".alert-danger").fadeIn();	
+									go_anchor("anchor1");	
+									$('#item_tab li:eq(4) a').tab('show')
+							} else if (result=='105') { //เลือกไฟล์ pdf
+									$(".alert-danger").html("<b>เกิดข้อผิดพลาด!!</b><br>กรุณาเลือกไฟล์ Certification PDF File (.pdf) เพื่ออัพโหลด ");
+									$(".alert-danger").fadeIn();	
+									go_anchor("anchor1");		
+									$('#item_tab li:eq(4) a').tab('show')					
 							} else {
 									$(".alert-danger").html(result);	
 									$(".alert-danger").fadeIn();	
 									go_anchor("anchor1");
+									$('#item_tab li:eq(4) a').tab('show')
 							}
 					
 				}
@@ -510,6 +546,14 @@ include_once("header.php");
 						$(".alert-warning").fadeIn();
 						go_anchor("anchor1");
 						return false;
+			} else if ($("#change_pdf").is("checked") && $("#cer_pdf").val()=="") {
+				$(".alert-warning").html("<b>กรุณากรอกข้อมูลให้ครบถ้วน!!</b><br>- กรุณาเลือกไฟล์ Certification PDF File.");
+				$("#cer_pdf").focus();
+				$(".alert-warning").fadeIn();
+				go_anchor("anchor1");
+				$('#item_tab li:eq(4) a').tab('show');
+				return false;
+				
 			}
 	};
 </script>
