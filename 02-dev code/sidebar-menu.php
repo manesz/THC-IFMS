@@ -43,6 +43,7 @@ MAIN SIDEBAR MENU
                 <ul class="sub">
                     <li><a  href="item-list.php"><i class="fa fa-circle-o"></i> list</a></li>
                     <li><a  href="item-add.php"><i class="fa fa-circle-o"></i> create item</a></li>
+                    <li><a  href="item-accessories-list.php"><i class="fa fa-circle-o"></i> Item accessories</a></li>
                 </ul>
             </li>
             <li class="sub-menu">

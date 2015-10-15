@@ -6,6 +6,37 @@ $action=$_POST['act'];
 
 $error=""; //no-error
 $PDF_PATH  = _PDF_ITEM_PATH."/";
+$IMG_PATH = _IMG_ITEM_PATH."/";
+
+if ($action=='load-images') {
+	$id=$_POST['item_id'];
+	$images='';
+	
+	$sql="SELECT * FROM "._TB_ITEM_IMAGE." WHERE item_id='$id' ";
+	$re=mysql_query($sql);
+	$n=mysql_num_rows($re);
+	if ($n>0) {
+		while ($rs=mysql_fetch_array($re)) {
+			$img_name=$rs['name'];
+			
+			$images.='   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+								<div class="project-wrapper">
+									<div class="project">
+										<div class="photo-wrapper">
+											<div class="photo">
+												<a class="fancybox" href="'.$IMG_PATH.$img_name.'"><img class="img-responsive" src="'.$IMG_PATH.$img_name.'" alt=""></a>
+											</div>
+											<div class="overlay"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							';	
+		}
+	}
+	echo $images;
+	
+}
 
 if ($action=='get_customer_info') {
 		$id=$_POST['id'];	
@@ -69,20 +100,7 @@ if ($action=='add') {
 	$serial_no=addslashes($_POST['serial_no']);	
 	$id_no=addslashes($_POST['id_no']);
 	
-	$attb1_1=($_POST['attb1_1'] == '1' ? '1' : '0');
-	$attb1_2=($_POST['attb1_2'] == '1' ? '1' : '0');
-	$attb1_3=($_POST['attb1_3'] == '1' ? '1' : '0');
-	$attb1_4=($_POST['attb1_4'] == '1' ? '1' : '0');
-	$attb1_5=($_POST['attb1_5'] == '1' ? '1' : '0');
-	$attb1_6=($_POST['attb1_6'] == '1' ? '1' : '0');
-	$attb1_7=addslashes($_POST['attb1_6_other']);
-	
-	$attb2_1=($_POST['attb2_1']== '1' ? '1' : '0');
-	$attb2_2=($_POST['attb2_2']== '1' ? '1' : '0');
-	$attb2_3=($_POST['attb2_3']== '1' ? '1' : '0');
-	$attb2_4=($_POST['attb2_4']== '1' ? '1' : '0');
-	$attb2_4_other=addslashes($_POST['attb2_4_other']);
-	
+	$item_accessories=addslashes($_POST['item_accessories']);
 	
 	$iso017025=($_POST['iso017025']== '1' ? '1' : '0');
 	
@@ -94,14 +112,30 @@ if ($action=='add') {
 	
 	$publish='1';	
 	$create_person=$_SESSION['ss_member_id'];
+	
+	//----ITEM Accessory 
+	$acc_chk=$_POST['acc_chk'];  
+	$acc_id=$_POST['acc_id'];
+	 $item_accessories='';
+	if(count($acc_chk)>0){  // ตรวจสอบ checkbox ว่ามีการเลือกมาอย่างน้อย 1 รายการหรือไม่  
+		foreach($acc_chk as $key=>$value){  
+			$item_accessories.=$value;
+			
+			$acc_more=$_POST["acc_more$value"];
+			if ($acc_more!="") {
+				$item_accessories.=":$acc_more";
+			}			
+			$item_accessories.="|";
+		}     
+	}  	
+	//---------
 
 	$sql="	INSERT INTO "._TB_ITEM." 
 				(
 						id, item_code_prefix, item_code, item_code_postfix,						
 						equipment_name, qty, department_id, customer_id, 
 						manufacturer, model, resolution, calibration_range, serial_no, id_no, 
-						attb1_1, attb1_2, attb1_3, attb1_4, attb1_5, attb1_6, attb1_6_other,
-						attb2_1, attb2_2, attb2_3, attb2_4, attb2_4_other,
+						item_accessories,
 						iso017025,
 						create_dttm, receive_dttm, update_dttm, 
 						publish,
@@ -111,8 +145,7 @@ if ($action=='add') {
 					NULL, '$prefix', '$item_code', '$postfix',		
 					'$equipment_name', '$qty', '$department_id', '$customer_id', 
 					'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
-					'$attb1_1', '$attb1_2', '$attb1_3', '$attb1_4', '$attb1_5', '$attb1_6', '$attb1_6_other', 
-					'$attb2_1', '$attb2_2', '$attb2_3', '$attb2_4', '$attb2_4_other', 
+					'$item_accessories',
 					'$iso017025', 
 					'$create_dttm', '$receive_dttm', '$update_dttm', 
 					'$publish', 
@@ -145,20 +178,6 @@ if ($action=='edit') {
 	$serial_no=addslashes($_POST['serial_no']);	
 	$id_no=addslashes($_POST['id_no']);
 	
-	$attb1_1=($_POST['attb1_1'] == '1' ? '1' : '0');
-	$attb1_2=($_POST['attb1_2'] == '1' ? '1' : '0');
-	$attb1_3=($_POST['attb1_3'] == '1' ? '1' : '0');
-	$attb1_4=($_POST['attb1_4'] == '1' ? '1' : '0');
-	$attb1_5=($_POST['attb1_5'] == '1' ? '1' : '0');
-	$attb1_6=($_POST['attb1_6'] == '1' ? '1' : '0');
-	$attb1_7=addslashes($_POST['attb1_6_other']);
-	
-	$attb2_1=($_POST['attb2_1']== '1' ? '1' : '0');
-	$attb2_2=($_POST['attb2_2']== '1' ? '1' : '0');
-	$attb2_3=($_POST['attb2_3']== '1' ? '1' : '0');
-	$attb2_4=($_POST['attb2_4']== '1' ? '1' : '0');
-	$attb2_4_other=addslashes($_POST['attb2_4_other']);
-	
 	
 	$iso017025=($_POST['iso017025']== '1' ? '1' : '0');
 	
@@ -170,12 +189,32 @@ if ($action=='edit') {
 	$inv_no=addslashes($_POST['inv_no']);
 	$update_dttm=date("Y-m-d H:i:s");
 	
+	
+	
+	//----ITEM Accessory 
+	$acc_chk=$_POST['acc_chk'];  
+	$acc_id=$_POST['acc_id'];
+	 $item_accessories='';
+	if(count($acc_chk)>0){  // ตรวจสอบ checkbox ว่ามีการเลือกมาอย่างน้อย 1 รายการหรือไม่  
+		foreach($acc_chk as $key=>$value){  
+			$item_accessories.=$value;
+			
+			$acc_more=$_POST["acc_more$value"];
+			if ($acc_more!="") {
+				$item_accessories.=":$acc_more";
+			}			
+			
+			$item_accessories.="|";
+		}     
+	}  	
+	//---------
+	
 	$SQL_PDF='';
 	if ($change_pdf=='1') { //เปลี่ยนภาพ
 				if($_FILES["cer_pdf"]["size"]>0){
 								if(!file_exists($PDF_PATH)) mkdir($PDF_PATH); //สร้าง Folder ปลายทางเมื่อไม่พบ
 								
-								if(isPDF($_FILES["cer_pdf"])){ //ตรวจสอบว่าเป็นไฟล์รูปภาพ
+								if(isPDF($_FILES["cer_pdf"])){ //ตรวจสอบว่าเป็นไฟล์ PDF
 								
 										//เรียกฟังก์ชั่น Resize
 										$pdf_name=$_FILES['cer_pdf']['name'];
@@ -192,18 +231,7 @@ if ($action=='edit') {
 																			calibration_range = '$calibration_range',
 																			serial_no = '$serial_no',
 																			id_no = '$id_no',
-																			attb1_1 = '$attb1_1',
-																			attb1_2 = '$attb1_2',
-																			attb1_3 = '$attb1_3',
-																			attb1_4 = '$attb1_4',
-																			attb1_5 = '$attb1_5',
-																			attb1_6 = '$attb1_6',
-																			attb1_6_other = '$attb1_6_other',
-																			attb2_1 = '$attb2_1',
-																			attb2_2 = '$attb2_2',
-																			attb2_3 = '$attb2_3',
-																			attb2_4 = '$attb2_4',
-																			attb2_4_other = '$attb2_4_other',
+																			item_accessories='$item_accessories',
 																			calibrate_result = '$calibrate_result',
 																			iso017025 = '$iso017025',
 																			manufacturer = '$manufacturer',
@@ -244,18 +272,7 @@ if ($action=='edit') {
 							calibration_range = '$calibration_range',
 							serial_no = '$serial_no',
 							id_no = '$id_no',
-							attb1_1 = '$attb1_1',
-							attb1_2 = '$attb1_2',
-							attb1_3 = '$attb1_3',
-							attb1_4 = '$attb1_4',
-							attb1_5 = '$attb1_5',
-							attb1_6 = '$attb1_6',
-							attb1_6_other = '$attb1_6_other',
-							attb2_1 = '$attb2_1',
-							attb2_2 = '$attb2_2',
-							attb2_3 = '$attb2_3',
-							attb2_4 = '$attb2_4',
-							attb2_4_other = '$attb2_4_other',
+							item_accessories='$item_accessories',
 							calibrate_result = '$calibrate_result',
 							iso017025 = '$iso017025',
 							manufacturer = '$manufacturer',

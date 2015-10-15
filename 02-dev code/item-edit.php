@@ -19,14 +19,9 @@ $num=mysql_num_rows($re);
 if ($num>0) {
 	$rs=mysql_fetch_array($re);
 	
-	
-	//`id`, `equipment_name`, `description`, `department_id`, `model`, `resolution`, `calibration_range`, `maker`, `attribute_name`, `serial_no`, `control_no`, `wo_no`, `id_no`, `attb1_1`, `attb1_2`, `attb1_3`, `attb1_4`, `attb1_5`, `attb1_6`, `attb1_6_other`, `attb2_1`, `attb2_2`, `attb2_3`, `attb2_4`, `attb2_4_other`, `calibrate_result`, `iso017025`, `manufacturer`, `calibration_point`, `cert_no`, `cer_pdf`, `inv_no`, `note`, `status`, `qty`, `create_dttm`, `receive_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
-	
 		$item_code_prefix=$rs['item_code_prefix'];		
 		$item_code_postfix=$rs['item_code_postfix'];
 		$item_code=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
-		
-		
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
 		$department_id=$rs['department_id'];	
@@ -36,19 +31,28 @@ if ($num>0) {
 		$serial_no=stripslashes($rs['serial_no']);	
 		$id_no=$rs['id_no'];
 		
-		$attb1_1=($rs['attb1_1'] =='1' ? ' checked ' : '');
-		$attb1_2=($rs['attb1_2']=='1' ? ' checked ' : '');
-		$attb1_3=($rs['attb1_3']=='1' ? ' checked ' : '');
-		$attb1_4=($rs['attb1_4']=='1' ? ' checked ' : '');
-		$attb1_5=($rs['attb1_5']=='1' ? ' checked ' : '');
-		$attb1_6=($rs['attb1_6']=='1' ? ' checked ' : '');
-		$attb1_6_other=stripslashes($rs['attb1_6_other']);
+		$item_accessories=stripslashes($rs['item_accessories']);
+		$arr_accessories=explode("|",$item_accessories);		
+		$n_arr=count($arr_accessories);
 		
-		$attb2_1=($rs['attb2_1']=='1' ? ' checked ' : '');
-		$attb2_2=($rs['attb2_2']=='1' ? ' checked ' : '');
-		$attb2_3=($rs['attb2_3']=='1' ? ' checked ' : '');
-		$attb2_4=($rs['attb2_4']=='1' ? ' checked ' : '');		
-		$attb2_4_other=stripslashes($rs['attb2_4_other']);
+		$arr_accessory=array();
+		for ($i=0;$i<=$n_arr;$i++) {
+			if ($arr_accessories[$i]!="") {
+				//$arr_accessory[]=$arr_accessories[$i];
+				
+				$arr_more = explode(":",$arr_accessories[$i]);
+				$n_more=count($arr_more);
+				for ($j=0;$j<=$n_more;$j++) {
+					if ($arr_more[$j]!="") {
+						$arr_accessory[]=$arr_more[$j];
+						//echo $arr_more[$j]."<BR>";	
+					}
+				}
+			}
+		}
+		$count_arr=count($arr_accessory);
+		
+	
 		
 		$calibrate_result=stripslashes($rs['calibrate_result']);	
 		
@@ -95,8 +99,94 @@ if ($num>0) {
 		
 		 $department_listbox=$db->department_inout_lab_listbox($department_id);
  		$customer_listbox=$db->customer_listbox($customer_id);
+		
+		//เลือกรูปภาพมา 1 ภาพ
+		$thumb='';
+		$IMG_PATH = _IMG_ITEM_PATH."/";
+		$sql2="SELECT * FROM "._TB_ITEM_IMAGE." WHERE item_id='$id' ORDER BY id LIMIT 1; ";
+		$re2=mysql_query($sql2);
+		$n2=mysql_num_rows($re2);
+		if ($n2>0) {
+			$rs2=mysql_fetch_array($re2);
+			$img_name=$rs2['name'];
+			$thumb='<img  src="'.$IMG_PATH.$img_name.'" style="text-align: center; width: 100%;" alt="">';			
+		} else {
+			$thumb='<img class="" src="libs/img/no-image.gif" style="text-align: center; width: 100%;" alt="">';	
+		}
 	
 }
+mysql_free_result($re);
+
+//Item accessories
+$accessories='';
+$sql2="SELECT id, title, parent_id,  update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='0' ORDER BY id ";
+$re2=mysql_query($sql2);
+$num2=mysql_num_rows($re2);
+
+$n=0;
+$m=0;
+if ($num2>0) {	
+	$n=1;
+	while ($rs2=mysql_fetch_array($re2)) {
+		$id2=$rs2['id'];
+		$title2=stripslashes($rs2['title']);
+		$parent_id2=$rs2['parent_id'];
+		
+		
+		$accessories.=' <label class="col-sm-12 col-md-12 control-label">'.$n.'. '.$title2.'</label>';
+		
+		//sub----
+				$sql3="SELECT id, title, parent_id, require_data, update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='$id2' ORDER BY id ";
+				$re3=mysql_query($sql3);
+				$num3=mysql_num_rows($re3);
+				
+				if ($num3>0) {	
+					$m=1;
+					while ($rs3=mysql_fetch_array($re3)) {
+						$id3=$rs3['id'];
+						$title3=stripslashes($rs3['title']);
+						$parent_id3=$rs3['parent_id'];		
+						$require_data3=$rs3['require_data'];
+						
+						$require_field='';
+						
+					
+						
+						$check="";
+						if ( in_array("$id3",$arr_accessory) ) {
+							$check=" checked ";
+						}
+					
+						$txt='';	
+						for ($k=0;$k<=$count_arr;$k++) {							
+							if ($id3==$arr_accessory[$k]) {
+								$txt=$arr_accessory[$k+1];
+								break;
+							}
+						}
+							
+						if ($require_data3=='1') {
+							$require_field='<input type="text" class="form-control" name="acc_more'.$id3.'" id="acc_more'.$id3.'" value="'.$txt.'">';
+						}
+						
+						$accessories.=' <div class="col-sm-12 col-md-4">
+													<input type="checkbox" class="" name="acc_chk[]" id="acc_chk[]"  value="'.$id3.'" '.$check.'> 
+													'.$n.'.'.$m.') '.$title3.' '.$require_field.'
+													
+												</div>';
+						$m++;
+					}
+					
+				}
+				mysql_free_result($re3);
+		//end sub
+		
+		$n++;
+	} //end while
+	
+}
+mysql_free_result($re2);
+
 
 
 
@@ -147,7 +237,7 @@ include_once("header.php");
                                             <div class="content-panel col-lg-12">
                                                 <div class="col-sm-12 col-md-12" style="text-align: center;">
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: center;">
-                                                        <img class="" src="libs/img/portfolio/port04.jpg" style="text-align: center; width: 100%;" alt="">
+                                                        <?php echo $thumb; ?>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">รหัสสินค้า : <?php echo $item_code; ?></p></div>
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">Quotation NO. : <?php echo $quotation; ?></p></div>
@@ -240,48 +330,19 @@ include_once("header.php");
                                         <input type="text" class="form-control" id="id_no" name="id_no"   value="<?php echo $id_no; ?>">
                                     </div>
                                 </div><!-- /ID No. -->
+                                
                                 <div class="form-group col-sm-12 col-md-12" style="height: auto;">
-                                    <label class="col-sm-12 col-md-12 control-label">1) อุปกรณ์เสริมของเครื่อง</label>
-                                    
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_1" id="attb1_1" value="1" <?php echo $attb1_1; ?>> 1.1 สายไฟ Probe/Sensor, Data link
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_2" id="attb1_2" value="1" <?php echo $attb1_2; ?>> 1.2 สาย Adapter, หม้อแปลงไฟฟ้า
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_3" id="attb1_3" value="1" <?php echo $attb1_3; ?>> 1.3 ขั้วต่อเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_4" id="attb1_4" value="1" <?php echo $attb1_4; ?>> 1.4 คู่มือการใช้งาน
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_5" id="attb1_5" value="1" <?php echo $attb1_5; ?>> 1.5 Battery Charger
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_6" id="attb1_6" value="1" <?php echo $attb1_6; ?>> 1.6 อื่น <input type="text" class="form-control" name="attb1_6_other" id="attb1_6_other" value="<?php echo $attb1_6_other; ?>">
-                                    </div>
-                                    
-                                    <label class="col-sm-12 col-md-12 control-label">2) การบรรจุหีบห่อเครื่องมือจากลูกค้า</label>
-                                    
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb2_1" id="attb2_1" value="1" <?php echo $attb2_1; ?>> 2.1 กล่องเครื่องมือ/ซองใส่เครื่อง
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_2" id="attb2_2" value="1" <?php echo $attb2_2; ?>> 2.2 หุ้มด้วยพลาสติกกันกระแทกเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_3" id="attb2_3" value="1" <?php echo $attb2_3; ?>> 2.3 กล่องกระดาษเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_4" id="attb2_4" value="1" <?php echo $attb2_4; ?>> 2.4 อื่น 
-                                        <input type="text" class="form-control"  name="attb2_4_other" id="attb2_4_other" value="<?php echo $attb2_4_other; ?>">
-                                    </div>
-                                   <div class="clearfix"></div>
+                                		<?php echo $accessories; ?>
+                                
+                                <hr />
+                              
+                                       <div class="clearfix"></div>
 									<div style="margin-top:20px;">
                                        <label class="col-sm-12 col-md-12 control-label">3) ISO</label>
                                        <div class="col-sm-12 col-md-12"><input type="checkbox" name="iso017025" id="iso017025" value="1" <?php  echo $iso017025; ?>>  ISO 17025 Accredited</div>
 									</div>
+                                    
+                                  
                                        
                                 </div><!-- /Accessories -->
                                 
@@ -300,48 +361,30 @@ include_once("header.php");
                             				<div class="form-group col-sm-12 col-md-12 clearfix" style="height: auto; clear: both;">
                                                     <label class="col-sm-12 col-md-4 control-label">อัพโหลดรูปภาพ</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input type="file" class="form-control"/>
+                                                      		   <span class="btn btn-success fileinput-button">
+                                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                                    <span>Select files...</span>
+                                                                    <!-- The file input field used as target for the file upload widget -->
+                                                                    <input id="fileupload" type="file" name="files[]" multiple>
+                                                                     <input name="item_id[]" type="hidden" value="<?php echo $id; ?>">
+                                                                </span>
+                                                                <br>
+                                                                <br>
+                                                                <!-- The global progress bar -->
+                                                                <div id="progress" class="progress">
+                                                                    <div class="progress-bar progress-bar-success"></div>
+                                                                </div>
+                                                                <!-- The container for the uploaded files -->
+                                                                <div id="files" class="files"></div>
+                                                                <br>
+
+                                                                   
+
                                                     </div>
+                                                    
+                                                      
                                                     <div class="col-sm-12 col-md-12">
-                                                        <div class="row mt">
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
-                                                                <div class="project-wrapper">
-                                                                    <div class="project">
-                                                                        <div class="photo-wrapper">
-                                                                            <div class="photo">
-                                                                                <a class="fancybox" href="libs/img/portfolio/port04.jpg"><img class="img-responsive" src="libs/img/portfolio/port04.jpg" alt=""></a>
-                                                                            </div>
-                                                                            <div class="overlay"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div><!-- col-lg-4 -->
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
-                                                                <div class="project-wrapper">
-                                                                    <div class="project">
-                                                                        <div class="photo-wrapper">
-                                                                            <div class="photo">
-                                                                                <a class="fancybox" href="libs/img/portfolio/port05.jpg"><img class="img-responsive" src="libs/img/portfolio/port05.jpg" alt=""></a>
-                                                                            </div>
-                                                                            <div class="overlay"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div><!-- col-lg-4 -->
-                
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
-                                                                <div class="project-wrapper">
-                                                                    <div class="project">
-                                                                        <div class="photo-wrapper">
-                                                                            <div class="photo">
-                                                                                <a class="fancybox" href="libs/img/portfolio/port06.jpg"><img class="img-responsive" src="libs/img/portfolio/port06.jpg" alt=""></a>
-                                                                            </div>
-                                                                            <div class="overlay"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div><!-- col-lg-4 -->
-                                                        </div><!-- /row -->
+                                                        <div class="row mt" id="box_images"></div>
                                                     </div>
                                                 </div>
                             </div>
@@ -446,6 +489,8 @@ include_once("header.php");
 
 <script>
     $(document).ready(function() {
+		
+		load_item_images('<?php echo $id; ?>');
 		
 		$(".alert").hide();	
 		var get_result="<?php echo $get_result; ?>";
@@ -556,4 +601,53 @@ include_once("header.php");
 				
 			}
 	};
+	
+	
+	function load_item_images(item_id) {
+		$.post("item-script.php",{'act':'load-images','item_id':item_id},function(data) {
+			$("#box_images").html(data);
+		});
+	}
+</script>
+
+
+<script src="libs/js/jquery-multi-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="libs/js/jquery-multi-upload/js/jquery.iframe-transport.js"></script>
+<script src="libs/js/jquery-multi-upload/js/jquery.fileupload.js"></script>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+/*jslint unparam: true */
+/*global window, $ */
+$(function () {
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    //var url = window.location.hostname === 'blueimp.github.io' ?
+       //         '//jquery-file-upload.appspot.com/' : 'server/php/';
+
+	var url='libs/class/php-upload/';
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        done: function (e, data) {
+			$('.upl').remove();
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+            });
+			
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).on('fileuploadstop', function (e, data) {
+		
+		   load_item_images('<?php echo $id; ?>');
+		   
+	}).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
 </script>

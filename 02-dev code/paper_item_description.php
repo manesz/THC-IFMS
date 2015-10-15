@@ -28,9 +28,10 @@ if ($num>0) {
 	$rs=mysql_fetch_array($re);
 	
 		$item_code_prefix=$rs['item_code_prefix'];		
+		$item_code=$rs['item_code'];
 		$item_code_postfix=$rs['item_code_postfix'];
-		$item_code=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
 		
+		$item_code_string=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
 		
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
@@ -41,6 +42,28 @@ if ($num>0) {
 		$serial_no=stripslashes($rs['serial_no']);	
 		$id_no=$rs['id_no'];
 		
+		$item_accessories=stripslashes($rs['item_accessories']);
+		$arr_accessories=explode("|",$item_accessories);		
+		$n_arr=count($arr_accessories);
+		
+		$arr_accessory=array();
+		for ($i=0;$i<=$n_arr;$i++) {
+			if ($arr_accessories[$i]!="") {
+				//$arr_accessory[]=$arr_accessories[$i];
+				
+				$arr_more = explode(":",$arr_accessories[$i]);
+				$n_more=count($arr_more);
+				for ($j=0;$j<=$n_more;$j++) {
+					if ($arr_more[$j]!="") {
+						$arr_accessory[]=$arr_more[$j];
+						//echo $arr_more[$j]."<BR>";	
+					}
+				}
+			}
+		}
+		$count_arr=count($arr_accessory);
+		
+		/*
 		$attb1_1=($rs['attb1_1'] =='1' ? '<li class="child">1.1 สายไฟ Probe/Sensor, Data link</li>' : '');
 		$attb1_2=($rs['attb1_2']=='1' ? '<li class="child">1.2 สาย Adapter, หม้อแปลงไฟฟ้า</li>' : '');
 		$attb1_3=($rs['attb1_3']=='1' ? '<li class="child">1.3 ขั้วต่อเครื่องมือ</li>' : '');
@@ -75,7 +98,7 @@ if ($num>0) {
 		if ($attb1_1=="" && $attb1_2=="" && $attb1_3=="" && $attb1_4=="" && $attb1_5=="" && $attb1_6=="" &&  $attb1_6_other=="") {
 			$no_acc1="(ไม่มี)";
 		} else { $no_acc1=""; }
-		
+		*/
 		
 		$calibrate_result=stripslashes($rs['calibrate_result']);	
 		
@@ -114,6 +137,73 @@ if ($num>0) {
 		
 	
 }
+
+
+
+
+
+$accessories='';
+$sql2="SELECT id, title, parent_id,  update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='0' ORDER BY id ";
+$re2=mysql_query($sql2);
+$num2=mysql_num_rows($re2);
+
+$n=0;
+$m=0;
+if ($num2>0) {	
+	$n=1;
+	while ($rs2=mysql_fetch_array($re2)) {
+		$id2=$rs2['id'];
+		$title2=stripslashes($rs2['title']);
+		$parent_id2=$rs2['parent_id'];
+		
+		
+		$accessories.='<li>'.$n.'. '.$title2.'</li>';
+		
+		//sub----
+				$sql3="SELECT id, title, parent_id, require_data, update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='$id2' ORDER BY id ";
+				$re3=mysql_query($sql3);
+				$num3=mysql_num_rows($re3);
+				
+				if ($num3>0) {	
+					$m=1;
+					while ($rs3=mysql_fetch_array($re3)) {
+						$id3=$rs3['id'];
+						$title3=stripslashes($rs3['title']);
+						$parent_id3=$rs3['parent_id'];		
+						$require_data3=$rs3['require_data'];
+						
+						$check="";
+						if ( in_array("$id3",$arr_accessory) ) {
+							$check=" checked ";
+					
+								$txt='';	
+								for ($k=0;$k<=$count_arr;$k++) {							
+									if ($id3==$arr_accessory[$k]) {
+										$txt=$arr_accessory[$k+1];
+										break;
+									}
+								}
+									
+								$require_field='';
+								if ($require_data3=='1') {
+									$require_field='<div class="seperator">'.$txt.'</div>';
+								}
+								
+								$accessories.='<li style="padding-left:15px;height:auto;">'.$n.'.'.$m.') '.$title3.' '.$require_field.'</li>';
+						}
+						$m++;
+					}
+					
+				}
+				mysql_free_result($re3);
+		//end sub
+		
+		$n++;
+	} //end while
+	
+}
+mysql_free_result($re2);
+
 
 $db->close(); 
 ?>
@@ -155,7 +245,9 @@ $db->close();
         <td class="text-center"><h4>Thai Heart Calibration Co.,Ltd.</h4></td>
     </tr><!-- END : THC company name -->
     <tr><!-- item barcode image -->
-        <td class="text-center"><img src="libs/img/sample-barcode.png" style="width: 230px; height: auto; padding-top: 0px;"/></td>
+        <td class="text-center"><!-- img src="libs/img/sample-barcode.png" style="width: 230px; height: auto; padding-top: 0px;"/ -->
+			<div id="bcTarget"></div>
+        </td>
     </tr><!-- END : item barcode image -->
     <tr><!-- item content -->
         <td>
@@ -210,32 +302,23 @@ $db->close();
                     <td colspan="3">
                         <ul class="list-style-none">
                         
-                            <li>1. อุปกรณ์เสริมของเครื่อง <?php echo $no_acc1; ?></li>
+                           
                                                         
-                            <?php echo $attb1_1; ?>
-                            <?php echo $attb1_2; ?>
-                            <?php echo $attb1_3; ?>
-                            <?php echo $attb1_4; ?>
-                            <?php echo $attb1_5; ?>
-                            <?php echo $attb1_6_other; ?>
-                            
+                            <?php echo $accessories; ?>
                             <!--
+                             <li>1. อุปกรณ์เสริมของเครื่อง <?php echo $no_acc1; ?></li>
                             <li class="child">	                           
                                 <span style="width: 60px; border-bottom: none; float: left;"> <?php echo $attb1_6; ?> 1.6 อื่นๆ</span>
                                 <span class="seperator" style="width: 150px; float: left; text-align: left;"><?php echo $attb1_6_other; ?></span>
                             </li>-->
-                            <li style="clear: both;">2. การบรรจุหีบห่อเครื่องมือจากลูกค้า <?php echo $no_acc2; ?></li>
-                            <?php echo $attb2_1; ?>
-                            <?php echo $attb2_2; ?>
-                            <?php echo $attb2_3; ?>
-                            <?php echo $attb2_4_other; ?>
+                           
                         </ul>
                     </td>
                 </tr><!-- End : Accessories list -->
                 <tr><!-- Note -->
                     <td colspan="3" style="">
                         <b>Note:</b>
-                        <p style="min-height: 100px;"><?php echo ($note!="" ? nl2br($note) : '-'); ?></p>
+                        <p style="padding:10px;"><?php echo ($note!="" ? nl2br($note) : '-'); ?></p>
                     </td>
                 </tr><!-- END : Note -->
                 <tr><!-- item status -->
@@ -256,5 +339,31 @@ $db->close();
         </td>
     </tr><!-- END : item content -->
 </table><!-- END : main table container -->
+
+<script src="libs/js/jquery-1.8.3.min.js"></script>
+<script src="libs/js/jquery-barcode-2.0.3/jquery-barcode.min.js"></script>
+
+<script>
+$(function() {
+	
+	//ดูตัวอย่างที่ http://barcode-coder.com/en/barcode-jquery-plugin-201.html
+	/*
+	type (string)
+		codabar
+		code11 (code 11)
+		code39 (code 39)
+		code93 (code 93)
+		code128 (code 128)
+		ean8 (ean 8)
+		ean13 (ean 13)
+		std25 (standard 2 of 5 - industrial 2 of 5)
+		int25 (interleaved 2 of 5)
+		msi
+		datamatrix (ASCII + extended)
+	*/
+	$("#bcTarget").barcode("<?php echo "$item_code_string"; ?>", "code128",{barWidth:1, barHeight:50, fontSize:14,});     
+	//{barWidth:2, barHeight:30}
+});
+</script>
 </body>
 </html>

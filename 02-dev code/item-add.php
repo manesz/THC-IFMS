@@ -10,6 +10,62 @@
  $department_listbox=$db->department_inout_lab_listbox('');
  $customer_listbox=$db->customer_listbox('');
  
+ 
+//Item accessories
+$accessories='';
+$sql2="SELECT id, title, parent_id,  update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='0' ORDER BY id ";
+$re2=mysql_query($sql2);
+$num2=mysql_num_rows($re2);
+
+$n=0;
+$m=0;
+if ($num2>0) {	
+	$n=1;
+	while ($rs2=mysql_fetch_array($re2)) {
+		$id2=$rs2['id'];
+		$title2=stripslashes($rs2['title']);
+		$parent_id2=$rs2['parent_id'];
+		
+		
+		$accessories.=' <label class="col-sm-12 col-md-12 control-label">'.$n.'. '.$title2.'</label>';
+		
+		//sub----
+				$sql3="SELECT id, title, parent_id, require_data, update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='$id2' ORDER BY id ";
+				$re3=mysql_query($sql3);
+				$num3=mysql_num_rows($re3);
+				
+				if ($num3>0) {	
+					$m=1;
+					while ($rs3=mysql_fetch_array($re3)) {
+						$id3=$rs3['id'];
+						$title3=stripslashes($rs3['title']);
+						$parent_id3=$rs3['parent_id'];		
+						$require_data3=$rs3['require_data'];
+						
+						$require_field='';
+						if ($require_data3=='1') {
+							$require_field='<input type="text" class="form-control" name="acc_more'.$id3.'" id="acc_more'.$id3.'">';
+						}
+						
+						$accessories.=' <div class="col-sm-12 col-md-4">
+													<input type="checkbox" class="" name="acc_chk[]" id="acc_chk[]"  value="'.$id3.'" '.$check.'> 
+													'.$n.'.'.$m.') '.$title3.' '.$require_field.'
+													
+												</div>';
+						$m++;
+					}
+					
+				}
+				mysql_free_result($re3);
+		//end sub
+		
+		$n++;
+	} //end while
+	
+}
+mysql_free_result($re2);
+
+ 
 include_once("header.php");
 ?>
 <section id="container" >
@@ -145,41 +201,8 @@ include_once("header.php");
                                     </div>
                                 </div><!-- /ID No. -->
                                 <div class="form-group col-sm-12 col-md-12" style="height: auto;">
-                                    <label class="col-sm-12 col-md-12 control-label">1) อุปกรณ์เสริมของเครื่อง</label>
+                                   <?php echo $accessories; ?>
                                     
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_1" id="attb1_1" /> 1.1 สายไฟ Probe/Sensor, Data link
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_2" id="attb1_2" value="1"> 1.2 สาย Adapter, หม้อแปลงไฟฟ้า
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_3" id="attb1_3" value="1"> 1.3 ขั้วต่อเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_4" id="attb1_4" value="1"> 1.4 คู่มือการใช้งาน
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_5" id="attb1_5" value="1"> 1.5 Battery Charger
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb1_6" id="attb1_6" value="1" > 1.6 อื่น <input type="text" class="form-control" name="attb1_6_other" id="attb1_6_other">
-                                    </div>
-                                    
-                                    <label class="col-sm-12 col-md-12 control-label">2) การบรรจุหีบห่อเครื่องมือจากลูกค้า</label>
-                                    
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class="" name="attb2_1" id="attb2_1" value="1"> 2.1 กล่องเครื่องมือ/ซองใส่เครื่อง
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_2" id="attb2_2" value="1"> 2.2 หุ้มด้วยพลาสติกกันกระแทกเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_3" id="attb2_3" value="1"> 2.3 กล่องกระดาษเครื่องมือ
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <input type="checkbox" class=""  name="attb2_4" id="attb2_4" value="1"> 2.4 อื่น <input type="text" class="form-control"  name="attb2_4_other" id="attb2_4_other">
-                                    </div>
                                    <div class="clearfix"></div>
 									<div style="margin-top:20px;">
                                        <label class="col-sm-12 col-md-12 control-label">3) ISO</label>

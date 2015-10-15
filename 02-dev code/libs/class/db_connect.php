@@ -11,10 +11,10 @@ header("Content-Type: text/html; charset=utf-8");
 	var $dbName='tlweb_thailifegift'; //database name	
 	
 */	
-	var $hostName='localhost'; //stores hostname or the server name
-	var $userName='root';
-	var $password='012300';   //password for the database
-	var $dbName='thc'; //database name	
+	var $hostName=_DB_HOST; //stores hostname or the server name
+	var $userName=_DB_USER;
+	var $password=_DB_PASS;   //password for the database
+	var $dbName=_DB_NAME; //database name	
 
 	/*
 	
