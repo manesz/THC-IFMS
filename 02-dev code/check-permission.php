@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting( error_reporting() & ~E_NOTICE );
 //Permission
 
 if (!$_SESSION['ss_login'] && $_SESSION['ss_login']!='1') {

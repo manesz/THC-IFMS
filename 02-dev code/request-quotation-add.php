@@ -5,6 +5,15 @@
  * Date: 12/9/2558
  * Time: 10:44 น.
  */
+include("check-permission.php");
+
+$department_listbox=$db->department_inout_lab_listbox('');
+$customer_listbox=$db->customer_listbox('');
+$position_listbox=$db->position_listbox('');
+
+//clear session เลือก item ทั้งหมด
+unset($_SESSION['ss_select_item_id']);
+ 
 include_once("header.php");
 ?>
 <section id="container" >
@@ -25,7 +34,11 @@ include_once("sidebar-menu.php");
     </div>
 </div><!-- /.row title -->
 
-<form class="form-horizontal style-form" method="post">
+  <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+<div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+<div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+
+ <form class="form-horizontal" action="quotation-script.php" id="frm_quotation" name="frm_quotation" method="post">
 
 <div class="row" style="">
     <div class="col-lg-12">
@@ -33,102 +46,79 @@ include_once("sidebar-menu.php");
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">Quotation No.</label>
                 <div class="col-lg-8">
-                    <input type="text" class="form-control"/>
+                    <input type="text" class="form-control" id="quotation_no" name="quotation_no">
                 </div>
             </div>
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
                 <div class="col-lg-8">
-                    <select class="selectBox js-states form-control">
-                        <option value="21">21</option>
-                        <option value="21">35</option>
-                    </select>
+                   <input type="text" name="contact_name" id="contact_name" class="form-control">
                 </div>
             </div>
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">แผนก</label>
                 <div class="col-lg-8">
-                    <select class="selectBox js-states form-control">
-                        <option value="21">21</option>
-                        <option value="21">35</option>
+                       <select class="selectBox js-states form-control" name="department_id" id="department_id">
+                                                            <option value="">-- โปรดเลือก --</option>
+                                                            <?php echo $department_listbox; ?>
                     </select>
                 </div>
             </div>
+            
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ตำแหน่ง </label>
                 <div class="col-lg-8">
-                    <select class="selectBox js-states form-control">
-                        <option value="21">21</option>
-                        <option value="21">35</option>
+                     <select class="selectBox js-states form-control" id="position_id" name="position_id">
+                       <option value="">-- โปรดเลือก --</option>
+                        <?php echo $position_listbox; ?>
                     </select>
                 </div>
             </div>
+            
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ชื่อบริษัท</label>
                 <div class="col-lg-8">
-                    <select class="selectBox js-states form-control">
-                        <option value="21">21</option>
-                        <option value="21">35</option>
+                   <select class="selectBox js-states form-control" id="customer_id" name="customer_id">
+                       <option value="">-- โปรดเลือก --</option>
+                        <?php echo $customer_listbox; ?>
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-bordered table-striped table-responsive">
-                        <tr>
-                            <td style="width: 30%;">ขื่อ</td>
-                            <td style="width: 70%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 30%;">ที่อยู่</td>
-                            <td style="width: 70%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 30%;">โทรศัพท์</td>
-                            <td style="width: 70%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 30%;">โทรสาร</td>
-                            <td style="width: 70%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 30%;">อีเมล</td>
-                            <td style="width: 70%;"></td>
-                        </tr>
-                    </table>
-                </div>
+            
+            <div class="clearfix"></div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12" id="box_comapny_info"></div>
             </div>
-            <div class="col-lg-12" style="text-align: left;">
-                <button class="btn btn-danger">ลบอุปกรณ์</button>
+            
+            <div class="clearfix"></div>
+            
+            <div class="col-lg-12" style="text-align: left; margin-top:10px;">
+                <button class="btn btn-danger" type="submit" id="btn_delete_item" name="btn_delete_item">ลบอุปกรณ์</button>
             </div>
+            
+            
             <div class="col-lg-12" style="">
-                <table id="requestList" class="table table-bordered table-striped table-responsive" style="width: 100%; margin: 10px 0 20px 0;"><!-- item content -->
-                    <thead>
-                        <td class="text-center" width="30"><input type="checkbox" class=""/></td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 350px;">Description</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 150px;">Manufacturer</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 80px;">Model</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 80px;">S/N or ID No.</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 60px;">Quantity</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 80px;">Status</td>
-                        <td class="text-center height-50 bg-fafafa" style="width: 80px;">ISO 17025<br/>Accredited</td>
-                    </thead>
-                    <tbody>
-                    <?php for($i=1;$i<=13;$i++):?>
-                        <tr style="text-align: center;">
-                            <td width="30"><input type="checkbox" class=""/></td>
-                            <td class="height-30"> - </td>
-                            <td class="height-30"> - </td>
-                            <td class="height-30"> - </td>
-                            <td class="height-30"> - </td>
-                            <td class="height-30"> - </td>
-                            <td class="height-30"> In Lab / On Site </td>
-                            <td class="height-30"> - </td>
-                        </tr>
-                    <?php endfor; ?>
-                    </tbody>
-                </table><!-- END : item content -->
+               
+                 	<div id="box_select_item_list"></div>
+                
             </div>
+            
+            
+            <div class="row" style="">
+                <div class="col-lg-12">
+                    <div class="content-panel col-lg-12">
+                        <div class="form-group" style="padding: 0; margin: 0;">
+                        	<input type="hidden" name="act" id="act" value="" />
+                            <button type="submit" id="btn_add_quotation" name="btn_add_qoutation" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
+                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row title -->
+            
+            </form><!-- /form -->
+            
+             <form class="form-horizontal style-form" action="quotation-script.php" id="frm_add_item" name="frm_add_item" method="post">
 
             <div class="clearfix form-group col-sm-12 col-md-12" style="float: right; text-align: right;">
                 <button class="btn btn-primary col-lg-4" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="float: right; text-align: center;">
@@ -136,52 +126,20 @@ include_once("sidebar-menu.php");
                 </button>
             </div><!-- /hidden button -->
             <div class="collapse" id="itemDescription" style="margin-top: 20px;"><!-- itemDescription tab -->
-                <button class="btn btn-success col-lg-12" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="margin: 0 0 20px 0;">
-                    บันทึกข้อมูลจำนวนอุปกรณ์
-                </button>
-                <table id="itemList" class="table table-bordered table-striped table-responsive">
-                    <thead>
-                    <th width="30"><input type="checkbox" class=""/></th>
-                    <th width="30">#</th>
-                    <th width="500">ชื่ออุปกรณ์</th>
-                    <th width="80">Manufacturer</th>
-                    <th width="80">Model</th>
-                    <th width="300">Customer</th>
-                    <th width="100">last updated</th>
-                    </thead>
-                    <?php for($i=1;$i<=100;$i++):?>
-                        <tr>
-                            <td><input type="checkbox" class="form-control"/></td>
-                            <td><?php echo $i; ?></td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td><?php echo date("d-m-Y"); ?></td>
-                        </tr>
-                    <?php endfor; ?>
-                </table>
-                <button class="btn btn-success col-lg-12" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="margin: 0 0 20px 0;">
-                    บันทึกข้อมูลจำนวนอุปกรณ์
-                </button>
+    				<div id="box_all_item_list"></div>
+                  
+                <!-- <button type="button" class="btn btn-success col-lg-12" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="margin: 0 0 20px 0;" id="add_item"> บันทึกข้อมูลจำนวนอุปกรณ์</button> -->
+                  <input type="hidden" name="act" id="act" value="add_item">
+                  <button type="submit" id="btn_add_item"  class="btn btn-success col-lg-4"  style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
             </div>
 
         </div><!-- /content-panel col-lg-12 -->
     </div><!-- /col-lg-12 -->
 </div><!-- /.row -->
 
-<div class="row" style="">
-    <div class="col-lg-12">
-        <div class="content-panel col-lg-12">
-            <div class="form-group" style="padding: 0; margin: 0;">
-                <button type="button" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
-                <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
-            </div>
-        </div>
-    </div>
-</div><!-- /.row title -->
-
-</form><!-- /form -->
+		</form>
+        
+        
 
 </section><!-- /.wrapper -->
 </section><!-- /#main-content -->
@@ -191,10 +149,118 @@ include_once("sidebar-menu.php");
 <!--script for this page-->
 <script src="libs/js/jquery.dataTables.min.js"></script>
 <script src="libs/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/js/jquery.form.js"></script>
+
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
+		
         $('#requestList').DataTable();
         $('#itemList').DataTable();
 //        $("#departmentList_filter").add
-    } );
+
+		
+
+		$(".alert").hide();	
+		$("#btn_delete_item").hide();
+		
+		var get_result="<?php echo $get_result; ?>";
+		if (get_result=="true") {
+			$(".alert-success").fadeIn();	
+		}
+
+		$("#customer_id").change(function() {
+				var id=$(this).val();
+						if (id!="") {
+							$.post("item-script.php", {'act':'get_customer_info','id':id},function(data) {
+								$("#box_comapny_info").html(data);
+							});
+						} else {
+							$("#box_comapny_info").html('')	;
+						}
+		});
+		
+		//load default item
+		load_all_item_list();
+		load_selected_item();	
+		
+		
+		//add item 
+		$('#frm_add_item').ajaxForm( 
+		{ 
+				beforeSubmit: validate,
+				complete: function(xhr) {
+						var result=xhr.responseText;
+						
+							if (result=='') {							
+						    		load_selected_item();		
+									load_all_item_list();	
+												
+							}					
+				}
+		}); 
+		
+		//Remove item
+		$("#btn_delete_item").click(function() {
+					$("#act").val("delete_item_list");
+					
+					$('#frm_quotation').ajaxForm( 
+					{ 
+							beforeSubmit: validate,
+							complete: function(xhr) {
+									var result=xhr.responseText;
+									load_selected_item();		
+									load_all_item_list();	
+							}
+					}); 
+				//	return false;
+		});
+		
+		
+		//Add Qoutation
+		$("#btn_add_quotation").click(function() {
+					$("#act").val("add_new_quotation");
+					
+					$('#frm_quotation').ajaxForm( 
+					{ 
+							//beforeSubmit: validate,
+							complete: function(xhr) {
+									var result=xhr.responseText;
+									
+									alert(result);
+											//	$("#box_select_item_list").html(result);	
+									//			load_selected_item();		
+									//			load_all_item_list();	
+															
+									
+							}
+					}); 
+				//	return false;
+		});
+});
+	
+	
+function validate(formData, jqForm, options) {		
+	  if ($('input[name^=item_chk]:checked').length <= 0) {
+		alert("โปรดเลือก Item ที่ต้องการ");
+		return false;	
+	 } 
+};
+
+function load_all_item_list() { //item ทั้งหมด ยกเว้นที่เลือก
+	$.post("quotation-script.php",{'act':'load_all_item_list'},function(data) {
+			$("#box_all_item_list").html(data);
+	});
+}
+
+function load_selected_item() { //item ที่เลือก
+	$.post("quotation-script.php",{'act':'display_select_item'},function(data) {
+			$("#box_select_item_list").html(data);	
+			
+			if (data!="") { 
+				$("#btn_delete_item").show();	 //show delete button
+			} else {
+				$("#btn_delete_item").hide();	 //hide delete button
+			}
+	});
+}
 </script>
