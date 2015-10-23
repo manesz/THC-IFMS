@@ -4,7 +4,7 @@ class db_class extends database {
 	function item_accessories_list($n, $parent_id) {
 			
 			$sub_item='';
-			$SQL="SELECT id, title, parent_id,  update_dttm FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='$parent_id' ORDER BY id ";
+			$SQL="SELECT id, title, parent_id,  update_dttm,require_data FROM "._TB_ITEM_ACCESSORIES." WHERE publish='1' AND parent_id='$parent_id' ORDER BY id ";
 			$re=mysql_query($SQL);
 			$num=mysql_num_rows($re);
 			
@@ -14,15 +14,16 @@ class db_class extends database {
 				while ($rs=mysql_fetch_array($re)) {
 					$id=$rs['id'];
 					$title=stripslashes($rs['title']);
-					
 					$parent_id=$rs['parent_id'];
+					$require_data=$rs['require_data'];
 					$latest_update=$rs['update_dttm'];
 					
 					
+					$require=($require_data=='1' ? ' <span style="color:#f00;">(ต้องกรอกข้อมูลเพิ่มเติม)</span> ' : '');
 					$sub_item.='
 										  <tr>
 											<td align="right">'.$n.'.'.$m.'</td>
-											<td>'.$title.'</td>
+											<td>'.$title.$require.'</td>
 											<td>'.$latest_update.'</td>
 											<td>
 												<div class="dropdown">
@@ -66,6 +67,7 @@ class db_class extends database {
 		}	
 		return $item_list;
 	}
+	
 	function auto_new_item_code($prefix, $postfix) {
 		//ตรวจสอบค่ามากสุด
 		$sql="	SELECT MAX(item_code) AS max_code FROM "._TB_ITEM." 
@@ -77,6 +79,8 @@ class db_class extends database {
 		$auto_item_code=($max_item_code+1);
 		return $auto_item_code;
 	}
+	
+	
 	
 		
 	function customer_name($id) {
@@ -121,6 +125,16 @@ class db_class extends database {
 		return $image;
 	}
 	//แผนก ----------------
+	function department_name($id) {
+		$sql="SELECT title  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$id' LIMIT 1; ";
+		$re=mysql_query($sql);
+		if (mysql_num_rows($re)>0) {
+			$rs=mysql_fetch_array($re);	
+			$title=stripslashes($rs['title']);
+		}
+		return $title;
+	}
+	
 	function department_listbox($select_id) {
 		$department='';
 		$sql="SELECT id, title FROM "._TB_DEPARTMENT." WHERE publish='1' ORDER BY title  ";
@@ -163,6 +177,16 @@ class db_class extends database {
 	}
 	
 	//ตำแหน่ง ----------------
+	function position_name($id) {
+		$sql="SELECT title  FROM "._TB_POSITION." WHERE publish='1' AND  id='$id' LIMIT 1; ";
+		$re=mysql_query($sql);
+		if (mysql_num_rows($re)>0) {
+			$rs=mysql_fetch_array($re);	
+			$title=stripslashes($rs['title']);
+		}
+		return $title;
+	}
+	
 	function position_listbox($select_id) {
 		$position='';
 		$sql="SELECT id, title FROM "._TB_POSITION." WHERE publish='1' ORDER BY title  ";

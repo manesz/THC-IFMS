@@ -25,6 +25,10 @@ define("_TB_ITEM","item");
 define("_TB_ITEM_ACCESSORIES","item_accessories");
 define("_TB_ITEM_IMAGE","item_image");
 
+define("_TB_QUOTATION","quotation");
+define("_TB_QUOTATION_ITEM","quotation_item");
+
+
 define("_UPLOAD_FOLDER","uploads");
 define("_IMG_PROFILE_PATH",_UPLOAD_FOLDER."/profile");
 define("_IMG_ITEM_PATH",_UPLOAD_FOLDER."/items/images");

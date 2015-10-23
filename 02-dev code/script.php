@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting( error_reporting() & ~E_NOTICE );
 include('define.php');
 include('libs/class/db_connect.php');
 include('libs/class/db_class.php');
