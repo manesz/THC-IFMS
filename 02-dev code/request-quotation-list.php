@@ -7,7 +7,6 @@
  */
 include("check-permission.php");
 
-//`id`, `code_sale`, `code_year`, `code_month`, `code_no`, `code_revise`, `contact_name`, `department_id`, `position_id`, `description`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
 
 $quotaton_list='';
 $sql="SELECT id, code_sale, code_year, code_month, code_no, code_revise, customer_id,update_dttm FROM "._TB_QUOTATION." WHERE publish='1' ORDER BY create_dttm DESC ";
@@ -47,7 +46,8 @@ if (mysql_num_rows($re)>0) {
                                                 <!--                                            <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
                                                 <li><a class="fancybox" href="paper_request_for_quotation.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
                                                 <li><a href="request-quotation-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
-                                                <li><a href="#"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
+                                             
+												<li><a href="#" onclick="delete_item(\''.$id.'\',\''.htmlspecialchars("$quotaton_code").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
                                             </ul>
                                         </div>
                                     </td>
@@ -127,4 +127,13 @@ include_once("footer.php");
         $('#departmentList').DataTable();
 //        $("#departmentList_filter").add
     } );
+	
+	function delete_item(id, title) {
+		var chk=confirm("โปรดยืนยันการลบข้อมูล "+title+" !!");
+		if (chk) {
+			$.post("quotation-script.php",{'act':'delete','id':id},function(data) {
+				window.location.href="request-quotation-list.php";
+			});
+		} else { return false; }
+	}
 </script>

@@ -24,6 +24,8 @@ if ($num>0) {
 		$item_code=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
+		$description=stripslashes($rs['description']);		
+		
 		$department_id=$rs['department_id'];	
 		$model=stripslashes($rs['model']);	
 		$resolution=stripslashes($rs['resolution']);	
@@ -211,9 +213,9 @@ include_once("header.php");
                 </div>
             </div><!-- /.row title -->
             
-             <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-            <div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-            <div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+             <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+            <div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+            <div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
 			      
                                 <!-- Tab -->                                
                                 <ul class="nav nav-tabs" role="tablist" id="item_tab" style="margin-top:20px;">
@@ -345,6 +347,17 @@ include_once("header.php");
                                   
                                        
                                 </div><!-- /Accessories -->
+                                
+                                
+                                   
+                                  <div class="form-group col-sm-12 col-md-6">
+                                            <label class="col-sm-12 col-md-3 control-label">Description</label>
+                                        <div class="col-sm-12 col-md-9">
+                                          <textarea name="description" id="description" class="form-control" rows="7"><?php echo $description; ?></textarea>
+                                        </div>
+                                    </div><!-- /description -->
+                                                
+                                   <div class="clearfix"></div>
                                 
 
                             </div>

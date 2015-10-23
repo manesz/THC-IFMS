@@ -7,9 +7,9 @@
  */
 include("check-permission.php"); 
 
-$department_listbox=$db->department_inout_lab_listbox('');
+
 $customer_listbox=$db->customer_listbox('');
-$position_listbox=$db->position_listbox('');
+$member_listbox=$db->member_listbox($_SESSION['ss_member_id']);
 
 //clear session เลือก item ทั้งหมด
 unset($_SESSION['ss_select_item_id']);
@@ -34,39 +34,43 @@ include_once("sidebar-menu.php");
     </div>
 </div><!-- /.row title -->
 
-  <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-<div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-<div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+  <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+<div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+<div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
 
  <form class="form-horizontal" action="quotation-script.php" id="frm_quotation" name="frm_quotation" method="post">
 
 <div class="row" style="">
     <div class="col-lg-12">
         <div class="content-panel col-lg-12">
-           
+        
+              <div class="row">
+                <label class="col-sm-12 col-md-4 control-label">Sale</label>
+                <div class="col-lg-8">
+                   <select name="sale_code" id="sale_code" class="form-control">
+                  			<?php echo $member_listbox; ?>
+                   </select>
+                </div>
+            </div>
+            
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
                 <div class="col-lg-8">
                    <input type="text" name="contact_name" id="contact_name" class="form-control">
                 </div>
             </div>
+            
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">แผนก</label>
                 <div class="col-lg-8">
-                       <select class="selectBox js-states form-control" name="department_id" id="department_id">
-                                                            <option value="">-- โปรดเลือก --</option>
-                                                            <?php echo $department_listbox; ?>
-                    </select>
+                		<input type="text" name="department_name" id="department_name" class="form-control">
                 </div>
             </div>
             
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ตำแหน่ง </label>
                 <div class="col-lg-8">
-                     <select class="selectBox js-states form-control" id="position_id" name="position_id">
-                       <option value="">-- โปรดเลือก --</option>
-                        <?php echo $position_listbox; ?>
-                    </select>
+                	<input type="text" name="position_name" id="position_name" class="form-control">
                 </div>
             </div>
             
@@ -105,7 +109,7 @@ include_once("sidebar-menu.php");
                         <div class="form-group" style="padding: 0; margin: 0;">
                         	<input type="hidden" name="act" id="act" value="" />
                             <button type="submit" id="btn_add_quotation" name="btn_add_qoutation" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
-                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
+                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;" onclick="window.location.href=window.location.href">เคลียร์ข้อมูล</button>
                         </div>
                     </div>
                 </div>
@@ -241,22 +245,17 @@ function validate(formData, jqForm, options) {
 };
 
 function validate_add_quotation(formData, jqForm, options) {		
-
-
-	
-	
-	
 	  if ($('#contact_name').val() == "") {
 		alert("กรุณาใส่ชื่อผู้ติดต่อ");
 		$("#contact_name").focus();
 		return false;	
-	  } else if ($('#department_id').val() == "") {
-			alert("กรุณาเลือกแผนก");
-			$("#department_id").focus();
+	  } else if ($('#department_name').val() == "") {
+			alert("กรุณาใส่ชื่อแผนก");
+			$("#department_name").focus();
 			return false;	
-	  } else if ($('#position_id').val() == "") {
-			alert("กรุณาเลือกตำแหน่ง");
-			$("#position_id").focus();
+	  } else if ($('#position_name').val() == "") {
+			alert("กรุณาใส่ชื่อตำแหน่ง");
+			$("#position_name").focus();
 			return false;	
 	} else if ($('#customer_id').val() == "") {
 			alert("กรุณาเลือกบริษัท");
@@ -285,6 +284,7 @@ function validate_add_quotation(formData, jqForm, options) {
 function load_all_item_list() { //item ทั้งหมด ยกเว้นที่เลือก
 	$.post("quotation-script.php",{'act':'load_all_item_list'},function(data) {
 			$("#box_all_item_list").html(data);
+			select_all();
 	});
 }
 
@@ -294,9 +294,20 @@ function load_selected_item() { //item ที่เลือก
 			
 			if (data!="") { 
 				$("#btn_delete_item").show();	 //show delete button
+				select_all();
 			} else {
 				$("#btn_delete_item").hide();	 //hide delete button
 			}
 	});
+}
+function select_all() {
+		$('#select_all_1,#select_all_2').change(function() {
+			var checkboxes = $(this).closest('form').find(':checkbox');
+			if($(this).is(':checked')) {
+				checkboxes.prop('checked', true);
+			} else {
+				checkboxes.prop('checked', false);
+			}
+		});	
 }
 </script>

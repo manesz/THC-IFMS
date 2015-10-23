@@ -81,16 +81,22 @@ if ($action=='get_customer_info') {
 
 if ($action=='add') {
 	
-	$prefix='THD';
+	
+	$department_id=addslashes($_POST['department_id']);	
+	$prefix=$db->department_code($department_id);
+	
 	$postfix=date("y");
 	
 	$code = $db->auto_new_item_code($prefix,$postfix);	
+	
 	$item_code=str_pad("$code", 6, "0", STR_PAD_LEFT); 
 	
 	
 	$equipment_name=addslashes($_POST['equipment_name']);	
+	$description=addslashes($_POST['description']);	
+	
 	$qty=addslashes($_POST['qty']);	
-	$department_id=addslashes($_POST['department_id']);
+	
 	$customer_id=addslashes($_POST['customer_id']);
 	
 	$manufacturer=addslashes($_POST['manufacturer']);
@@ -133,7 +139,7 @@ if ($action=='add') {
 	$sql="	INSERT INTO "._TB_ITEM." 
 				(
 						id, item_code_prefix, item_code, item_code_postfix,						
-						equipment_name, qty, department_id, customer_id, 
+						equipment_name, description, qty, department_id, customer_id, 
 						manufacturer, model, resolution, calibration_range, serial_no, id_no, 
 						item_accessories,
 						iso017025,
@@ -143,7 +149,7 @@ if ($action=='add') {
 				) 
 				VALUES (
 					NULL, '$prefix', '$item_code', '$postfix',		
-					'$equipment_name', '$qty', '$department_id', '$customer_id', 
+					'$equipment_name', '$description', '$qty', '$department_id', '$customer_id', 
 					'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
 					'$item_accessories',
 					'$iso017025', 
@@ -165,10 +171,15 @@ if ($action=='add') {
 if ($action=='edit') {	
 	
 	$id=$_POST['id'];		
-
-	$equipment_name=addslashes($_POST['equipment_name']);	
-	$qty=addslashes($_POST['qty']);	
+	
 	$department_id=addslashes($_POST['department_id']);
+	$prefix=$db->department_code($department_id);
+
+	$equipment_name=addslashes($_POST['equipment_name']);
+	$description=addslashes($_POST['description']);	
+	
+	$qty=addslashes($_POST['qty']);	
+	
 	$customer_id=addslashes($_POST['customer_id']);
 	
 	$manufacturer=addslashes($_POST['manufacturer']);
@@ -223,8 +234,9 @@ if ($action=='edit') {
 											
 										if( copy($_FILES['cer_pdf']['tmp_name'], $path)) {														
 														$SQL="UPDATE  "._TB_ITEM." 
-																	SET  				
+																	SET  	item_code_prefix='$prefix',
 																			equipment_name = '$equipment_name', 
+																			description = '$description', 
 																			department_id = '$department_id',
 																			model = '$model',
 																			resolution = '$resolution',
@@ -264,8 +276,10 @@ if ($action=='edit') {
 				}							
 	} else {
 		$SQL="UPDATE  "._TB_ITEM." 
-					SET  				
+					SET  		
+							item_code_prefix='$prefix',		
 							equipment_name = '$equipment_name', 
+							description = '$description', 
 							department_id = '$department_id',
 							model = '$model',
 							resolution = '$resolution',

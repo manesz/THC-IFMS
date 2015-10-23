@@ -1,0 +1,8 @@
+ALTER TABLE  `quotation` CHANGE  `department_id`  `department_name` VARCHAR( 255 ) NOT NULL ,
+CHANGE  `position_id`  `position_name` VARCHAR( 255 ) NOT NULL;
+
+
+ALTER TABLE  `quotation_item` ADD  `is_status` ENUM(  "i",  "o" ) NOT NULL AFTER  `quantity` ;
+
+
+

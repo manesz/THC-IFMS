@@ -124,7 +124,19 @@ class db_class extends database {
 		}
 		return $image;
 	}
+	
 	//แผนก ----------------
+	function department_code($id) {
+		$code='';
+		$sql="SELECT code  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$id' LIMIT 1; ";
+		$re=mysql_query($sql);
+		if (mysql_num_rows($re)>0) {
+			$rs=mysql_fetch_array($re);	
+			$code=stripslashes($rs['code']);
+		}
+		return $code;
+	}
+	
 	function department_name($id) {
 		$sql="SELECT title  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$id' LIMIT 1; ";
 		$re=mysql_query($sql);
@@ -237,6 +249,29 @@ class db_class extends database {
 		}
 		return $title;
 	}
+	
+	
+	//Member / Sale 
+						
+	function member_listbox($select_id) {
+		$listbox='';
+		$sql="SELECT id, f_name, l_name FROM "._TB_MEMBER." WHERE publish='1' ORDER BY f_name, l_name  ";
+		$re=mysql_query($sql);
+		if (mysql_num_rows($re)>0) {
+			while ($rs=mysql_fetch_array($re)) {
+				$id=$rs["id"];
+				$f_name=stripslashes($rs["f_name"]);	
+				$l_name=stripslashes($rs["l_name"]);	
+				$Name="$f_name $l_name";
+				
+				$select=($id==$select_id ? ' selected ' : '');
+				$listbox.='<option value="'.$id.'" '.$select.'>'.$Name.'</option>';
+			}
+		}
+		mysql_free_result($re);
+		return $listbox;		
+	}
+	
 	
 	//Other ---------------------------
 	

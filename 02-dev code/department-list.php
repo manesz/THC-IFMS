@@ -9,7 +9,7 @@
 include("check-permission.php");
 $content='';
 
-$SQL="SELECT id, title,  update_dttm FROM "._TB_DEPARTMENT." WHERE publish='1' ";
+$SQL="SELECT id, title, code, update_dttm FROM "._TB_DEPARTMENT." WHERE publish='1' ";
 $re=mysql_query($SQL);
 $num=mysql_num_rows($re);
 
@@ -17,11 +17,13 @@ if ($num>0) {
 	while ($rs=mysql_fetch_array($re)) {
 		$id=$rs['id'];
 		$title=stripslashes($rs['title']);
+		$code=$rs['code'];
 		$latest_update=$rs['update_dttm'];
 		
 		$content.='
 			                  <tr>
-                                <td>'.$id.'</td>
+                                <td class="text-center">'.$id.'</td>
+								<td class="text-center">'.$code.'</td>
                                 <td>'.$title.'</td>
                                 <td>'.$latest_update.'</td>
                                 <td>
@@ -68,7 +70,8 @@ include_once("header.php");
                     <div class="content-panel col-lg-12">
                         <table id="departmentList" class="table table-bordered table-striped">
                             <thead>
-                            <td width="100">#</td>
+                            <td width="100" class="text-center">#</td>
+                            <td width="100" class="text-center">Short Code</td>
                             <td width="500">แผนก</td>
                             <td width="100">last updated</td>
                             <td width="50">edit</td>

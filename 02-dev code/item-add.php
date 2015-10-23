@@ -86,9 +86,9 @@ include_once("header.php");
                 </div>
             </div><!-- /.row title -->
             
-                <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-            <div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-            <div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+                <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+            <div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+            <div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
             
          
 			      
@@ -96,10 +96,12 @@ include_once("header.php");
                                 <ul class="nav nav-tabs" role="tablist" id="pro_tab" style="margin-top:20px;">
                                   	<li role="presentation" class="active"><a href="#tab_general" role="tab" data-toggle="tab" class="bg-info"><h5>ข้อมูลทั่วไป</h5></a></li>     
                                     <li role="presentation"><a href="#tab_description" role="tab" data-toggle="tab" class="bg-info"><h5>รายละเอียดอุปกรณ์</h5></a></li>
+                                    <!-- 
                                     <li role="presentation" class="disabled"><a href="#tab_image"  class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>รูปภาพ</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_calibration" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Calibration</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_certification" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Certification</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_invoice" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Invoice</h5></a></li>
+                                    -->
                                 </ul>
                      
                      
@@ -211,6 +213,16 @@ include_once("header.php");
                                        
                                 </div><!-- /Accessories -->
                                 
+                         
+                                
+                                  <div class="form-group col-sm-12 col-md-6">
+                                            <label class="col-sm-12 col-md-3 control-label">Description</label>
+                                        <div class="col-sm-12 col-md-9">
+                                          <textarea name="description" id="description" class="form-control" rows="7"></textarea>
+                                        </div>
+                                    </div><!-- /description -->
+                                                
+                                   <div class="clearfix"></div>
 
                             </div>
                         </div><!-- /itemDescription tab -->

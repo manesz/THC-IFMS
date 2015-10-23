@@ -11,6 +11,7 @@ include("check-permission.php");
 $id=$_GET['id'];
 unset($_SESSION['ss_select_item_id']);
 
+
 if (isset($_GET['id']) && $id!="") {
 
 	
@@ -30,22 +31,15 @@ if (isset($_GET['id']) && $id!="") {
 					
 					$contact_name=stripslashes($rs['contact_name']);
 					$customer_id=$rs['customer_id'];
-					$department_id=$rs['department_id'];
-					$position_id=$rs['position_id'];
+					$department_name=$rs['department_name'];
+					$position_name=$rs['position_name'];
 					
 					$description=stripslashes($rs['description']);
 					
 					$quotaton_code="$code_sale-$code_year$code_month$code_no $code_revise";			
-										
-					//$customer_name=$db->customer_name($customer_id);
-					
-					$department_listbox=$db->department_inout_lab_listbox($department_id);
+
 					$customer_listbox=$db->customer_listbox($customer_id);
-					$position_listbox=$db->position_listbox($position_id);
-					
-					
-					
-					//`id`, `code_sale`, `code_year`, `code_month`, `code_no`, `code_revise`, `contact_name`, `department_id`, `position_id`, `description`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
+					$member_listbox=$db->member_listbox($code_sale);
 		}
 
 } else {
@@ -74,15 +68,25 @@ include_once("sidebar-menu.php");
     </div>
 </div><!-- /.row title -->
 
-  <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-<div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-<div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+  <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+<div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+<div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
 
  <form class="form-horizontal" action="quotation-script.php" id="frm_quotation" name="frm_quotation" method="post">
 
 <div class="row" style="">
     <div class="col-lg-12">
         <div class="content-panel col-lg-12">
+        
+        	  <div class="row">
+                <label class="col-sm-12 col-md-4 control-label">Sale</label>
+                <div class="col-lg-8">
+                   <select name="sale_code" id="sale_code" class="form-control">
+                   <option value="">-- โปรดเลือก --</option>
+                  			<?php echo $member_listbox; ?>
+                   </select>
+                </div>
+            </div>
            
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
@@ -93,20 +97,14 @@ include_once("sidebar-menu.php");
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">แผนก</label>
                 <div class="col-lg-8">
-                       <select class="selectBox js-states form-control" name="department_id" id="department_id">
-                                                            <option value="">-- โปรดเลือก --</option>
-                                                            <?php echo $department_listbox; ?>
-                    </select>
+                		<input type="text" name="department_name" id="department_name" class="form-control" value="<?php echo $department_name; ?>">
                 </div>
             </div>
             
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ตำแหน่ง </label>
                 <div class="col-lg-8">
-                     <select class="selectBox js-states form-control" id="position_id" name="position_id">
-                       <option value="">-- โปรดเลือก --</option>
-                        <?php echo $position_listbox; ?>
-                    </select>
+                 	<input type="text" name="position_name" id="position_name" class="form-control" value="<?php echo $position_name; ?>">
                 </div>
             </div>
             
@@ -144,8 +142,9 @@ include_once("sidebar-menu.php");
                     <div class="content-panel col-lg-12">
                         <div class="form-group" style="padding: 0; margin: 0;">
                         	<input type="hidden" name="act" id="act" value="" />
+                            <input type="hidden" name="quotation_id" id="quotation_id" value="<?php echo $id; ?>" />
                             <button type="submit" id="btn_add_quotation" name="btn_add_qoutation" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
-                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>
+                            <button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;" onclick="window.location.href=window.location.href">เคลียร์ข้อมูล</button>
                         </div>
                     </div>
                 </div>
@@ -209,8 +208,9 @@ $(document).ready(function() {
 		});
 		
 		//load default item
-		load_all_item_list();
-		load_selected_item();	
+		load_edit_quotation_item();
+		load_selected_item();
+		load_all_item_list();			
 		get_customer_info("<?php echo $customer_id; ?>");
 		
 		
@@ -248,7 +248,7 @@ $(document).ready(function() {
 		
 		//Add Qoutation
 		$("#btn_add_quotation").click(function() {
-					$("#act").val("add_new_quotation");
+					$("#act").val("edit_quotation");
 					
 					$('#frm_quotation').ajaxForm( 
 					{ 
@@ -265,6 +265,8 @@ $(document).ready(function() {
 					}); 
 				//	return false;
 		});
+		
+	
 });
 	
 	
@@ -277,17 +279,21 @@ function validate(formData, jqForm, options) {
 
 function validate_add_quotation(formData, jqForm, options) {		
 	
-	  if ($('#contact_name').val() == "") {
+	 if ($('#sale_code').val() == "") {
+		alert("กรุณาเลือก Sale ");
+		$("#sale_code").focus();
+		return false;	
+	 } else if ($('#contact_name').val() == "") {
 		alert("กรุณาใส่ชื่อผู้ติดต่อ");
 		$("#contact_name").focus();
 		return false;	
-	  } else if ($('#department_id').val() == "") {
-			alert("กรุณาเลือกแผนก");
-			$("#department_id").focus();
+	  } else if ($('#department_name').val() == "") {
+			alert("กรุณาใส่ชื่อแผนก");
+			$("#department_name").focus();
 			return false;	
-	  } else if ($('#position_id').val() == "") {
-			alert("กรุณาเลือกตำแหน่ง");
-			$("#position_id").focus();
+	  } else if ($('#position_name').val() == "") {
+			alert("กรุณาใส่ชื่อตำแหน่ง");
+			$("#position_name").focus();
 			return false;	
 	} else if ($('#customer_id').val() == "") {
 			alert("กรุณาเลือกบริษัท");
@@ -298,14 +304,21 @@ function validate_add_quotation(formData, jqForm, options) {
 			return false;	
 	} else if ($("#box_select_item_list").html()!="") {
 			var flag=true;
+			var flag2=true;
+			
 			$('input[name^="item_qty"]').each(function() {
 					if ($(this).val()=="") {
 						flag=false;						
 					}
 			});	
 			
-			if (!flag) {
-				alert("กรุณาระบุจำนวนให้ครบถ้วนทุกอุปกรณ์");
+			$('select[name^="is_status"]').each(function() {
+					if ($(this).val()=="") {
+						flag2=false;						
+					}
+			});	
+			if (!flag || !flag2) {
+				alert("กรุณาระบุจำนวน และ Status ให้ครบถ้วนทุกอุปกรณ์");
 				return false;	
 			}
 	}
@@ -314,19 +327,25 @@ function validate_add_quotation(formData, jqForm, options) {
 function load_all_item_list() { //item ทั้งหมด ยกเว้นที่เลือก
 	$.post("quotation-script.php",{'act':'load_all_item_list'},function(data) {
 			$("#box_all_item_list").html(data);
+			select_all();			
 	});
 }
 
 function load_selected_item() { //item ที่เลือก
-	$.post("quotation-script.php",{'act':'display_select_item'},function(data) {
-			$("#box_select_item_list").html(data);	
-			
+	$.post("quotation-script.php",{'act':'display_select_item','quotation_id':'<?php echo $id; ?>'},function(data) {
+			$("#box_select_item_list").html(data);
+						
 			if (data!="") { 
 				$("#btn_delete_item").show();	 //show delete button
+				select_all();
 			} else {
 				$("#btn_delete_item").hide();	 //hide delete button
 			}
 	});
+}
+
+function load_edit_quotation_item() { //item ที่เลือก
+	$.post("quotation-script.php",{'act':'load_edit_quotation_item','id':'<?php echo $id; ?>'});
 }
 
 //Customer info
@@ -338,5 +357,17 @@ function get_customer_info(id) {
 		} else {
 			$("#box_comapny_info").html('')	;
 		}
+}
+
+
+function select_all() {
+		$('#select_all_1,#select_all_2').change(function() {
+			var checkboxes = $(this).closest('form').find(':checkbox');
+			if($(this).is(':checked')) {
+				checkboxes.prop('checked', true);
+			} else {
+				checkboxes.prop('checked', false);
+			}
+		});	
 }
 </script>

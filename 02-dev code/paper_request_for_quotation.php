@@ -17,7 +17,6 @@
 			AND id='$id' 
 			LIMIT 1; ";
 			
-			
 $re=mysql_query($sql);
 
 if (mysql_num_rows($re)>0) {
@@ -32,20 +31,16 @@ if (mysql_num_rows($re)>0) {
 			$quotaton_code="$code_sale-$code_year$code_month$code_no $code_revise";		
 			
 			$contact_name=$rs['contact_name'];
-			$department_id=$rs['department_id'];
-			$position_id=$rs['position_id'];
+			$department_name=$rs['department_name'];
+			$position_name=$rs['position_name'];
 			
-			$customer_id=$rs['customer_id'];
-			
+			$customer_id=$rs['customer_id'];			
 			$update_dttm=date("Y-m-d",strtotime($rs['update_dttm']));
 				
-		
-			$department_name=$db->department_name($department_id);
-			$position_name=$db->position_name($position_id);
 			
 			//Get company information -----------------
 			//$company_name=$db->customer_name($customer_id);
-			$sql1="SELECT company_name, company_address, phone_no, fax_no, email FROM "._TB_CUSTOMER." WHERE id='$id' LIMIT 1; ";
+			$sql1="SELECT company_name, company_address, phone_no, fax_no, email FROM "._TB_CUSTOMER." WHERE id='$customer_id' LIMIT 1; ";
 			$re1=mysql_query($sql1);
 			if (mysql_num_rows($re1)>0) {
 					$rs1=mysql_fetch_array($re1);
@@ -62,7 +57,6 @@ if (mysql_num_rows($re)>0) {
 							B.equipment_name, B.model, B.resolution, B.serial_no, B.id_no , B.manufacturer, B.calibrate_result, B.iso017025
 						FROM "._TB_QUOTATION_ITEM." AS A, "._TB_ITEM." AS B 
 						WHERE A.item_id=B.id 
-						
 							AND A.publish='1' 
 							AND A.quotation_id='$id' 
 							ORDER BY A.quotation_id 
@@ -79,6 +73,8 @@ if (mysql_num_rows($re)>0) {
 							$quotation_id=$rs2['quotation_id'];
 							$item_id=$rs2['item_id'];
 							$quantity=$rs2['quantity'];
+							$is_status=$rs2['is_status'];
+							
 							$create_dttm=$rs2['create_dttm'];
 							$update_dttm=$rs2['update_dttm'];
 							
@@ -92,21 +88,14 @@ if (mysql_num_rows($re)>0) {
 							$manufacturer=stripslashes($rs2['manufacturer']);
 							$calibrate_result=stripslashes($rs2['calibrate_result']);
 							$iso017025=$rs2['iso017025'];
-							
-							$Serial=($serial_no!="" ? '<div>'.$serial_no.'</div>' : '' );
-							$ID_NO=($id_no!="" ? '<div>'.$id_no.'</div>' : '' );
-							
-							if ($Serial=="" && $ID_NO=="") {
-								$Serial_IDNO='-';
-							} else {
-								$Serial_IDNO=$Serial.$ID_NO;
-							}
-							
+					
 							$ISO=($iso017025=='1' ? 'Yes' : '-');
 							
 							if ($calibrate_result=='D') { $Calibrate="Done"; }
 							if ($calibrate_result=='R') { $Calibrate="Repairing"; }
 							if ($calibrate_result=='B') { $Calibrate="Broken"; }
+							
+							$Status=($is_status=='i' ? ' InLab ' : 'Onsite');
 							
 							
 						
@@ -115,11 +104,11 @@ if (mysql_num_rows($re)>0) {
 														<td class="height-30">'.$equipment_name.' </td>
 														<td class="height-30">'.($manufacturer!="" ? $manufacturer : '-').'</td>
 														<td class="height-30">'.($model!="" ? $model : '-').' </td>
-														<td class="height-30">'.($resolution!="" ? $resolution : '-').' </td>
-														<td class="height-30">'.$Serial_IDNO.'</td>
+														<td class="height-30">'.($id_no!="" ? $id_no : '-').' </td>
+														<td class="height-30">'.($serial_no!="" ? $serial_no : '-').'</td>
 														<td class="height-30">'.$Calibrate.'</td>
 														<td class="height-30">'.number_format($quantity).'</td>
-														<td class="height-30"> In Lab / On Site </td>
+														<td class="height-30"> '.$Status.' </td>
 														<td class="height-30">'.$ISO.'</td>
 													</tr>';
 							$n++;
@@ -133,8 +122,8 @@ if (mysql_num_rows($re)>0) {
 		}//end while quotation
 }
 
-//`id`, `code_sale`, `code_year`, `code_month`, `code_no`, `code_revise`, `contact_name`, `department_id`, `position_id`, `description`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
- 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -239,8 +228,8 @@ if (mysql_num_rows($re)>0) {
                     <td class="text-center height-50 bg-fafafa" style="width: 350px;">รายการ<br/>Description</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 150px;">ผู้ผลิต<br/>Manufacturer</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 80px;">รุ่น<span style="color: red;">*</span><br/>Model</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">ความละเอียด<br/>Resolution</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">หมายเลขเครื่อง<br/>S/N or ID No.</td>
+                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">ID No.</td>
+                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">หมายเลขเครื่อง<br/>S/N</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Range</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 60px;">จำนวน<br/>Quantity</td>
                     <td class="text-center height-50 bg-fafafa" style="width: 80px;">Status</td>
