@@ -5,7 +5,7 @@
  * Date: 12/9/2558
  * Time: 10:44 น.
  */
-include("check-permission.php");
+include("check-permission.php"); 
 
 $department_listbox=$db->department_inout_lab_listbox('');
 $customer_listbox=$db->customer_listbox('');
