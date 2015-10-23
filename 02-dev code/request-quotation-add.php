@@ -43,12 +43,7 @@ include_once("sidebar-menu.php");
 <div class="row" style="">
     <div class="col-lg-12">
         <div class="content-panel col-lg-12">
-            <div class="row">
-                <label class="col-sm-12 col-md-4 control-label">Quotation No.</label>
-                <div class="col-lg-8">
-                    <input type="text" class="form-control" id="quotation_no" name="quotation_no">
-                </div>
-            </div>
+           
             <div class="row">
                 <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
                 <div class="col-lg-8">
@@ -130,7 +125,7 @@ include_once("sidebar-menu.php");
                   
                 <!-- <button type="button" class="btn btn-success col-lg-12" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="margin: 0 0 20px 0;" id="add_item"> บันทึกข้อมูลจำนวนอุปกรณ์</button> -->
                   <input type="hidden" name="act" id="act" value="add_item">
-                  <button type="submit" id="btn_add_item"  class="btn btn-success col-lg-4"  style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
+                  <button type="submit" id="btn_add_item"  class="btn btn-success col-lg-4"  style="float: right; margin: 0 5px 0 5px;">ตกลง</button>
             </div>
 
         </div><!-- /content-panel col-lg-12 -->
@@ -222,15 +217,14 @@ $(document).ready(function() {
 					
 					$('#frm_quotation').ajaxForm( 
 					{ 
-							//beforeSubmit: validate,
+							beforeSubmit: validate_add_quotation,
 							complete: function(xhr) {
 									var result=xhr.responseText;
-									
-									alert(result);
-											//	$("#box_select_item_list").html(result);	
-									//			load_selected_item();		
-									//			load_all_item_list();	
-															
+									if (result=="") {
+										window.location.href="request-quotation-list.php";
+									} else {
+										alert("เกิดข้อผิดพลาด!\n"	+result);
+									}
 									
 							}
 					}); 
@@ -244,6 +238,48 @@ function validate(formData, jqForm, options) {
 		alert("โปรดเลือก Item ที่ต้องการ");
 		return false;	
 	 } 
+};
+
+function validate_add_quotation(formData, jqForm, options) {		
+
+
+	
+	
+	
+	  if ($('#contact_name').val() == "") {
+		alert("กรุณาใส่ชื่อผู้ติดต่อ");
+		$("#contact_name").focus();
+		return false;	
+	  } else if ($('#department_id').val() == "") {
+			alert("กรุณาเลือกแผนก");
+			$("#department_id").focus();
+			return false;	
+	  } else if ($('#position_id').val() == "") {
+			alert("กรุณาเลือกตำแหน่ง");
+			$("#position_id").focus();
+			return false;	
+	} else if ($('#customer_id').val() == "") {
+			alert("กรุณาเลือกบริษัท");
+			$("#customer_id").focus();
+			return false;		
+	} else if ($("#box_select_item_list").html()=="") {
+			alert("กรุณาเลือกอุปกรณ์ที่ต้องการขอทราบราคาอย่างน้อย 1 รายการ");	
+			return false;	
+	} else if ($("#box_select_item_list").html()!="") {
+			var flag=true;
+			$('input[name^="item_qty"]').each(function() {
+					if ($(this).val()=="") {
+						flag=false;						
+					}
+			});	
+			
+			if (!flag) {
+				alert("กรุณาระบุจำนวนให้ครบถ้วนทุกอุปกรณ์");
+				return false;	
+			}
+	}
+	 
+	 
 };
 
 function load_all_item_list() { //item ทั้งหมด ยกเว้นที่เลือก

@@ -5,8 +5,69 @@
  * Date: 12/9/2558
  * Time: 10:44 น.
  */
-include_once("header.php");
+include("check-permission.php");
 
+//`id`, `code_sale`, `code_year`, `code_month`, `code_no`, `code_revise`, `contact_name`, `department_id`, `position_id`, `description`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
+
+$quotaton_list='';
+$sql="SELECT id, code_sale, code_year, code_month, code_no, code_revise, customer_id,update_dttm FROM "._TB_QUOTATION." WHERE publish='1' ORDER BY create_dttm DESC ";
+$re=mysql_query($sql);
+
+if (mysql_num_rows($re)>0) {
+		while ($rs=mysql_fetch_array($re)) {
+			$id=$rs['id'];
+			$code_sale=$rs['code_sale'];
+			$code_year=$rs['code_year'];
+			$code_month=$rs['code_month'];
+			$code_no=$rs['code_no'];
+			$code_revise=$rs['code_revise'];
+			$customer_id=$rs['customer_id'];
+			
+			$update_dttm=date("Y-m-d",strtotime($rs['update_dttm']));
+			
+			$quotaton_code="$code_sale-$code_year$code_month$code_no $code_revise";			
+			$customer_name=$db->customer_name($customer_id);
+			$num_item=count_item($id);
+			
+			
+			
+			$quotaton_list.='<tr>
+                                    <td>'.$id.'</td>
+                                    <td>'.$customer_name.'</td>
+                                    <td>'.$quotaton_code.'</td>
+                                    <td>'.number_format($num_item).'</td>
+                                    <td>'.$update_dttm.'</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="fa fa-cog"> จัดการ</i>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                <!--                                            <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
+                                                <li><a class="fancybox" href="paper_request_for_quotation.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
+                                                <li><a href="#"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
+                                                <li><a href="#"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>';
+		//	$num_item=count_item($id);
+			
+		}
+};
+
+
+function count_item($quotation_id) {
+	global $conn;
+
+	$re=mysql_query("SELECT COUNT(quotation_id) AS NumItem FROM "._TB_QUOTATION_ITEM." WHERE quotation_id='$quotation_id' ");
+	$num_item=mysql_result($re,0);
+	return $num_item;
+
+}
+
+include_once("header.php");
 ?>
 <section id="container" >
     <!-- **********************************************************************************************************************************************************
@@ -43,29 +104,9 @@ include_once("header.php");
                             <th width="80">last updated</th>
                             <th width="50">edit</th>
                             </thead>
-                            <?php for($i=1;$i<=100;$i++):?>
-                                <tr>
-                                    <td><?php echo $i; ?></td>
-                                    <td>a</td>
-                                    <td>23-150090061 R.1</td>
-                                    <td>99</td>
-                                    <td><?php echo date("d-m-Y"); ?></td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i class="fa fa-cog"> จัดการ</i>
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                <!--                                            <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
-                                                <li><a class="fancybox" href="paper_request_for_quotation.php" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
-                                                <li><a href="#"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
-                                                <li><a href="#"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endfor; ?>
+                            <tbody>
+                            <?php echo $quotaton_list; ?>
+                          </tbody>
                         </table>
                     </div><!-- /content-panel -->
                 </div><!-- /col-md-12 -->
