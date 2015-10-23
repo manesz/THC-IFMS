@@ -8,6 +8,7 @@
  include("check-permission.php");
  
  $item_in_list='';
+ $item_per_page=13;
  
  
  $id=$_GET['id'];
@@ -63,12 +64,17 @@ if (mysql_num_rows($re)>0) {
 						WHERE A.item_id=B.id 
 						
 							AND A.publish='1' 
-							AND A.quotation_id='$id' ";
-						
+							AND A.quotation_id='$id' 
+							ORDER BY A.quotation_id 
+							
+						";
 						
 			$re2=mysql_query($sql2);
-			if (mysql_num_rows($re2)>0) {
+			$num_items=mysql_num_rows($re2);
+			
+			if ($num_items>0) {
 					$n=1;
+					
 					while ($rs2=mysql_fetch_array($re2)) {
 							$quotation_id=$rs2['quotation_id'];
 							$item_id=$rs2['item_id'];

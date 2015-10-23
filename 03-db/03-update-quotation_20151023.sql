@@ -27,4 +27,4 @@ CREATE TABLE `quotation_item` (
   `publish` char(1) NOT NULL,
   `create_person` int(11) NOT NULL,
   PRIMARY KEY  (`quotation_id`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8; 

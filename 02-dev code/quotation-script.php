@@ -267,5 +267,96 @@ if ($action=='display_select_item') {
 }
 
 
+//ดึง item เฉพาะที่เลือก (การแก้ไข) --------------------------------
+if ($action=='load_edit_quotation_item') {
+	
+	$quotation_id=$_POST['id'];
+	//ดึง item ใน Quotation มาก่อนแล้วใส่ไปใน Session
+	
+	$sql0="	SELECT A.quotation_id, A.item_id,
+					B.id, B.equipment_name, B.model, B.id_no, B.manufacturer, B.description, B.serial_no,  B.update_dttm
+				FROM "._TB_QUOTATION_ITEM." AS A, "._TB_ITEM." AS B 
+				WHERE 	A.item_id=B.id 
+					AND A.quotation_id = '$quotation_id' 
+					AND A.publish='1' 
+				ORDER BY A.item_id ";
+	
+	$item_list='';
+	
+	if (isset($_SESSION['ss_select_item_id']) && count($_SESSION['ss_select_item_id'])>0) {
+		
+		$ids=join(',',$_SESSION['ss_select_item_id']);
+		$condition=" AND id IN ($ids) ";
+	
+
+					$SQL="	SELECT id, equipment_name, model, id_no, manufacturer, description, serial_no,  update_dttm
+								FROM "._TB_ITEM."
+								WHERE  publish='1' $condition  ";
+					
+					$re=mysql_query($SQL);
+					$num=mysql_num_rows($re);
+					
+					if ($num>0) {
+						$item_list.=' <table id="requestList" class="table table-bordered table-striped table-responsive" style="width: 100%; margin: 10px 0 20px 0;"><!-- item content -->
+																		<thead>
+																			<td class="text-center" width="30"><input type="checkbox" class=""/></td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 350px;">Description</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 150px;">Manufacturer</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 80px;">Model</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 80px;">S/N or ID No.</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 60px;">Quantity</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 80px;">Status</td>
+																			<td class="text-center height-50 bg-fafafa" style="width: 80px;">ISO 17025<br/>Accredited</td>
+																		</thead>
+																		<tbody>';
+						while ($rs=mysql_fetch_array($re)) {
+										$item_id=$rs['id'];
+										$equipment_name=stripslashes($rs['equipment_name']);
+										$manufacturer=stripslashes($rs['manufacturer']);
+										$model=stripslashes($rs['model']);
+										$description=stripslashes($rs['description']);
+										$id_no=stripslashes($rs['id_no']);		
+										$serial_no=stripslashes($rs['serial_no']);		
+										$latest_update=$rs['update_dttm'];	
+										
+										
+										if ($serial_no!="" && $id_no!="") { $Serial="$serial_no<br>$id_no"; }
+										elseif ($serial_no!="" && $id_no=="") { $Serial="$serial_no"; }
+										elseif ($serial_no=="" && $id_no!="") { $Serial="$id_no"; }
+										else { $Serial="-"; }
+										
+									
+										$Status="-";
+										
+										$checkbox='<input type="checkbox" class="" name="item_chk[]" id="item_chk[]"  value="'.$item_id.'"> ';
+										
+										$quotation='<input type="input"  class="form-control" name="item_qty[]" id="item_qty[]"  value="">';
+										$quotation.='<input type="hidden"  class="form-control" name="item_id[]" id="item_id[]"  value="'.$item_id.'">';										
+										
+										$item_list.='
+												 <tr>
+													 <td>'.$checkbox.'</td>											
+													<td>'.$equipment_name.' </td>
+													<td>'.$manufacturer.'</td>
+													<td>'.$model.'</td>					
+													<td>'.$Serial.'</td>
+													<td>'.$quotation.'</td>
+													<td>'.$Status.'</td>											
+													<td>'.$latest_update.'</td>					
+												</tr>
+										';
+							
+						} //end whiel
+						
+						$item_list.='</tbody></table>';
+						
+					}
+	} else {
+		unset($_SESSION['ss_select_item_id']);
+	}
+	echo $item_list;
+}
+
+
 $db->close();
 ?>

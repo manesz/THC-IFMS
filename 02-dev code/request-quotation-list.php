@@ -46,7 +46,7 @@ if (mysql_num_rows($re)>0) {
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                 <!--                                            <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
                                                 <li><a class="fancybox" href="paper_request_for_quotation.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
-                                                <li><a href="#"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
+                                                <li><a href="request-quotation-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
                                                 <li><a href="#"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
                                             </ul>
                                         </div>
