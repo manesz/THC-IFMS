@@ -18,10 +18,16 @@ $num=mysql_num_rows($re);
 
 if ($num>0) {
 	$rs=mysql_fetch_array($re);
-	
+
+		
 		$item_code_prefix=$rs['item_code_prefix'];		
-		$item_code_postfix=$rs['item_code_postfix'];
-		$item_code=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
+		$item_code_day=$rs['item_code_day'];
+		$item_code_month=$rs['item_code_month'];
+		$item_code=$rs['item_code'];
+		$item_code_year=$rs['item_code_year'];
+		
+		$item_no=$db->item_no_format($item_code_prefix,$item_code_day,$item_code_month,$item_code,$item_code_year);
+		
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
 		$description=stripslashes($rs['description']);		
@@ -241,7 +247,7 @@ include_once("header.php");
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: center;">
                                                         <?php echo $thumb; ?>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">รหัสสินค้า : <?php echo $item_code; ?></p></div>
+                                                    <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">รหัสสินค้า : <?php echo $item_no; ?></p></div>
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">Quotation NO. : <?php echo $quotation; ?></p></div>
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">Invoice : <?php echo $invoice; ?></p></div>
                                                     <div class="form-group col-sm-12 col-md-6" style="text-align: left; padding-left: 20px;"><p class="col-md-12">Status : <?php echo $status; ?></p></div>

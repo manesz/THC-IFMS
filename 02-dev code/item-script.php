@@ -79,17 +79,19 @@ if ($action=='get_customer_info') {
 		echo $content;
 }
 
+
 if ($action=='add') {
 	
 	
-	$department_id=addslashes($_POST['department_id']);	
-	$prefix=$db->department_code($department_id);
+	$department_id=addslashes($_POST['department_id']);
 	
-	$postfix=date("y");
+	$prefix=$db->create_item_code_prefix($department_id);	
+	$day=date("d");
+	$month=date("m");
+	$year=date("y");
 	
-	$code = $db->auto_new_item_code($prefix,$postfix);	
-	
-	$item_code=str_pad("$code", 6, "0", STR_PAD_LEFT); 
+	$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
+	$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
 	
 	
 	$equipment_name=addslashes($_POST['equipment_name']);	
@@ -134,11 +136,11 @@ if ($action=='add') {
 			$item_accessories.="|";
 		}     
 	}  	
-	//---------
+	
 
 	$sql="	INSERT INTO "._TB_ITEM." 
 				(
-						id, item_code_prefix, item_code, item_code_postfix,						
+						id, item_code_prefix, item_code_day, item_code_month, item_code, item_code_year,						
 						equipment_name, description, qty, department_id, customer_id, 
 						manufacturer, model, resolution, calibration_range, serial_no, id_no, 
 						item_accessories,
@@ -148,7 +150,7 @@ if ($action=='add') {
 						create_person
 				) 
 				VALUES (
-					NULL, '$prefix', '$item_code', '$postfix',		
+					NULL, '$prefix', '$day', '$month', '$item_code', '$year',		
 					'$equipment_name', '$description', '$qty', '$department_id', '$customer_id', 
 					'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
 					'$item_accessories',
@@ -173,8 +175,8 @@ if ($action=='edit') {
 	$id=$_POST['id'];		
 	
 	$department_id=addslashes($_POST['department_id']);
-	$prefix=$db->department_code($department_id);
-
+	$prefix=$db->create_item_code_prefix($department_id);
+	
 	$equipment_name=addslashes($_POST['equipment_name']);
 	$description=addslashes($_POST['description']);	
 	
@@ -234,7 +236,7 @@ if ($action=='edit') {
 											
 										if( copy($_FILES['cer_pdf']['tmp_name'], $path)) {														
 														$SQL="UPDATE  "._TB_ITEM." 
-																	SET  	item_code_prefix='$prefix',
+																	SET  	item_code_prefix='$prefix',																			
 																			equipment_name = '$equipment_name', 
 																			description = '$description', 
 																			department_id = '$department_id',

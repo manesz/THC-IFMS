@@ -28,10 +28,12 @@ if ($num>0) {
 	$rs=mysql_fetch_array($re);
 	
 		$item_code_prefix=$rs['item_code_prefix'];		
+		$item_code_day=$rs['item_code_day'];
+		$item_code_month=$rs['item_code_month'];
 		$item_code=$rs['item_code'];
-		$item_code_postfix=$rs['item_code_postfix'];
+		$item_code_year=$rs['item_code_year'];
 		
-		$item_code_string=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
+		$item_no=$db->item_no_format($item_code_prefix,$item_code_day,$item_code_month,$item_code,$item_code_year);
 		
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
@@ -334,7 +336,7 @@ $(function() {
 		msi
 		datamatrix (ASCII + extended)
 	*/
-	$("#bcTarget").barcode("<?php echo "$item_code_string"; ?>", "code128",{barWidth:1, barHeight:50, fontSize:14,});     
+	$("#bcTarget").barcode("<?php echo "$item_no"; ?>", "code128",{barWidth:1, barHeight:50, fontSize:14,});     
 	//{barWidth:2, barHeight:30}
 });
 </script>

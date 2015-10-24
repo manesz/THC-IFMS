@@ -9,7 +9,10 @@ include("check-permission.php");
 
 
 $customer_listbox=$db->customer_listbox('');
-$member_listbox=$db->member_listbox($_SESSION['ss_member_id']);
+
+
+$department_id=$db->department_id_from_code('MKT');
+$member_listbox=$db->member_listbox($_SESSION['ss_member_id'],$department_id);
 
 //clear session เลือก item ทั้งหมด
 unset($_SESSION['ss_select_item_id']);
@@ -45,7 +48,7 @@ include_once("sidebar-menu.php");
         <div class="content-panel col-lg-12">
         
               <div class="row">
-                <label class="col-sm-12 col-md-4 control-label">Sale</label>
+                <label class="col-sm-12 col-md-4 control-label">ชื่อพนักงานขาย</label>
                 <div class="col-lg-8">
                    <select name="sale_code" id="sale_code" class="form-control">
                   			<?php echo $member_listbox; ?>
@@ -129,7 +132,7 @@ include_once("sidebar-menu.php");
                   
                 <!-- <button type="button" class="btn btn-success col-lg-12" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="margin: 0 0 20px 0;" id="add_item"> บันทึกข้อมูลจำนวนอุปกรณ์</button> -->
                   <input type="hidden" name="act" id="act" value="add_item">
-                  <button type="submit" id="btn_add_item"  class="btn btn-success col-lg-4"  style="float: right; margin: 0 5px 0 5px;">ตกลง</button>
+                  <button type="submit" id="btn_add_item"  class="btn btn-success col-lg-4"  style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูลจำนวนอุปกรณ์</button>
             </div>
 
         </div><!-- /content-panel col-lg-12 -->
@@ -148,6 +151,7 @@ include_once("sidebar-menu.php");
 <!--script for this page-->
 <script src="libs/js/jquery.dataTables.min.js"></script>
 <script src="libs/js/dataTables.bootstrap.min.js"></script>
+
 <script src="libs/js/jquery.form.js"></script>
 
 <script>

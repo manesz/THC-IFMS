@@ -13,8 +13,6 @@ unset($_SESSION['ss_select_item_id']);
 
 
 if (isset($_GET['id']) && $id!="") {
-
-	
 	
 		$sql="SELECT * FROM "._TB_QUOTATION." WHERE id='$id' AND publish='1' LIMIT 1; ";
 		$re=mysql_query($sql);
@@ -39,7 +37,11 @@ if (isset($_GET['id']) && $id!="") {
 					$quotaton_code="$code_sale-$code_year$code_month$code_no $code_revise";			
 
 					$customer_listbox=$db->customer_listbox($customer_id);
-					$member_listbox=$db->member_listbox($code_sale);
+					
+					$department_id=$db->department_id_from_code('MKT');
+					$member_listbox=$db->member_listbox($code_sale,$department_id);
+
+				//	$member_listbox=$db->member_listbox($code_sale);
 		}
 
 } else {
@@ -224,7 +226,6 @@ $(document).ready(function() {
 							if (result=='') {							
 						    		load_selected_item();		
 									load_all_item_list();	
-												
 							}					
 				}
 		}); 
@@ -246,7 +247,7 @@ $(document).ready(function() {
 		});
 		
 		
-		//Add Qoutation
+		//Edit Qoutation
 		$("#btn_add_quotation").click(function() {
 					$("#act").val("edit_quotation");
 					

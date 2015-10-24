@@ -28,7 +28,8 @@ if (mysql_num_rows($re)>0) {
 			$code_no=$rs['code_no'];
 			$code_revise=$rs['code_revise'];
 			
-			$quotaton_code="$code_sale-$code_year$code_month$code_no $code_revise";		
+			$quotaton_no=$db->quotation_no_format($code_sale,$code_year,$code_month,$code_no,$code_revise);
+			
 			
 			$contact_name=$rs['contact_name'];
 			$department_name=$rs['department_name'];
@@ -113,7 +114,7 @@ if (mysql_num_rows($re)>0) {
 													</tr>';
 							$n++;
 							
-							//`quotation_id`, `item_id`, `quantity`, `create_dttm`, `update_dttm`, `publish`, `create_person`
+						
 					}
 			}
 			

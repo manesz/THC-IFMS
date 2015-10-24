@@ -28,6 +28,9 @@ define("_TB_ITEM_IMAGE","item_image");
 define("_TB_QUOTATION","quotation");
 define("_TB_QUOTATION_ITEM","quotation_item");
 
+define("_TB_CSR","csr");
+define("_TB_CSR_ITEM","csr_item");
+
 
 define("_UPLOAD_FOLDER","uploads");
 define("_IMG_PROFILE_PATH",_UPLOAD_FOLDER."/profile");
