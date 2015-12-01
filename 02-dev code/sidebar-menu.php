@@ -46,7 +46,7 @@ MAIN SIDEBAR MENU
                     <li><a  href="item-accessories-list.php"><i class="fa fa-circle-o"></i> Item accessories</a></li>
                 </ul>
             </li>
-            <li class="sub-menu">
+            <!-- li class="sub-menu">
                 <a href="javascript:;" >
                     <i class="fa fa-money"></i>
                     <span>REQUEST QUOTATION</span>
@@ -55,15 +55,15 @@ MAIN SIDEBAR MENU
                     <li><a  href="request-quotation-list.php"><i class="fa fa-circle-o"></i> list</a></li>
                     <li><a  href="request-quotation-add.php"><i class="fa fa-circle-o"></i> create quotation</a></li>
                 </ul>
-            </li>
+            </li -->
             <li class="sub-menu">
                 <a href="javascript:;" >
                     <i class="fa fa-money"></i>
-                    <span>CALIBRATE SERVICE</span>
+                    <span>CSR</span>
                 </a>
                 <ul class="sub">
                     <li><a  href="calibrate-service-list.php"><i class="fa fa-circle-o"></i> list</a></li>
-                    <li><a  href="calibrate-service-add.php"><i class="fa fa-circle-o"></i> create quotation</a></li>
+                    <li><a  href="calibrate-service-add.php"><i class="fa fa-circle-o"></i> create CSR</a></li>
                 </ul>
             </li>
             <li class="sub-menu">

@@ -26,6 +26,7 @@ if ($num>0) {
 		$tax_no=stripslashes($rs['tax_no']);	
 		$fax_no=stripslashes($rs['fax_no']);	
 		$email=stripslashes($rs['email']);	
+		$contact_name=stripslashes($rs['contact_name']);
 		$publish=$rs['publish'];
 		$create_dttm=$rs['create_dttm'];
 		$latest_update=$rs['update_dttm'];
@@ -96,6 +97,13 @@ include_once("header.php");
                                 <label class="col-sm-12 col-md-4 control-label">เลขที่ผู้เสียภาษี </label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="tax_no" id="tax_no" value="<?php echo $tax_no; ?>">
+                                </div>
+                            </div>
+                            
+                             <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ </label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="contact_name" id="contact_name" value="<?php echo $contact_name; ?>">
                                 </div>
                             </div>
                             

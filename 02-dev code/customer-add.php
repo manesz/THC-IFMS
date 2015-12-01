@@ -74,6 +74,13 @@ include_once("header.php");
                                 </div>
                             </div>
                             
+                             <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ </label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="contact_name" id="contact_name">
+                                </div>
+                            </div>
+                            
                             <div class="row">
                                 <div class="col-md-12">
 

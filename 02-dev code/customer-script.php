@@ -5,6 +5,17 @@ $db = new db_class();
 $action=$_POST['act'];
 
 $error=""; //no-error
+if ($action=='get_contact_name') {
+	$id=$_POST['id'];
+	$contact_name='';
+	$re=mysql_query("SELECT contact_name FROM "._TB_CUSTOMER." WHERE id='$id' LIMIT 1; ");	
+	if (mysql_num_rows($re)>0) {
+		$rs=mysql_fetch_array($re);
+		$contact_name=stripslashes($rs['contact_name']);
+	}
+	echo $contact_name;
+}
+
 if ($action=='add') {
 	
 	$company_name=addslashes($_POST['company_name']);	
@@ -13,11 +24,13 @@ if ($action=='add') {
 	$phone_no=addslashes($_POST['phone_no']);
 	$fax_no=addslashes($_POST['fax_no']);
 	$email=$_POST['email'];
+	$contact_name=addslashes($_POST['contact_name']);
+	
 	$publish='1';	
 	$create_person=$_SESSION['ss_member_id'];
 
 	$sql="	INSERT INTO "._TB_CUSTOMER." 
-				(id, company_name, company_address, tax_no, phone_no, fax_no, email, create_dttm, update_dttm, publish, create_person) 
+				(id, company_name, company_address, tax_no, phone_no, fax_no, email, contact_name, create_dttm, update_dttm, publish, create_person) 
 				VALUES (
 					NULL, 
 					'$company_name', 
@@ -25,7 +38,8 @@ if ($action=='add') {
 					'$tax_no', 
 					'$phone_no', 
 					'$fax_no', 
-					'$email', 					
+					'$email', 		
+					'$contact_name',			
 					NOW(), 
 					NOW(), 			
 					'$publish', 			
@@ -49,6 +63,7 @@ if ($action=='edit') {
 	$phone_no=addslashes($_POST['phone_no']);
 	$fax_no=addslashes($_POST['fax_no']);
 	$email=$_POST['email'];
+	$contact_name=addslashes($_POST['contact_name']);
 	$publish='1';	
 	$create_person=$_SESSION['ss_member_id'];
 	
@@ -60,6 +75,7 @@ if ($action=='edit') {
 						phone_no = '$phone_no',
 						fax_no = '$fax_no', 
 						email = '$email', 
+						contact_name='$contact_name',
 						update_dttm=NOW(),
 						publish='$publish',
 						create_person='$create_person'

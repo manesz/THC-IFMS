@@ -13,14 +13,17 @@ function curPageName() {
  return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
 }
 
-function randomPassword() {
-    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
-    for ($i = 0; $i < 8; $i++) {
-        $n = rand(0, count($alphabet)-1);
-        $pass[$i] = $alphabet[$n];
-    }
-    return $pass;
+
+function create_auto_session_csr( $length = 3, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ) {
+    $prefix= substr( str_shuffle( $chars ), 0, $length );
+	$string=date("ymdHis");
+	return "$prefix$string";
 }
+
+function randomPassword( $length = 8, $chars = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789' ) {
+    return substr( str_shuffle( $chars ), 0, $length );
+}
+
 
 function curPageURL() {
  $pageURL = 'http';

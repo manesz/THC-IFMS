@@ -10,8 +10,8 @@ include("check-permission.php");
 $content='';
 
 
-$SQL="	SELECT id, equipment_name, model, serial_no, id_no, customer_id,  update_dttm 
-			FROM "._TB_ITEM." WHERE publish='1' ";
+$SQL="	SELECT id, equipment_name, model, serial_no, id_no, customer_id,  update_dttm , publish
+			FROM "._TB_ITEM." WHERE publish<>'0' ";
 
 $re=mysql_query($SQL);
 $num=mysql_num_rows($re);
@@ -25,21 +25,29 @@ if ($num>0) {
 		$id_no=stripslashes($rs['id_no']);
 		$customer_id=stripslashes($rs['customer_id']);		
 		$latest_update=$rs['update_dttm'];
+		$publish=$rs['publish'];
 		
 		$customer_name=$db->customer_name($customer_id);
 		
+		$td_bg='';
+		$text_status='';
+		if ($publish=='2') { //สถานะยกเลิก
+			$td_bg=' style="background-color:#bbb"; ';				
+			$text_status=' <span style="color:#f00;font-size:16px;">** ยกเลิก **</span>';
+		}
+		
 		$content.='
 			     <tr>
-					<td>'.$id.'</td>
-					<td>'.$equipment_name.' </td>
-					<td>'.$model.'</td>
-					<td>'.$serial_no.'</td>
-					<td> '.$id_no.' </td>
-					<td> - </td>
-					<td>'.$customer_name.'</td>
-					<td> - </td>
-					<td>'.$latest_update.'</td>
-					<td>
+					<td '.$td_bg.'>'.$id.'</td>
+					<td '.$td_bg.'>'.$equipment_name.' '.$text_status.'</td>
+					<td '.$td_bg.'>'.$model.'</td>
+					<td '.$td_bg.'>'.$serial_no.'</td>
+					<td '.$td_bg.'> '.$id_no.' </td>
+					<td '.$td_bg.'> - </td>
+					<td '.$td_bg.'>'.$customer_name.'</td>
+					<td '.$td_bg.'> - </td>
+					<td '.$td_bg.'>'.$latest_update.'</td>
+					<td '.$td_bg.'>
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 								จัดการ
@@ -48,6 +56,7 @@ if ($num>0) {
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 								<li><a href="paper_item_description.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
 								<li><a href="item-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
+								<li><a href="#" onclick="cancel_item(\''.$id.'\',\''.htmlspecialchars("$equipment_name").'\');return false;"><i class="fa fa-times" style="color: red;"> ยกเลิก</i></a></li>
 								<li><a href="#" onclick="delete_item(\''.$id.'\',\''.htmlspecialchars("$equipment_name").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
 							</ul>
 						</div>
@@ -149,9 +158,7 @@ include_once("header.php");
     </section><!-- /main-content -->
 </section><!-- /coniainer -->
 
-<?php
-include_once("footer.php");
-?>
+<?php include_once("footer.php"); ?>
 <!--script for this page-->
 <script src="libs/js/jquery.dataTables.min.js"></script>
 <script src="libs/js/dataTables.bootstrap.min.js"></script>
@@ -161,10 +168,19 @@ include_once("footer.php");
 //        $("#departmentList_filter").add
     } );
 	
-		function delete_item(id, title) {
-	var chk=confirm("โปรดยืนยันการลบข้อมูล "+title+" !!");
+	function delete_item(id, title) {
+	var chk=confirm("คำเตือน!!\nอุปกรณ์นี้จะถูกลบถาวร และเลขที่อุปกรณ์นี้จะถูกแทนที่เมื่อมีการเพิ่มอุปกรณ์ใหม่\n\nโปรดยืนยันการลบอุปกรณ์ [ "+title+" ] !!\n\n");
 		if (chk) {
-			$.post("item-script.php",{'act':'delete','id':id},function(data) {
+			$.post("item-script.php",{'act':'delete-item','id':id},function(data) {
+				window.location.href="item-list.php";
+			});
+		} else { return false; }
+	}
+	
+	function cancel_item(id, title) {
+	var chk=confirm("โปรดยืนยันการยกเลิกอุปกรณ์ [ "+title+" ] !!\n\n");
+		if (chk) {
+			$.post("item-script.php",{'act':'cancel-item','id':id},function(data) {
 				window.location.href="item-list.php";
 			});
 		} else { return false; }

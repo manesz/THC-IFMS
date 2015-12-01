@@ -7,8 +7,8 @@
  */
  include("check-permission.php");
  
- $department_listbox=$db->department_inout_lab_listbox('');
- $customer_listbox=$db->customer_listbox('');
+ $department_listbox=$db->department_inout_lab_listbox($_SESSION['ss_department_id']);
+ $customer_listbox=$db->customer_listbox($_SESSION['ss_customer_id']);
  
  
 //Item accessories
@@ -86,9 +86,9 @@ include_once("header.php");
                 </div>
             </div><!-- /.row title -->
             
-                <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-            <div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-            <div class="alert alert-danger"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
+                <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+            <div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+            <div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างผู้ใช้งานได้</b> Change a few things up and try submitting again.</div>
             
          
 			      
@@ -96,10 +96,12 @@ include_once("header.php");
                                 <ul class="nav nav-tabs" role="tablist" id="pro_tab" style="margin-top:20px;">
                                   	<li role="presentation" class="active"><a href="#tab_general" role="tab" data-toggle="tab" class="bg-info"><h5>ข้อมูลทั่วไป</h5></a></li>     
                                     <li role="presentation"><a href="#tab_description" role="tab" data-toggle="tab" class="bg-info"><h5>รายละเอียดอุปกรณ์</h5></a></li>
+                                    <!-- 
                                     <li role="presentation" class="disabled"><a href="#tab_image"  class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>รูปภาพ</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_calibration" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Calibration</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_certification" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Certification</h5></a></li>
                                     <li role="presentation" class="disabled"><a href="#tab_invoice" class="bg-info" onclick="alert('กรุณาบันทึกข้อมูลทั่วไป และรายละเอียดอุปกรณ์ก่อน');"><h5>Invoice</h5></a></li>
+                                    -->
                                 </ul>
                      
                      
@@ -125,7 +127,7 @@ include_once("header.php");
                                                 <div class="form-group col-sm-12 col-md-6">
                                                     <label class="col-sm-12 col-md-3 control-label">จำนวน / Quantity</label>
                                                     <div class="col-sm-12 col-md-9">
-                                                        <input type="text" class="form-control" name="qty" id="qty">
+                                                        <input type="text" class="form-control" name="qty" id="qty" value="1">
                                                     </div>
                                                 </div><!-- /quality -->
                                                 <div class="form-group col-sm-12 col-md-6">
@@ -134,7 +136,8 @@ include_once("header.php");
                                                         <select class="selectBox js-states form-control" name="department_id" id="department_id">
                                                             <option value="">-- โปรดเลือก --</option>
                                                             <?php echo $department_listbox; ?>
-                                                        </select>
+                                                        </select> 
+
                                                     </div>
                                                 </div><!-- /Lab -->
                                                 <div class="form-group col-sm-12 col-md-6">
@@ -191,13 +194,13 @@ include_once("header.php");
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
                                     <label class="col-sm-12 col-md-4 control-label">Serial No.</label>
                                     <div class="col-sm-12 col-md-8">
-                                        <input type="text" class="form-control" name="serial_no" id="serial_no">
+                                        <input type="text" class="form-control" name="serial_no" id="serial_no" value="N/A">
                                     </div>
                                 </div><!-- /Serial No. -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
                                     <label class="col-sm-12 col-md-4 control-label">ID No.</label>
                                     <div class="col-sm-12 col-md-8">
-                                        <input type="text" class="form-control" id="id_no" name="id_no">
+                                        <input type="text" class="form-control" id="id_no" name="id_no" value="N/A">
                                     </div>
                                 </div><!-- /ID No. -->
                                 <div class="form-group col-sm-12 col-md-12" style="height: auto;">
@@ -211,6 +214,16 @@ include_once("header.php");
                                        
                                 </div><!-- /Accessories -->
                                 
+                         
+                                
+                                  <div class="form-group col-sm-12 col-md-6">
+                                            <label class="col-sm-12 col-md-3 control-label">Description</label>
+                                        <div class="col-sm-12 col-md-9">
+                                          <textarea name="description" id="description" class="form-control" rows="7"></textarea>
+                                        </div>
+                                    </div><!-- /description -->
+                                                
+                                   <div class="clearfix"></div>
 
                             </div>
                         </div><!-- /itemDescription tab -->
@@ -297,8 +310,14 @@ include_once("header.php");
 						var result=xhr.responseText;
 						
 						var arr=result.split(":");
-						if (arr[0]=="returnid") {
-							window.location.href="item-edit.php?id="+arr[1]+"&result=true";
+						if (arr[0]=="returnid") {							
+							var return_url="<?php echo $_GET['return']; ?>";
+							//window.location.href="item-edit.php?id="+arr[1]+"&result=true&return="+return_url;
+							if (return_url=='add') {
+								window.location.href='calibrate-service-add.php';
+							} else {
+								window.location.href='calibrate-service-edit.php?id=<?php echo $_GET['csrid']; ?>';
+							}
 						} else {							
 								if (result=='102') { //save ไม่ได้
 									$(".alert-danger").html("<b>เกิดข้อผิดพลาด!!</b><br> "+result);
@@ -325,6 +344,8 @@ include_once("header.php");
 				}
 		});
 	});
+	
+
 
 	function validate(formData, jqForm, options) {
 			$(".alert").hide();
@@ -341,6 +362,15 @@ include_once("header.php");
 						$(".alert-warning").fadeIn();
 						go_anchor("anchor1");
 						return false;
+						
+		} else if ($("#qty").val()!="" && !IsNumber($("#qty").val())) {
+
+						$(".alert-warning").html("<b>กรุณากรอกข้อมูลให้ครบถ้วน!!</b><br>- จำนวนต้องเป็นตัวเลขเท่านั้น");
+						$("#qty").focus();
+						$(".alert-warning").fadeIn();
+						go_anchor("anchor1");
+						return false;
+						
    		  } else if ($("#department_id").val()=="") {
 						$(".alert-warning").html("<b>กรุณากรอกข้อมูลให้ครบถ้วน!!</b><br>- LAB");
 						$("#department_id").focus();

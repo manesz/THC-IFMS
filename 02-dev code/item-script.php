@@ -4,6 +4,7 @@ include("check-permission.php");
 $db = new db_class();
 $action=$_POST['act'];
 
+
 $error=""; //no-error
 $PDF_PATH  = _PDF_ITEM_PATH."/";
 $IMG_PATH = _IMG_ITEM_PATH."/";
@@ -79,85 +80,173 @@ if ($action=='get_customer_info') {
 		echo $content;
 }
 
+function DuplicateMySQLRecord ($table, $id_field, $id) {
+  // load the original record into an array
+  $result = mysql_query("SELECT * FROM {$table} WHERE {$id_field}={$id}");
+  $original_record = mysql_fetch_assoc($result);
+
+  // insert the new record and get the new auto_increment id
+  mysql_query("INSERT INTO {$table} (`{$id_field}`) VALUES (NULL)");
+  $newid = mysql_insert_id();
+
+  // generate the query to update the new record with the previous values
+  $query = "UPDATE {$table} SET ";
+  foreach ($original_record as $key => $value) {
+    if ($key != $id_field) {
+        $query .= '`'.$key.'` = "'.str_replace('"','\"',$value).'", ';
+    }
+  }
+  
+  $query = substr($query,0,strlen($query)-2); # lop off the extra trailing comma
+  $query .= " WHERE {$id_field}={$newid}";
+  mysql_query($query);
+
+  // return the new id
+  return $newid;
+}
+
+if ($action=='clone-item') {
+	$clone_item_id=$_POST['id'];	
+	$clone_qty=$_POST['clone_qty'];
+	
+	$table=_TB_ITEM;
+	$id_field='id';
+	$id=$clone_item_id;
+	
+	
+	for ($n=1;$n<=$clone_qty;$n++) {
+			$newid=DuplicateMySQLRecord ($table, $id_field, $id); //Clone	
+			//crea new code id	
+			$day=date("d");
+			$month=date("m");
+			$year=date("y");
+			
+			$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
+			$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+			
+			//update
+			$result=mysql_query("UPDATE $table SET item_code_day='$day', item_code_month='$month', item_code='$item_code', item_code_year='$year' 
+											WHERE id='$newid' LIMIT 1; ");
+			
+			if ($result) {
+				//clone image
+				$sql="SELECT * FROM "._TB_ITEM_IMAGE." WHERE item_id='$clone_item_id' ORDER BY id";
+				$re=mysql_query($sql);
+				if (mysql_num_rows($re)>0) {
+					while ($rs=mysql_fetch_array($re)) {
+							//`id`, `name`, `size`, `type`, `url`, `item_id`, `description`
+							$name=$rs['name'];
+							$size=$rs['size'];
+							$type=$rs['type'];
+							$url=$rs['url'];
+							$description=$rs['description'];
+							
+							mysql_query("
+								INSERT INTO "._TB_ITEM_IMAGE."  (id, name, size, type, url, item_id, description) 
+								VALUES (NULL, '$name', '$size', '$type', '$url', '$newid', '$description')
+							");
+								
+					} //end whiel
+				} //end num rows
+				mysql_free_result($re);		
+				echo '';
+			} //end result
+	} //end for
+				
+}
+
 if ($action=='add') {
 	
-	$prefix='THD';
-	$postfix=date("y");
-	
-	$code = $db->auto_new_item_code($prefix,$postfix);	
-	$item_code=str_pad("$code", 6, "0", STR_PAD_LEFT); 
-	
-	
-	$equipment_name=addslashes($_POST['equipment_name']);	
 	$qty=addslashes($_POST['qty']);	
-	$department_id=addslashes($_POST['department_id']);
-	$customer_id=addslashes($_POST['customer_id']);
 	
-	$manufacturer=addslashes($_POST['manufacturer']);
-	$model=$_POST['model'];
-	$resolution=addslashes($_POST['resolution']);	
-	$calibration_range=addslashes($_POST['calibration_range']);	
-	$serial_no=addslashes($_POST['serial_no']);	
-	$id_no=addslashes($_POST['id_no']);
+	if ($qty>0) {
+		for ($n=1;$n<=$qty;$n++) {	
 	
-	$item_accessories=addslashes($_POST['item_accessories']);
+					$session_csr=$_SESSION['session_CSR'];	
+					$department_id=addslashes($_POST['department_id']);	
+					$prefix=$db->create_item_code_prefix($department_id);	
+					$day=date("d");
+					$month=date("m");
+					$year=date("y");
+					
+					$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
+					$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+					
+					
+					$equipment_name=addslashes($_POST['equipment_name']);	
+					$description=addslashes($_POST['description']);	
+					
+					
+					
+					$customer_id=addslashes($_POST['customer_id']);
+					
+					$manufacturer=addslashes($_POST['manufacturer']);
+					$model=$_POST['model'];
+					$resolution=addslashes($_POST['resolution']);	
+					$calibration_range=addslashes($_POST['calibration_range']);	
+					$serial_no=addslashes($_POST['serial_no']);	
+					$id_no=addslashes($_POST['id_no']);
+					
+					$item_accessories=addslashes($_POST['item_accessories']);
+					
+					$iso017025=($_POST['iso017025']== '1' ? '1' : '0');
+					
+					$create_dttm=date("Y-m-d H:i:s");
+					$receive_dttm=$create_dttm;
+					$update_dttm=$create_dttm;
+					
+					
+					
+					$publish='1';	
+					$create_person=$_SESSION['ss_member_id'];
+					
+					//----ITEM Accessory 
+					$acc_chk=$_POST['acc_chk'];  
+					$acc_id=$_POST['acc_id'];
+					 $item_accessories='';
+					if(count($acc_chk)>0){  // ตรวจสอบ checkbox ว่ามีการเลือกมาอย่างน้อย 1 รายการหรือไม่  
+						foreach($acc_chk as $key=>$value){  
+							$item_accessories.=$value;
+							
+							$acc_more=$_POST["acc_more$value"];
+							if ($acc_more!="") {
+								$item_accessories.=":$acc_more";
+							}			
+							$item_accessories.="|";
+						}     
+					}  	
+					
+				
+					$sql="	INSERT INTO "._TB_ITEM." 
+								(
+										id, item_code_prefix, item_code_day, item_code_month, item_code, item_code_year,						
+										equipment_name, description, qty, department_id, customer_id, 
+										manufacturer, model, resolution, calibration_range, serial_no, id_no, 
+										item_accessories,
+										iso017025,
+										create_dttm, receive_dttm, update_dttm, 
+										publish,
+										session_csr,
+										create_person
+								) 
+								VALUES (
+									NULL, '$prefix', '$day', '$month', '$item_code', '$year',		
+									'$equipment_name', '$description', '$qty', '$department_id', '$customer_id', 
+									'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
+									'$item_accessories',
+									'$iso017025', 
+									'$create_dttm', '$receive_dttm', '$update_dttm', 
+									'$publish', 
+									'$session_csr',
+									'$create_person'
+								) ";
+					$db->query($sql);			
+					//if (!$db->query($sql) ) {	$error="102";	} else {	$newID=$db->getinsertID(); $error="returnid:$newID";	}
+					
+		} //end for
+	} //end if qty > 0
 	
-	$iso017025=($_POST['iso017025']== '1' ? '1' : '0');
-	
-	$create_dttm=date("Y-m-d H:i:s");
-	$receive_dttm=$create_dttm;
-	$update_dttm=$create_dttm;
-	
-	
-	
-	$publish='1';	
-	$create_person=$_SESSION['ss_member_id'];
-	
-	//----ITEM Accessory 
-	$acc_chk=$_POST['acc_chk'];  
-	$acc_id=$_POST['acc_id'];
-	 $item_accessories='';
-	if(count($acc_chk)>0){  // ตรวจสอบ checkbox ว่ามีการเลือกมาอย่างน้อย 1 รายการหรือไม่  
-		foreach($acc_chk as $key=>$value){  
-			$item_accessories.=$value;
-			
-			$acc_more=$_POST["acc_more$value"];
-			if ($acc_more!="") {
-				$item_accessories.=":$acc_more";
-			}			
-			$item_accessories.="|";
-		}     
-	}  	
-	//---------
-
-	$sql="	INSERT INTO "._TB_ITEM." 
-				(
-						id, item_code_prefix, item_code, item_code_postfix,						
-						equipment_name, qty, department_id, customer_id, 
-						manufacturer, model, resolution, calibration_range, serial_no, id_no, 
-						item_accessories,
-						iso017025,
-						create_dttm, receive_dttm, update_dttm, 
-						publish,
-						create_person
-				) 
-				VALUES (
-					NULL, '$prefix', '$item_code', '$postfix',		
-					'$equipment_name', '$qty', '$department_id', '$customer_id', 
-					'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
-					'$item_accessories',
-					'$iso017025', 
-					'$create_dttm', '$receive_dttm', '$update_dttm', 
-					'$publish', 
-					'$create_person'
-				) ";
-	if (!$db->query($sql) ) {
-		$error="102";
-	} else {
-		$newID=$db->getinsertID();
-		$error="returnid:$newID";
-	}
-	
+	$error="returnid:xxx"; 
 	echo $error;
 }
 
@@ -165,10 +254,15 @@ if ($action=='add') {
 if ($action=='edit') {	
 	
 	$id=$_POST['id'];		
-
-	$equipment_name=addslashes($_POST['equipment_name']);	
-	$qty=addslashes($_POST['qty']);	
+	
 	$department_id=addslashes($_POST['department_id']);
+	$prefix=$db->create_item_code_prefix($department_id);
+	
+	$equipment_name=addslashes($_POST['equipment_name']);
+	$description=addslashes($_POST['description']);	
+	
+	$qty=addslashes($_POST['qty']);	
+	
 	$customer_id=addslashes($_POST['customer_id']);
 	
 	$manufacturer=addslashes($_POST['manufacturer']);
@@ -223,8 +317,9 @@ if ($action=='edit') {
 											
 										if( copy($_FILES['cer_pdf']['tmp_name'], $path)) {														
 														$SQL="UPDATE  "._TB_ITEM." 
-																	SET  				
+																	SET  	item_code_prefix='$prefix',																			
 																			equipment_name = '$equipment_name', 
+																			description = '$description', 
 																			department_id = '$department_id',
 																			model = '$model',
 																			resolution = '$resolution',
@@ -264,8 +359,10 @@ if ($action=='edit') {
 				}							
 	} else {
 		$SQL="UPDATE  "._TB_ITEM." 
-					SET  				
+					SET  		
+							item_code_prefix='$prefix',		
 							equipment_name = '$equipment_name', 
+							description = '$description', 
 							department_id = '$department_id',
 							model = '$model',
 							resolution = '$resolution',
@@ -298,7 +395,7 @@ if ($action=='edit') {
 
 }
 
-if ($action=='delete') {
+if ($action=='delete-item') {
 	$id=$_POST['id'];
 	$SQL="UPDATE "._TB_ITEM." SET publish='0' WHERE id='$id' LIMIT 1; ";
 	if (!mysql_query($SQL)) {
@@ -306,6 +403,23 @@ if ($action=='delete') {
 	} 	
 	echo $error;
 }
+
+if ($action=='cancel-item') {
+	$id=$_POST['id'];
+	$SQL="UPDATE "._TB_ITEM." SET publish='2' WHERE id='$id' LIMIT 1; ";
+	if (!mysql_query($SQL)) {
+			$error="102";
+	} 	
+	echo $error;
+}
+
+//ลบ item ทีละ 1 รายการในหน้า CSR
+if ($action=='delete_item_id') {
+	$id=$_POST['id'];
+	mysql_query("UPDATE "._TB_ITEM." SET publish='0' WHERE id='$id' LIMIT 1; ");
+}
+
+
 
 $db->close();
 ?>
