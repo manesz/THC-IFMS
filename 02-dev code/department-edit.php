@@ -19,6 +19,7 @@ if ($num>0) {
 	$rs=mysql_fetch_array($re);
 		$id=$rs['id'];
 		$title=stripslashes($rs['title']);
+		$code=$rs['code'];
 		$description=stripslashes($rs['description']);
 		$is_in_lab=$rs['is_in_lab'];
 		$is_on_site=$rs['is_on_site'];
@@ -54,8 +55,6 @@ include_once("header.php");
     ?>
     <section id="main-content">
         <section class="wrapper">
-
-           
             
             <div class="row vertical-align">
                 <div class="col-sm-8"><h3><i class="fa fa-angle-right"></i> แก้ไขแผนก</h3></div>
@@ -68,9 +67,9 @@ include_once("header.php");
                     <div class="content-panel col-lg-12">
                         <h4 class="mb"></h4>
 
-                        <div class="alert alert-success"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
-                        <div class="alert alert-warning"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
-                        <div class="alert alert-danger"><b>ไม่สามารถสร้างแผนกได้</b> Change a few things up and try submitting again.</div>
+                        <div class="alert alert-success" style="display:none;"><b>บันทึกข้อมูลสำเร็จ</b> You successfully read this important alert message.</div>
+                        <div class="alert alert-warning" style="display:none;"><b>กรุณากรอกข้อมูลให้ครบถ้วน</b> Better check yourself, you're not looking too good.</div>
+                        <div class="alert alert-danger" style="display:none;"><b>ไม่สามารถสร้างแผนกได้</b> Change a few things up and try submitting again.</div>
 
                         <form class="form-horizontal style-form" action="department-script.php" id="frm" method="post">
                             <div class="form-group col-sm-12 col-md-12">
@@ -80,6 +79,14 @@ include_once("header.php");
                                     <input type="hidden" class="form-control" name="current_title" id="current_title" value="<?php echo $title; ?>" > 
                                 </div>
                             </div>
+                            
+                            <div class="form-group col-sm-12 col-md-12">
+                                <label class="col-sm-12 col-md-3 control-label">Short Code <span class="note-red">*</span></label>
+                                <div class="col-sm-12 col-md-9">
+                                    <input type="text" class="form-control" name="code" id="code" maxlength="5" value="<?php echo $code; ?>">
+                                </div>
+                            </div>
+                            
                             <div class="form-group col-sm-12 col-md-12">
                                 <label class="col-sm-12 col-md-3 control-label">รายละเอียด</label>
                                 <div class="col-sm-12 col-md-9">
@@ -160,7 +167,13 @@ include_once("footer.php");
 						$(".alert-warning").fadeIn();
 						go_anchor("anchor1");
 						return false;
-			} 
+			} else if ($("#code").val()=="") {
+						$(".alert-warning").html("<b>กรุณากรอกข้อมูลให้ครบถ้วน!!</b><br>- Short Code ");				
+						$("#code").focus();		
+						$(".alert-warning").fadeIn();	
+						go_anchor("anchor1");
+						return false;
+			}
 			/*else if ($("#description").val()=="") {
 						$(".alert-warning").html("<b>กรุณากรอกข้อมูลให้ครบถ้วน!!</b><br>- รายละเอียด ");				
 						$("#description").focus();		

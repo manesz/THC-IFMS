@@ -28,13 +28,16 @@ if ($num>0) {
 	$rs=mysql_fetch_array($re);
 	
 		$item_code_prefix=$rs['item_code_prefix'];		
+		$item_code_day=$rs['item_code_day'];
+		$item_code_month=$rs['item_code_month'];
 		$item_code=$rs['item_code'];
-		$item_code_postfix=$rs['item_code_postfix'];
+		$item_code_year=$rs['item_code_year'];
 		
-		$item_code_string=$item_code_prefix.' - '.$rs['item_code'].'/'.$item_code_postfix;
+		$item_no=$db->item_no_format($item_code_prefix,$item_code_day,$item_code_month,$item_code,$item_code_year);
 		
 		
 		$equipment_name=stripslashes($rs['equipment_name']);		
+		$description=stripslashes($rs['description']);	
 		$department_id=$rs['department_id'];	
 		$model=stripslashes($rs['model']);	
 		$resolution=stripslashes($rs['resolution']);	
@@ -63,43 +66,6 @@ if ($num>0) {
 		}
 		$count_arr=count($arr_accessory);
 		
-		/*
-		$attb1_1=($rs['attb1_1'] =='1' ? '<li class="child">1.1 สายไฟ Probe/Sensor, Data link</li>' : '');
-		$attb1_2=($rs['attb1_2']=='1' ? '<li class="child">1.2 สาย Adapter, หม้อแปลงไฟฟ้า</li>' : '');
-		$attb1_3=($rs['attb1_3']=='1' ? '<li class="child">1.3 ขั้วต่อเครื่องมือ</li>' : '');
-		$attb1_4=($rs['attb1_4']=='1' ? '<li class="child">1.4 คู่มือการใช้งาน</li>' : '');
-		$attb1_5=($rs['attb1_5']=='1' ? '<li class="child">1.5 Battery Charger</li>' : '');
-		
-		if ($rs['attb1_6']=='1' && $attb1_6_other!="") {
-			$attb1_6_other=stripslashes($rs['attb1_6_other']);
-		} else {
-			$attb1_6_other='';
-		}
-		
-		if ($attb1_1=="" && $attb1_2=="" && $attb1_3=="" && $attb1_4=="" && $attb1_5=="" &&  $attb1_6_other=="") {
-			$no_acc1="(ไม่มี)";
-		} else { $no_acc1=""; }
-		
-		$attb2_1=($rs['attb2_1']=='1' ? '<li class="child">2.1 กล่องเครื่องมือ/ซองใส่เครื่อง</li>' : '');
-		$attb2_2=($rs['attb2_2']=='1' ? '<li class="child">2.2 หุ้มด้วยพลาสติกกันกระแทกเครื่องมือ</li>' : '');
-		$attb2_3=($rs['attb2_3']=='1' ? '<li class="child">2.3 กล่องกระดาษเครื่องมือ</li>' : '');
-		
-		if ($rs['attb2_4']=='1' && $attb2_4_other!="") {
-			$attb2_4_other=stripslashes($rs['attb2_4_other']);
-		} else {
-			$attb2_4_other='';	
-		}
-		
-		if ($attb2_1=="" && $attb2_2=="" && $attb2_3=="" &&  $attb2_4_other=="") {
-			$no_acc2="(ไม่มี)";
-		} else { $no_acc2=""; }
-		
-		
-		if ($attb1_1=="" && $attb1_2=="" && $attb1_3=="" && $attb1_4=="" && $attb1_5=="" && $attb1_6=="" &&  $attb1_6_other=="") {
-			$no_acc1="(ไม่มี)";
-		} else { $no_acc1=""; }
-		*/
-		
 		$calibrate_result=stripslashes($rs['calibrate_result']);	
 		
 		$calibrate_result_D='<i class="fa fa-circle-o"></i>';
@@ -109,8 +75,6 @@ if ($num>0) {
 		if ($calibrate_result=="D") { $calibrate_result_D='<i class="fa fa-circle"></i>'; }
 		if ($calibrate_result=="R") { $calibrate_result_R='<i class="fa fa-circle"></i>'; }
 		if ($calibrate_result=="B") { $calibrate_result_B='<i class="fa fa-circle"></i>'; }
-		
-		
 		
 		
 		$iso017025=($rs['iso017025']=='1' ? ' checked ' : '');		
@@ -133,12 +97,25 @@ if ($num>0) {
 		$receive_dttm=$rs['receive_dttm'];	
 		$update_dttm=$rs['update_dttm'];	
 		
-		$customer_id=$rs['customer_id'];	
+		$customer_id=$rs['customer_id'];
+		$company_name=$db->customer_name($customer_id);	
+		
+		
+		if ($description=="" && $note=="") {
+				$NoteDescription='';
+		} else {
+				$NoteDescription='<tr>
+												<td colspan="3" style="">
+													<b>Note:</b>
+													'.($description!="" ? '<p style="padding:0 5px 10px 5px;"><u>Description</u><br>'.nl2br($description).'</p>' : '-').'
+													'.($note!="" ? '<p style="padding:0 5px 10px 5px;"><u>Description</u><br>'.nl2br($note).'</p>' : '-').'
+													
+												</td>
+											</tr>';
+		}
 		
 	
 }
-
-
 
 
 
@@ -237,6 +214,7 @@ $db->close();
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>* { font-family:Arial, Helvetica, sans-serif }</style>
 </head>
 
 <body>
@@ -246,14 +224,14 @@ $db->close();
     </tr><!-- END : THC company name -->
     <tr><!-- item barcode image -->
         <td class="text-center"><!-- img src="libs/img/sample-barcode.png" style="width: 230px; height: auto; padding-top: 0px;"/ -->
-			<div id="bcTarget"></div>
+			<div id="bcTarget" style="width:210px; margin:0 auto;"></div>
         </td>
     </tr><!-- END : item barcode image -->
     <tr><!-- item content -->
         <td>
             <table class="table table_no_border" style="width: 250px;"><!-- item description -->
                 <tr><!-- Customer Company Name -->
-                    <td class="text-center" colspan="3">S I K (THAILAND) LTD (HEAD OFFICE)</td>
+                    <td class="text-center" colspan="3"><?php echo $company_name; ?></td>
                 </tr><!-- END : Customer Company Name -->
                 <tr><!-- Receive date -->
                     <td style="width: 100px;">Receive date</td>
@@ -291,7 +269,7 @@ $db->close();
                     <td style="width: 140px;"><?php echo ($calibration_range!="" ? $calibration_range : '-'); ?></td>
                 </tr><!-- END : Calibration Points -->
                 <tr><!-- Lot No. -->
-                    <td style="width: 100px;">Lot No.</td>
+                    <td style="width: 100px;">CSR No.</td>
                     <td style="width: 10px;">:</td>
                     <td style="width: 140px;">NO. 00628/15</td>
                 </tr><!-- END : Lot No. -->
@@ -315,12 +293,9 @@ $db->close();
                         </ul>
                     </td>
                 </tr><!-- End : Accessories list -->
-                <tr><!-- Note -->
-                    <td colspan="3" style="">
-                        <b>Note:</b>
-                        <p style="padding:10px;"><?php echo ($note!="" ? nl2br($note) : '-'); ?></p>
-                    </td>
-                </tr><!-- END : Note -->
+                <?php echo $NoteDescription; ?>
+           
+                
                 <tr><!-- item status -->
                     <td colspan="3">
                         <table style="width: 100%;">
@@ -361,7 +336,7 @@ $(function() {
 		msi
 		datamatrix (ASCII + extended)
 	*/
-	$("#bcTarget").barcode("<?php echo "$item_code_string"; ?>", "code128",{barWidth:1, barHeight:50, fontSize:14,});     
+	$("#bcTarget").barcode("<?php echo "$item_no"; ?>", "code128",{barWidth:1, barHeight:50, fontSize:14,});     
 	//{barWidth:2, barHeight:30}
 });
 </script>

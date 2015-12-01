@@ -7,6 +7,7 @@
  */
 include("check-permission.php"); 
 
+<<<<<<< HEAD
 $csr_list='';
 
 
@@ -18,13 +19,28 @@ $re=mysql_query($sql);
 //	//`id`, `code_no`, `code_year`, `code_sale`, `quotation_no`, `contact_name`, `cert_for`, `address`, `fax`, `telephone`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
 $Num=mysql_num_rows($re);
 if ($Num>0) {
+=======
+
+
+$csr_list='';
+$sql="SELECT * FROM "._TB_CSR." WHERE publish='1' ORDER BY create_dttm DESC ";
+$re=mysql_query($sql);
+
+//	//`id`, `code_no`, `code_year`, `code_sale`, `quotation_id`, `contact_name`, `cert_for`, `address`, `fax`, `telephone`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
+
+if (mysql_num_rows($re)>0) {
+>>>>>>> origin/master
 		while ($rs=mysql_fetch_array($re)) {
 			$id=$rs['id'];
 			$code_year=$rs['code_year'];
 			$code_no=$rs['code_no'];
 			$code_sale=$rs['code_sale'];
 			
+<<<<<<< HEAD
 			$quotation_no=$rs['quotation_no'];
+=======
+			$quotation_id=$rs['quotation_id'];
+>>>>>>> origin/master
 			$contact_name=stripslashes($rs['contact_name']);
 			$cert_for=stripslashes($rs['cert_for']);
 			
@@ -34,8 +50,11 @@ if ($Num>0) {
 			
 			$customer_id=$rs['customer_id'];
 			
+<<<<<<< HEAD
 			$publish=$rs['publish'];
 			
+=======
+>>>>>>> origin/master
 			$update_dttm=date("Y-m-d",strtotime($rs['update_dttm']));
 			
 			$csr_code="$code_no/$code_year";			
@@ -44,6 +63,7 @@ if ($Num>0) {
 			$num_item=count_item($id);
 			
 			$LotNo='-';
+<<<<<<< HEAD
 			$QuotationNo=$quotation_no;
 			$InvoiceNo='-';
 			
@@ -66,6 +86,22 @@ if ($Num>0) {
 									 <td '.$td_bg.'>'.$code_sale.'</td>
                                     <td '.$td_bg.'>'.$update_dttm.'</td>
                                     <td '.$td_bg.'>
+=======
+			$QuotationNo='-';
+			$InvoiceNo='-';
+			
+			
+			$csr_list.='<tr>
+                                    <td>'.$id.'</td>
+                                    <td>'.$customer_name.'</td>
+                                    <td>'.$LotNo.'</td>
+									<td>'.$QuotationNo.'</td>
+									<td>'.$InvoiceNo.'</td>
+                                    <td>'.number_format($num_item).'</td>
+									 <td>'.$code_sale.'</td>
+                                    <td>'.$update_dttm.'</td>
+                                    <td>
+>>>>>>> origin/master
                                         <div class="dropdown">
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <i class="fa fa-cog"> จัดการ</i>
@@ -74,8 +110,12 @@ if ($Num>0) {
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                 <!--   <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
                                                 <li><a class="fancybox" href="paper_calibration_service_request.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
+<<<<<<< HEAD
                                                 <li><a href="calibrate-service-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>   
 												<li><a href="#" onclick="cancel_item(\''.$id.'\',\''.htmlspecialchars("$csr_code").'\');return false;"><i class="fa fa-times" style="color: red;"> ยกเลิก</i></a></li>                                          
+=======
+                                                <li><a href="calibrate-service-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>                                             
+>>>>>>> origin/master
 												<li><a href="#" onclick="delete_item(\''.$id.'\',\''.htmlspecialchars("$csr_code").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
                                             </ul>
                                         </div>
@@ -89,7 +129,11 @@ if ($Num>0) {
 function count_item($csr_id) {
 	global $conn;
 
+<<<<<<< HEAD
 	$re=mysql_query("SELECT COUNT(id) AS NumItem FROM "._TB_ITEM." WHERE csr_id='$csr_id' ");
+=======
+	$re=mysql_query("SELECT COUNT(csr_id) AS NumItem FROM "._TB_CSR_ITEM." WHERE csr_id='$csr_id' ");
+>>>>>>> origin/master
 	$num_item=mysql_result($re,0);
 	return $num_item;
 
@@ -162,13 +206,20 @@ include_once("footer.php");
     } );
 	
 	function delete_item(id, title) {
+<<<<<<< HEAD
 		var chk=confirm("คำเตือน!!\nCSR จะถูกลบถาวร และ CSR No. นี้จะถูกแทนที่เมื่อมีการเพิ่ม CSR ใหม่\n\nโปรดยืนยันการลบ CSR No. ["+title+"] !!\n\n");
 		if (chk) {
 			$.post("calibrate-service-script.php",{'act':'delete-csr','id':id},function(data) {
+=======
+		var chk=confirm("โปรดยืนยันการลบข้อมูล No."+title+" !!");
+		if (chk) {
+			$.post("calibarte-service-script.php",{'act':'delete','id':id},function(data) {
+>>>>>>> origin/master
 				window.location.href="calibarte-service-list.php";
 			});
 		} else { return false; }
 	}
+<<<<<<< HEAD
 	
 	function cancel_item(id, title) {
 		var chk=confirm("โปรดยืนยันการยกเลิก CSR No.  ["+title+"] !!\n\n");
@@ -178,4 +229,6 @@ include_once("footer.php");
 			});
 		} else { return false; }
 	}
+=======
+>>>>>>> origin/master
 </script>

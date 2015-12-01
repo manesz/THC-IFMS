@@ -22,13 +22,21 @@ if (isset($_GET['id']) && $id!="") {
 		
 		if (mysql_num_rows($re)>0) {
 					$rs=mysql_fetch_array($re);
+<<<<<<< HEAD
 						
+=======
+					
+>>>>>>> origin/master
 						$code_year=$rs['code_year'];
 						$code_no=$rs['code_no'];
 						
 						$code_sale=$rs['code_sale'];
 						
+<<<<<<< HEAD
 						$quotation_no=$rs['quotation_no'];
+=======
+						$quotation_id=$rs['quotation_id'];
+>>>>>>> origin/master
 						$contact_name=stripslashes($rs['contact_name']);
 						$cert_for=stripslashes($rs['cert_for']);
 						
@@ -43,9 +51,12 @@ if (isset($_GET['id']) && $id!="") {
 						
 						$CSR_NO=$db->csr_no_format($code_no,$code_year);
 						
+<<<<<<< HEAD
 						$is_status=$rs['status'];
 						$Status=($is_status=='i' ? ' In-Lab ' : 'On-Site');
 						
+=======
+>>>>>>> origin/master
 							//Get company information -----------------
 
 							$sql1="SELECT company_name, company_address, phone_no, fax_no, email FROM "._TB_CUSTOMER." WHERE id='$customer_id' LIMIT 1; ";
@@ -62,6 +73,7 @@ if (isset($_GET['id']) && $id!="") {
 			
 						
 						//Get All Item ---------------------------
+<<<<<<< HEAD
 						$sql2="	SELECT * 	FROM "._TB_ITEM." 
 									WHERE csr_id='".$id."'
 										AND publish='1' 
@@ -70,6 +82,18 @@ if (isset($_GET['id']) && $id!="") {
 								 ";
 									
    			
+=======
+						$sql2="	SELECT A.*, 
+										B.item_code_prefix, B.item_code_day, B.item_code_month, B.item_code, B.item_code_year,
+										B.equipment_name, B.model, B.resolution, B.serial_no, B.id_no , B.manufacturer, B.calibrate_result, B.iso017025
+									FROM "._TB_CSR_ITEM." AS A, "._TB_ITEM." AS B 
+									WHERE A.item_id=B.id 
+										AND A.publish='1' 
+										AND A.csr_id='$id' 
+										ORDER BY A.item_id 
+										
+									";
+>>>>>>> origin/master
 									
 						$re2=mysql_query($sql2);
 						$num_items=mysql_num_rows($re2);
@@ -80,9 +104,16 @@ if (isset($_GET['id']) && $id!="") {
 								
 								while ($rs2=mysql_fetch_array($re2)) {
 									
+<<<<<<< HEAD
 										$item_id=$rs2['id'];
 										$quotation_no=$rs2['quotation_no'];										
 									
+=======
+										$item_id=$rs2['item_id'];
+										$quotation_id=$rs2['quotation_id'];										
+										$quantity=$rs2['quantity'];
+										$is_status=$rs2['is_status'];
+>>>>>>> origin/master
 										
 										$create_dttm=$rs2['create_dttm'];
 										$update_dttm=$rs2['update_dttm'];
@@ -113,9 +144,15 @@ if (isset($_GET['id']) && $id!="") {
 										if ($calibrate_result=='R') { $Calibrate="Repairing"; }
 										if ($calibrate_result=='B') { $Calibrate="Broken"; }
 										
+<<<<<<< HEAD
 										
 										
 										//$quotation_no=$db->quotation_format_from_id($quotation_no);
+=======
+										$Status=($is_status=='i' ? ' InLab ' : 'Onsite');
+										
+										$quotation_no=$db->quotation_format_from_id($quotation_id);
+>>>>>>> origin/master
 										$item_no=$db->item_no_format($item_code_prefix,$item_code_day,$item_code_month,$item_code,$item_code_year);
 									
 										$item_in_list.='   
@@ -205,7 +242,11 @@ exit;
                         </td>
                     </tr>
                     <tr>
+<<<<<<< HEAD
                         <td class="text-center" style="width: 90px; padding: 5px;"><?php echo $Status; ?></td>
+=======
+                        <td class="text-center" style="width: 90px; padding: 5px;">In-Lab<br/>On-Site</td>
+>>>>>>> origin/master
                         <td class="text-center" style="width: 100px; padding: 5px;">
                             <span style="border-bottom: none; float: left;">Lab : </span>
                             <span class="seperator" style="width: 50px; float: left; text-align: center;">THE-00</span>
@@ -242,7 +283,11 @@ exit;
                 <tr>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">ชื่อผู้ติดต่อ : </span>
+<<<<<<< HEAD
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($contact_name !="" ? $contact_name : '&nbsp;');  ?></span>
+=======
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $contact_name; ?></span>
+>>>>>>> origin/master
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">วันที่ : </span>
@@ -256,37 +301,65 @@ exit;
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">Cert สำหรับ : </span>
+<<<<<<< HEAD
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($cert_for !="" ? $cert_for : '&nbsp;');  ?></span>
+=======
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $cert_for; ?></span>
+>>>>>>> origin/master
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">ที่อยู่ : </span>
+<<<<<<< HEAD
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($company_address !="" ? $company_address : '&nbsp;');  ?></span>
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">ที่อยู่ : </span>
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($address !="" ? $address : '&nbsp;');  ?></span>
+=======
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $company_address;  ?></span>
+                    </td>
+                    <td>
+                        <span style="width: 100px; border-bottom: none; float: left;">ที่อยู่ : </span>
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $address;  ?></span>
+>>>>>>> origin/master
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">โทรศัพท์ : </span>
+<<<<<<< HEAD
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($phone_no !="" ? $phone_no : '&nbsp;');  ?></span>
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">โทรศัพท์ : </span>
                         <span class="seperator" style="width: 500px; float: left; text-align: left;">&nbsp;</span>
+=======
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $phone_no;  ?></span>
+                    </td>
+                    <td>
+                        <span style="width: 100px; border-bottom: none; float: left;">โทรศัพท์ : </span>
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $telephone;  ?></span>
+>>>>>>> origin/master
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">โทรสาร : </span>
+<<<<<<< HEAD
                         <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo ($fax_no !="" ? $fax_no : '&nbsp;');  ?></span>
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">โทรสาร : </span>
                         <span class="seperator" style="width: 500px; float: left; text-align: left;">&nbsp;</span>
+=======
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $fax_no;  ?></span>
+                    </td>
+                    <td>
+                        <span style="width: 100px; border-bottom: none; float: left;">โทรสาร : </span>
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $fax;  ?></span>
+>>>>>>> origin/master
                     </td>
                 </tr>
             </table><!-- END : customer content -->
@@ -327,7 +400,11 @@ exit;
                         </p>
                         <p style="clear: both; margin-top: 30px;">
                             <span style="border-bottom: none; float: left; width: 50px;">วันที่</span>
+<<<<<<< HEAD
                             <span class="seperator" style="width: 200px; float: left; text-align: center; font-size: 12px;">&nbsp;</span>
+=======
+                            <span class="seperator" style="width: 200px; float: left; text-align: center; font-size: 12px;"><?php echo date("d-m-Y")?></span>
+>>>>>>> origin/master
                         </p>
                     </td>
                 </tr>
@@ -422,7 +499,11 @@ $(function() {
 	if (n_item>0) {
 		for (n=1;n<n_item;n++) {
 			var item_no=$("#item_no_"+n).html();
+<<<<<<< HEAD
 			$("#barcode_"+n).barcode(item_no, "code128",{barWidth:1, barHeight:25, fontSize:12,});     
+=======
+			$("#barcode_"+n).barcode(item_no, "code128",{barWidth:1, barHeight:20, fontSize:10,});     
+>>>>>>> origin/master
 		}
 	
 	}

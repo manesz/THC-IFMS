@@ -80,6 +80,7 @@ if ($action=='get_customer_info') {
 		echo $content;
 }
 
+<<<<<<< HEAD
 function DuplicateMySQLRecord ($table, $id_field, $id) {
   // load the original record into an array
   $result = mysql_query("SELECT * FROM {$table} WHERE {$id_field}={$id}");
@@ -113,6 +114,21 @@ if ($action=='clone-item') {
 	$id_field='id';
 	$id=$clone_item_id;
 	
+=======
+
+if ($action=='add') {
+	
+	
+	$department_id=addslashes($_POST['department_id']);
+	
+	$prefix=$db->create_item_code_prefix($department_id);	
+	$day=date("d");
+	$month=date("m");
+	$year=date("y");
+	
+	$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
+	$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+>>>>>>> origin/master
 	
 	for ($n=1;$n<=$clone_qty;$n++) {
 			$newid=DuplicateMySQLRecord ($table, $id_field, $id); //Clone	
@@ -157,7 +173,16 @@ if ($action=='clone-item') {
 
 if ($action=='add') {
 	
+<<<<<<< HEAD
 	$qty=addslashes($_POST['qty']);	
+=======
+	$equipment_name=addslashes($_POST['equipment_name']);	
+	$description=addslashes($_POST['description']);	
+	
+	$qty=addslashes($_POST['qty']);	
+	
+	$customer_id=addslashes($_POST['customer_id']);
+>>>>>>> origin/master
 	
 	if ($qty>0) {
 		for ($n=1;$n<=$qty;$n++) {	
@@ -246,7 +271,59 @@ if ($action=='add') {
 		} //end for
 	} //end if qty > 0
 	
+<<<<<<< HEAD
 	$error="returnid:xxx"; 
+=======
+	
+	$publish='1';	
+	$create_person=$_SESSION['ss_member_id'];
+	
+	//----ITEM Accessory 
+	$acc_chk=$_POST['acc_chk'];  
+	$acc_id=$_POST['acc_id'];
+	 $item_accessories='';
+	if(count($acc_chk)>0){  // ตรวจสอบ checkbox ว่ามีการเลือกมาอย่างน้อย 1 รายการหรือไม่  
+		foreach($acc_chk as $key=>$value){  
+			$item_accessories.=$value;
+			
+			$acc_more=$_POST["acc_more$value"];
+			if ($acc_more!="") {
+				$item_accessories.=":$acc_more";
+			}			
+			$item_accessories.="|";
+		}     
+	}  	
+	
+
+	$sql="	INSERT INTO "._TB_ITEM." 
+				(
+						id, item_code_prefix, item_code_day, item_code_month, item_code, item_code_year,						
+						equipment_name, description, qty, department_id, customer_id, 
+						manufacturer, model, resolution, calibration_range, serial_no, id_no, 
+						item_accessories,
+						iso017025,
+						create_dttm, receive_dttm, update_dttm, 
+						publish,
+						create_person
+				) 
+				VALUES (
+					NULL, '$prefix', '$day', '$month', '$item_code', '$year',		
+					'$equipment_name', '$description', '$qty', '$department_id', '$customer_id', 
+					'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
+					'$item_accessories',
+					'$iso017025', 
+					'$create_dttm', '$receive_dttm', '$update_dttm', 
+					'$publish', 
+					'$create_person'
+				) ";
+	if (!$db->query($sql) ) {
+		$error="102";
+	} else {
+		$newID=$db->getinsertID();
+		$error="returnid:$newID";
+	}
+	
+>>>>>>> origin/master
 	echo $error;
 }
 

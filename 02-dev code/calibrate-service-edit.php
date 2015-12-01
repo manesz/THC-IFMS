@@ -9,22 +9,37 @@ include("check-permission.php");
 
 
 $id=$_GET['id'];
+<<<<<<< HEAD
+=======
+unset($_SESSION['ss_select_item_id']);
+>>>>>>> origin/master
 
 
 if (isset($_GET['id']) && $id!="") {
 	
+<<<<<<< HEAD
 		$sql="SELECT * FROM "._TB_CSR." WHERE id='$id' AND publish<>'0' LIMIT 1; ";
 		$re=mysql_query($sql);
 		
 		if (mysql_num_rows($re)>0) {
 			
+=======
+		$sql="SELECT * FROM "._TB_CSR." WHERE id='$id' AND publish='1' LIMIT 1; ";
+		$re=mysql_query($sql);
+		
+		if (mysql_num_rows($re)>0) {
+>>>>>>> origin/master
 					$rs=mysql_fetch_array($re);
 					
 						$code_year=$rs['code_year'];
 						$code_no=$rs['code_no'];
 						$code_sale=$rs['code_sale'];
 						
+<<<<<<< HEAD
 						$quotation_no=$rs['quotation_no'];
+=======
+						$quotation_id=$rs['quotation_id'];
+>>>>>>> origin/master
 						$contact_name=stripslashes($rs['contact_name']);
 						$cert_for=stripslashes($rs['cert_for']);
 						
@@ -33,14 +48,18 @@ if (isset($_GET['id']) && $id!="") {
 						$telephone=stripslashes($rs['telephone']);			
 						
 						$customer_id=$rs['customer_id'];
+<<<<<<< HEAD
 						$department_id=$rs['department_id'];
 						$on_status=$rs['status'];
 						
 						$create_dttm=$rs['create_dttm'];
+=======
+>>>>>>> origin/master
 						
 						$csr_code="$code_no/$code_year";			
 
 						$customer_listbox=$db->customer_listbox($customer_id);
+<<<<<<< HEAD
 						
 						
 						$member_listbox=$db->member_listbox($code_sale,$db->department_id_from_code('MKT'));
@@ -125,6 +144,15 @@ if (isset($_GET['id']) && $id!="") {
 					} //end whiel				
 				}//end if
 		} //end if csr 
+=======
+						$quotation_listbox=$db->quotation_listbox($quotation_id);
+						
+						$department_id=$db->department_id_from_code('MKT');
+						$member_listbox=$db->member_listbox($code_sale,$department_id);
+						
+					
+		}
+>>>>>>> origin/master
 
 } else {
 $db->close();
@@ -132,6 +160,14 @@ exit;
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> origin/master
 include_once("header.php");
 ?>
 <section id="container" >
@@ -157,6 +193,7 @@ include_once("header.php");
                 <div class="row" style="">
                     <div class="col-lg-12">
                         <div class="content-panel col-lg-12">
+<<<<<<< HEAD
                         
                         	  <div class="row">
                                 <label class="col-sm-12 col-md-4 control-label">ชื่อพนักงานขาย</label>
@@ -213,6 +250,50 @@ include_once("header.php");
                             </div>
                             
                               <div class="row">
+=======
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">Quotation No.</label>
+                                <div class="col-lg-8">
+                                    <select class="selectBox js-states form-control" id="quotation_id" name="quotation_id">
+                                        <!-- option value="">-- โปรดเลือก --</option -->
+                                        <?php echo $quotation_listbox; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
+                                <div class="col-lg-8">
+                                   <input type="text" name="contact_name" id="contact_name" class="form-control" value="<?php echo $contact_name; ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อพนักงานขาย</label>
+                                <div class="col-lg-8">
+                                   <select name="sale_code" id="sale_code" class="form-control">
+											<?php echo $member_listbox; ?>
+                                   </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">Cert สำหรับ </label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="cert_for" id="cert_for" class="form-control" value="<?php echo $cert_for; ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ที่อยู่</label>
+                                <div class="col-lg-8"><input type="text" name="address" id="address" class="form-control" value="<?php echo $address; ?>"></div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">โทรสาร</label>
+                                <div class="col-lg-8"><input type="text" name="fax" id="fax" class="form-control" value="<?php echo $fax; ?>"></div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">โทรศัพท์</label>
+                                <div class="col-lg-8"><input type="text" name="telephone" id="telephone" class="form-control" value="<?php echo $telephone; ?>"></div>
+                            </div>
+                            <div class="row">
+>>>>>>> origin/master
                                 <label class="col-sm-12 col-md-4 control-label">ชื่อบริษัท</label>
                                 <div class="col-lg-8">
                                        <select class="selectBox js-states form-control" id="customer_id" name="customer_id">
@@ -228,6 +309,7 @@ include_once("header.php");
                                     <div class="col-md-12" id="box_comapny_info"></div>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             <div class="clearfix"></div>
                             <hr />
                           
@@ -274,6 +356,33 @@ include_once("header.php");
 										</tbody>
 									</table>
 
+=======
+                            
+                             <div class="clearfix"></div>
+                            <div class="col-lg-6" style="">
+                               	<button class="btn btn-danger" type="submit" id="btn_delete_item" name="btn_delete_item">ลบอุปกรณ์</button>
+                            </div>
+                            
+                            <div class="col-lg-12" style="">
+                              	 <div id="box_select_item_list"></div>
+                            </div>
+
+                            <div class="clearfix form-group col-sm-12 col-md-12" style="float: right; text-align: right;">
+                                  <button class="btn btn-primary col-lg-4" role="button" data-toggle="collapse" href="#itemDescription" aria-expanded="false" aria-controls="itemDescription" style="float: right; text-align: center;">
+                    เพิ่มอุปกรณ์
+                </button>
+                            </div><!-- /hidden button -->
+                            <div class="collapse" id="itemDescription" style="margin-top: 20px;"><!-- itemDescription tab -->
+
+                                <h4>รายการอุปกรณ์ทั้งหมด</h4>
+                                
+    
+                                
+                                <button type="submit" id="btn_add_item1"  class="btn btn-success col-lg-12" style="margin: 0 0 20px 0;">บันทึกข้อมูลจำนวนอุปกรณ์</button>                                
+                             	 <div id="box_all_item_list"></div>
+                                 
+                                <button type="submit" id="btn_add_item2"  class="btn btn-success col-lg-12" style="margin: 0 0 20px 0;">บันทึกข้อมูลจำนวนอุปกรณ์</button>
+>>>>>>> origin/master
 
                             </div>
 
@@ -310,14 +419,26 @@ include_once("header.php");
 
 <script>
 $(document).ready(function() {
+<<<<<<< HEAD
 	
 		$(".alert").hide();	
 		select_all();
+=======
+	$('#requestList').DataTable();
+	$('#itemList').DataTable();
+//        $("#departmentList_filter").add
+
+		$(".alert").hide();	
+		$("#btn_delete_item").hide();
+		
+		
+>>>>>>> origin/master
 		
 		$("#customer_id").change(function() {
 				var id=$(this).val();
 				get_customer_info(id);
 		});
+<<<<<<< HEAD
 			
 		get_customer_info("<?php echo $customer_id; ?>");
 		
@@ -334,11 +455,50 @@ $(document).ready(function() {
 			
 			if (chk) {
 					$("#act").val("delete_item_list");					
+=======
+		
+		//load default item
+		load_edit_csr_item();
+		load_selected_item();
+		load_all_item_list();			
+		get_customer_info("<?php echo $customer_id; ?>");
+		
+		
+		//add item 
+		$("#btn_add_item1,#btn_add_item2").click(function() {
+			if ($("#quotation_id").val()=="") {
+				alert("กรุณาระบุ Quotation No.");
+				return false;
+			} else {			
+					$("#act").val("add_item");
 					$('#frm').ajaxForm( 
 					{ 
 							beforeSubmit: validate,
 							complete: function(xhr) {
 									var result=xhr.responseText;
+									
+										if (result=='') {							
+												load_selected_item();		
+												load_all_item_list();	
+															
+										}					
+							}
+					}); 
+			}
+				
+		});
+		
+		//Remove item
+		$("#btn_delete_item").click(function() {
+					$("#act").val("delete_item_list");
+					
+>>>>>>> origin/master
+					$('#frm').ajaxForm( 
+					{ 
+							beforeSubmit: validate,
+							complete: function(xhr) {
+									var result=xhr.responseText;
+<<<<<<< HEAD
 									window.location.href=window.location.href;
 							}
 					}); 
@@ -347,6 +507,14 @@ $(document).ready(function() {
 			}
 				//	return false;
 		});		
+=======
+									load_selected_item();		
+									load_all_item_list();	
+							}
+					}); 
+				//	return false;
+		});
+>>>>>>> origin/master
 		
 		
 		//Edit CSR
@@ -373,6 +541,7 @@ $(document).ready(function() {
 		});
 });
 	
+<<<<<<< HEAD
 
 
 
@@ -395,6 +564,8 @@ function clone_item(id,item_name) {
 		
 	}
 }
+=======
+>>>>>>> origin/master
 	
 function validate(formData, jqForm, options) {		
 	  if ($('input[name^=item_chk]:checked').length <= 0) {
@@ -404,9 +575,15 @@ function validate(formData, jqForm, options) {
 };
 
 function validate_edit_csr(formData, jqForm, options) {		
+<<<<<<< HEAD
 	  if ($('#quotation_no').val() == "") {
 		alert("กรุณาเลือก Quotation No.");
 		$("#quotation_no").focus();
+=======
+	  if ($('#quotation_id').val() == "") {
+		alert("กรุณาเลือก Quotation No.");
+		$("#quotation_id").focus();
+>>>>>>> origin/master
 		return false;	
 	  } else if ($('#contact_name').val() == "") {
 		alert("กรุณาใส่ชื่อผู้ติดต่อ");
@@ -420,6 +597,7 @@ function validate_edit_csr(formData, jqForm, options) {
 			alert("กรุณาเลือกบริษัท");
 			$("#customer_id").focus();
 			return false;		
+<<<<<<< HEAD
 	} else {
 		
 		var flag_serial=true;
@@ -448,11 +626,40 @@ function validate_edit_csr(formData, jqForm, options) {
 				return false;	
 			}
 			
+=======
+	} else if ($("#box_select_item_list").html()=="") {
+			alert("กรุณาเลือกอุปกรณ์ที่ต้องการอย่างน้อย 1 รายการ");	
+			return false;		
+>>>>>>> origin/master
 	}
 	 
 	 
 };
 
+<<<<<<< HEAD
+=======
+function load_all_item_list() { //item ทั้งหมด ยกเว้นที่เลือก
+	$.post("calibrate-service-script.php",{'act':'load_all_item_list'},function(data) {
+			$("#box_all_item_list").html(data);
+			select_all();
+	});
+}
+
+function load_selected_item() { //item ที่เลือก
+	var quotation_code=$("#quotation_id").find('option:selected').text();
+	
+	$.post("calibrate-service-script.php",{'act':'display_select_item','quotation_code':quotation_code,'csr_id':'<?php echo $id; ?>'},function(data) {
+			$("#box_select_item_list").html(data);	
+			
+			if (data!="") { 
+				$("#btn_delete_item").show();	 //show delete button
+				select_all();
+			} else {
+				$("#btn_delete_item").hide();	 //hide delete button
+			}
+	});
+}
+>>>>>>> origin/master
 function select_all() {
 		$('#select_all_1,#select_all_2').change(function() {
 			var checkboxes = $(this).closest('form').find(':checkbox');
@@ -475,6 +682,7 @@ function get_customer_info(id) {
 		}
 }
 
+<<<<<<< HEAD
 
 /*
 function delete_item(id,txt) {
@@ -506,5 +714,11 @@ var chk=confirm("โปรดยืนยันการยกเลิกอุ
 		});
 	} else { return false; }
 }
+=======
+function load_edit_csr_item() { //item ที่เลือก
+	$.post("calibrate-service-script.php",{'act':'load_edit_csr_item','id':'<?php echo $id; ?>'});
+}
+
+>>>>>>> origin/master
 
 </script>
