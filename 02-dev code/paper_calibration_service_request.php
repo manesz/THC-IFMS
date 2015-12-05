@@ -17,7 +17,7 @@
 
 if (isset($_GET['id']) && $id!="") {
 	
-		$sql="SELECT * FROM "._TB_CSR." WHERE id='$id' AND publish='1' LIMIT 1; ";
+		$sql="SELECT * FROM "._TB_CSR." WHERE id='$id' AND publish<>'0' LIMIT 1; ";
 		$re=mysql_query($sql);
 		
 		if (mysql_num_rows($re)>0) {
@@ -37,6 +37,7 @@ if (isset($_GET['id']) && $id!="") {
 						$telephone=stripslashes($rs['telephone']);			
 						
 						$customer_id=$rs['customer_id'];
+						$department_id=$rs['department_id'];
 						
 						$csr_code="$code_no/$code_year";									
 						$sale_name=$db->member_name($code_sale);
@@ -44,7 +45,16 @@ if (isset($_GET['id']) && $id!="") {
 						$CSR_NO=$db->csr_no_format($code_no,$code_year);
 						
 						$is_status=$rs['status'];
-						$Status=($is_status=='i' ? ' In-Lab ' : 'On-Site');
+
+						if ($is_status=='1') {
+							$Status='In-Lab';	
+							$LabCode='00';
+						} else {
+							$Status='On-Site';
+							$LabCode='01';
+						}
+						
+						$LAB=$db->department_code($department_id)."-".$LabCode;
 						
 							//Get company information -----------------
 
@@ -208,7 +218,7 @@ exit;
                         <td class="text-center" style="width: 90px; padding: 5px;"><?php echo $Status; ?></td>
                         <td class="text-center" style="width: 100px; padding: 5px;">
                             <span style="border-bottom: none; float: left;">Lab : </span>
-                            <span class="seperator" style="width: 50px; float: left; text-align: center;">THE-00</span>
+                            <span class="seperator" style="width: 50px; float: left; text-align: center;"><?php echo $LAB; ?></span>
                         </td>
                         <td class="text-center" style="width: 110px; padding: 5px;">
                             <span style="width: 40px; border-bottom: none; float: left;">จำนวน : </span>

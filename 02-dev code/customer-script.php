@@ -8,7 +8,7 @@ $error=""; //no-error
 if ($action=='get_contact_name') {
 	$id=$_POST['id'];
 	$contact_name='';
-	$re=mysql_query("SELECT contact_name FROM "._TB_CUSTOMER." WHERE id='$id' LIMIT 1; ");	
+	$re=mysql_query("SELECT contact_name FROM "._TB_CUSTOMER." WHERE id='$id' LIMIT 1; ");	 
 	if (mysql_num_rows($re)>0) {
 		$rs=mysql_fetch_array($re);
 		$contact_name=stripslashes($rs['contact_name']);

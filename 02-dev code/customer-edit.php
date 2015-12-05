@@ -114,7 +114,7 @@ include_once("header.php");
                             </div>
                             
                         </div><!-- /content-panel col-lg-12 -->
-                    </div><!-- /col-lg-12 -->
+                    </div><!-- /col-lg-12 --> 
                 </div><!-- /.row -->
 
                 <div class="row" style="">
