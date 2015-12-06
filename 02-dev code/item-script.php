@@ -109,24 +109,97 @@ if ($action=='clone-item') {
 	$clone_item_id=$_POST['id'];	
 	$clone_qty=$_POST['clone_qty'];
 	
+		
 	$table=_TB_ITEM;
 	$id_field='id';
 	$id=$clone_item_id;
 	
+	//เอา department_id ของเดิมมาก่อน
+	$department_id='';
+	$re_dpt=mysql_query("SELECT department_id FROM $table WHERE id='$clone_item_id' LIMIT 1; ");
+	if (mysql_num_rows($re_dpt)>0) {
+		$rs_dpt=mysql_fetch_array($re_dpt);
+		$department_id=$rs_dpt['department_id'];	
+	}
+	mysql_free_result($re_dpt);
+	
 	
 	for ($n=1;$n<=$clone_qty;$n++) {
 			$newid=DuplicateMySQLRecord ($table, $id_field, $id); //Clone	
+			
 			//crea new code id	
 			$day=date("d");
 			$month=date("m");
 			$year=date("y");
 			
-			$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
-			$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+			//สร้าง item code ใหม่ หรือ reuse -----------------------------------------------------
+			$flag_reuse=false;
+			
+			//ตรวจสอบสถานะนี้เป็น 0 หรือไม่ ถ้าเป็น 0 แสดงว่าถูกลบไปแล้ว 	
+			//`item_code_prefix`, `item_code_day`, `item_code_month`, `item_code`, `item_code_year`
+			$sql_publish="	SELECT item_code_prefix, item_code_day, item_code_month, item_code, item_code_year
+									FROM "._TB_ITEM." 
+									WHERE publish='0' 
+									ORDER BY item_code_year, item_code_month, item_code_day, CONVERT(item_code,UNSIGNED INTEGER) ";
+									
+			$re_publish=mysql_query($sql_publish);
+			if (mysql_num_rows($re_publish)>0) { //ถ้ามี record ที่ถูกลบ
+			
+					while ($rs_publis=mysql_fetch_array($re_publish)) {
+						
+							$old_item_code_prefix=$rs_publis['item_code_prefix'];
+							$old_item_code_day=$rs_publis['item_code_day'];						
+							$old_item_code_month=$rs_publis['item_code_month'];
+							$old_item_code=$rs_publis['item_code'];
+							$old_item_code_year=$rs_publis['item_code_year'];		
+							
+							
+							//เอา code ที่ถูกลบ มาตรวจสอบว่ามีหรือยังโดยที่ publish ต้องไม่เป็น 0
+							$re_exist=mysql_query("SELECT id FROM "._TB_ITEM." 
+																WHERE item_code_prefix='$old_item_code_prefix' 
+																	AND item_code_day='$old_item_code_day' 
+																	AND item_code_month='$old_item_code_month' 
+																	AND item_code='$old_item_code' 
+																	AND item_code_year='$old_item_code_year' 
+																	AND publish<>'0' 
+																ORDER BY item_code_year, item_code_month, item_code_day, CONVERT(item_code,UNSIGNED INTEGER) 
+																LIMIT 1; "); 
+							
+							if (mysql_num_rows($re_exist)<=0) { //ถ้าไม่พบ แสดงว่ายังไม่มีการ reuse ก็ให้ใช้ รหัสเดิมมา reuse ใหม่
+								$flag_reuse=true;
+								
+								$new_item_code_prefix=$old_item_code_prefix;
+								$new_item_code_day=$old_item_code_day;
+								$new_item_code_month=$old_item_code_month;
+								$new_item_code=	$old_item_code;
+								$new_item_code_year=	$old_item_code_year;
+																		
+								break;
+							}
+							 //ถ้ามีแสดงว่ามี item ที่ถูกลบ และมีการ Reuse ใหม่แล้ว
+							 
+					}//end while
+			}
+			
+			if ($flag_reuse) { //reuse
+				
+					$prefix=$new_item_code_prefix;
+					$day=$new_item_code_day;
+					$month=$new_item_code_month;
+					$item_code=$new_item_code;
+					$year=$new_item_code_year;	
+																	
+			} else {
+					$code = $db->auto_new_item_code($prefix,$year,$month,$day, $department_id);	
+					$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+			}
+			
+			//จบสวนสร้าง item code หรือ reuse --------------------
+	
+			
 			
 			//update
-			$result=mysql_query("UPDATE $table SET item_code_day='$day', item_code_month='$month', item_code='$item_code', item_code_year='$year' 
-											WHERE id='$newid' LIMIT 1; ");
+			$result=mysql_query("UPDATE $table SET item_code_day='$day', item_code_month='$month', item_code='$item_code', item_code_year='$year' WHERE id='$newid' LIMIT 1; ");
 			
 			if ($result) {
 				//clone image
@@ -159,24 +232,31 @@ if ($action=='add') {
 	
 	$qty=addslashes($_POST['qty']);	
 	
-	if ($qty>0) {
-		for ($n=1;$n<=$qty;$n++) {	
+	if ($_POST['edit_session_csr'] && $_POST['edit_session_csr']!="") {
+		$session_csr=$_POST['edit_session_csr'];
+	} else {
+		$session_csr=$_SESSION['session_CSR'];	
+	}
 	
-					$session_csr=$_SESSION['session_CSR'];	
+	if ($_POST['eidt_csr_id'] && $_POST['eidt_csr_id']!="") {
+		$csr_id=$_POST['eidt_csr_id'];
+	} else {
+		$csr_id='';	
+	}
+	
+	
+	if ($qty>0) {
+		
+		for ($n=1;$n<=$qty;$n++) {	
+					
 					$department_id=addslashes($_POST['department_id']);	
 					$prefix=$db->create_item_code_prefix($department_id);	
 					$day=date("d");
 					$month=date("m");
 					$year=date("y");
-					
-					$code = $db->auto_new_item_code($prefix,$year,$month,$day);	
-					$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
-					
-					
+										
 					$equipment_name=addslashes($_POST['equipment_name']);	
-					$description=addslashes($_POST['description']);	
-					
-					
+					$description=addslashes($_POST['description']);								
 					
 					$customer_id=addslashes($_POST['customer_id']);
 					
@@ -195,10 +275,78 @@ if ($action=='add') {
 					$receive_dttm=$create_dttm;
 					$update_dttm=$create_dttm;
 					
-					
-					
 					$publish='1';	
 					$create_person=$_SESSION['ss_member_id'];
+					
+					
+					//สร้าง item code ใหม่ หรือ reuse -----------------------------------------------------
+					
+					$flag_reuse=false;
+					
+					//ตรวจสอบสถานะนี้เป็น 0 หรือไม่ ถ้าเป็น 0 แสดงว่าถูกลบไปแล้ว 	
+					//`item_code_prefix`, `item_code_day`, `item_code_month`, `item_code`, `item_code_year`
+					$sql_publish="	SELECT item_code_prefix, item_code_day, item_code_month, item_code, item_code_year 
+											FROM "._TB_ITEM." 
+											WHERE publish='0' 
+											ORDER BY item_code_year, item_code_month, item_code_day, CONVERT(item_code,UNSIGNED INTEGER) ";
+											
+					$re_publish=mysql_query($sql_publish);
+					if (mysql_num_rows($re_publish)>0) { //ถ้ามี record ที่ถูกลบ
+							
+							while ($rs_publis=mysql_fetch_array($re_publish)) {
+								
+									$old_item_code_prefix=$rs_publis['item_code_prefix'];
+									$old_item_code_day=$rs_publis['item_code_day'];						
+									$old_item_code_month=$rs_publis['item_code_month'];
+									$old_item_code=$rs_publis['item_code'];
+									$old_item_code_year=$rs_publis['item_code_year'];
+									
+									
+									//เอา code ที่ถูกลบ มาตรวจสอบว่ามีหรือยังโดยที่ publish ต้องไม่เป็น 0
+									$re_exist=mysql_query("SELECT id FROM "._TB_ITEM." 
+																		WHERE item_code_prefix='$old_item_code_prefix' 
+																			AND item_code_day='$old_item_code_day' 
+																			AND item_code_month='$old_item_code_month' 
+																			AND item_code='$old_item_code' 
+																			AND item_code_year='$old_item_code_year' 
+																			AND publish<>'0' 
+																		ORDER BY item_code_year, item_code_month, item_code_day, CONVERT(item_code,UNSIGNED INTEGER) 
+																		LIMIT 1; "); 
+									
+									
+									
+									
+									if (mysql_num_rows($re_exist)<=0) { //ถ้าไม่พบ แสดงว่ายังไม่มีการ reuse ก็ให้ใช้ รหัสเดิมมา reuse ใหม่
+										$flag_reuse=true;
+										
+										$new_item_code_prefix=$old_item_code_prefix;
+										$new_item_code_day=$old_item_code_day;
+										$new_item_code_month=$old_item_code_month;
+										$new_item_code=	$old_item_code;
+										$new_item_code_year=	$old_item_code_year;
+																				
+										break;
+									}
+									 //ถ้ามีแสดงว่ามี item ที่ถูกลบ และมีการ Reuse ใหม่แล้ว
+									 
+							}//end while
+					}
+					
+					if ($flag_reuse) { //reuse
+						
+							$prefix=$new_item_code_prefix;
+							$day=$new_item_code_day;
+							$month=$new_item_code_month;
+							$item_code=$new_item_code;
+							$year=$new_item_code_year;	
+							
+																			
+					} else {
+							$code = $db->auto_new_item_code($prefix,$year,$month,$day,$department_id);
+							$item_code=str_pad("$code", 4, "0", STR_PAD_LEFT); 
+					}
+					
+					//จบสวนสร้าง item code หรือ reuse --------------------
 					
 					//----ITEM Accessory 
 					$acc_chk=$_POST['acc_chk'];  
@@ -226,6 +374,7 @@ if ($action=='add') {
 										iso017025,
 										create_dttm, receive_dttm, update_dttm, 
 										publish,
+										csr_id,
 										session_csr,
 										create_person
 								) 
@@ -237,10 +386,11 @@ if ($action=='add') {
 									'$iso017025', 
 									'$create_dttm', '$receive_dttm', '$update_dttm', 
 									'$publish', 
+									'$csr_id',
 									'$session_csr',
 									'$create_person'
 								) ";
-					$db->query($sql);			
+					$db->query($sql);	
 					//if (!$db->query($sql) ) {	$error="102";	} else {	$newID=$db->getinsertID(); $error="returnid:$newID";	}
 					
 		} //end for

@@ -7,8 +7,21 @@
  */
  include("check-permission.php");
  
- $department_listbox=$db->department_inout_lab_listbox($_SESSION['ss_department_id']);
- $customer_listbox=$db->customer_listbox($_SESSION['ss_customer_id']);
+ if ($_GET['department_id'] && $_GET['department_id']!="") {
+	$department_id=$_GET['department_id']; 
+ } else {
+	$department_id=$_SESSION['ss_department_id'];	 
+ }
+ 
+ if ($_GET['customer_id'] && $_GET['customer_id']!="") {
+	$customer_id=$_GET['customer_id']; 
+ } else {
+	$customer_id=$_SESSION['ss_customer_id'];	 
+ }
+ 
+ 
+ $department_listbox=$db->department_inout_lab_listbox($department_id);
+ $customer_listbox=$db->customer_listbox($customer_id);
  
  
 //Item accessories
@@ -280,6 +293,14 @@ include_once("header.php");
       
                 <div style="padding: 0; margin: 0; margin-top:30px;">
                                  <input type="hidden" name="act" id="act" value="add" />
+                                 <?php 
+								 if ($_GET['session_csr'] && $_GET['session_csr']!="" && $_GET['return'] == 'edit') {
+		                                 echo '<input type="hidden" name="edit_session_csr" id="edit_session_csr" value="'.$_GET['session_csr'].'" />';
+								 }
+								 if ($_GET['csrid'] && $_GET['csrid']!="" && $_GET['return'] == 'edit') {
+		                                 echo '<input type="hidden" name="eidt_csr_id" id="edit_csr_id" value="'.$_GET['csrid'].'" />';
+								 }
+								 ?>
                                 <button type="submit" id="btn_save" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
                                 <button type="reset" class="btn btn-default btn-lg col-md-3"  style="float: right; margin: 0 5px 0 5px;">เคลียร์ข้อมูล</button>      
                 </div>

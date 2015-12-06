@@ -36,6 +36,8 @@ if (isset($_GET['id']) && $id!="") {
 						$department_id=$rs['department_id'];
 						$on_status=$rs['status'];
 						
+						$session_csr=$rs['session_csr'];
+						
 						$create_dttm=$rs['create_dttm'];
 						
 						$csr_code="$code_no/$code_year";			
@@ -113,7 +115,7 @@ if (isset($_GET['id']) && $id!="") {
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 												<li><a href="#" id="btn_clone" onclick="clone_item(\''.$item_id.'\',\''.htmlspecialchars("$equipment_name").'\'); return false;"><i class="fa fa-eye"> Clone</i></a></li>
 												<li><a href="paper_item_description.php?id='.$item_id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
-												<li><a href="item-edit.php?id='.$item_id.'&return=add"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
+												<li><a href="item-edit.php?id='.$item_id.'&csrid='.$id.'&return=edit"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>
 												<li><a href="#" onclick="cancel_item(\''.$item_id.'\',\''.htmlspecialchars("$equipment_name").'\');return false;"><i class="fa fa-times" style="color: red;"> ยกเลิก</i></a></li>
 												<li><a href="#" onclick="delete_item(\''.$item_id.'\',\''.htmlspecialchars("$equipment_name").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>
 											</ul>
@@ -285,6 +287,7 @@ include_once("header.php");
                     <div class="col-lg-12">
                         <div class="content-panel col-lg-12">
                             <div class="form-group" style="padding: 0; margin: 0;">
+	                            <a name="itemzone"></a>
                              	<input type="hidden" name="act" id="act" value="">
                                 <input type="hidden" name="csr_id" id="csr_id" value="<?php echo $id; ?>" />
                                 <button type="submit" id="btn_save_csr" name="btn_save_csr" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
@@ -323,7 +326,27 @@ $(document).ready(function() {
 		
 		
 		$("#btn_add_item").click(function() {
-			window.location.href="item-add.php?return=edit&csrid=<?php echo $id; ?>";		
+			//window.location.href="item-add.php?return=edit&csrid=<?php echo $id; ?>&session_csr=<?php echo $session_csr; ?>&department_id=<?php echo $department_id; ?>&customer_id=<?php echo $customer_id; ?>";		
+			
+				 if ($('#sale_code').val() == "") {
+						alert("กรุณาระบุชื่อพนักงานขาย");
+						$("#sale_code").focus();
+				} else if ($('#department_id').val() == "") {
+						alert("กรุณาเลือก Lab");
+						$("#department_id").focus();
+				} else if ($('#on_status').val() == "") {
+						alert("กรุณาเลือก Status");
+						$("#on_status").focus();			
+				 } else if ($('#contact_name').val() == "") {
+					alert("กรุณาใส่ชื่อผู้ติดต่อ");
+					$("#contact_name").focus();
+				} else if ($('#customer_id').val() == "") {
+						alert("กรุณาเลือกบริษัท");
+						$("#customer_id").focus();						
+				} else {					
+						//window.location.href="item-add.php?return=edit&csrid=<?php echo $id; ?>&session_csr=<?php echo $session_csr; ?>";								
+						window.location.href="item-add.php?return=edit&csrid=<?php echo $id; ?>&session_csr=<?php echo $session_csr; ?>&department_id=<?php echo $department_id; ?>&customer_id=<?php echo $customer_id; ?>";		
+				}
 		});
 		
 		
@@ -384,7 +407,7 @@ function clone_item(id,item_name) {
 			clone_item(id,item_name);	
 	}  else if (clone_qty>0) {		
 			
-		$.post("item-script.php",{'act':'clone-item','id':id,'clone_qty':clone_qty},function(data) {
+		$.post("item-script.php",{'act':'clone-item','id':id,'clone_qty':clone_qty,'department_id':$("#department_id").val()},function(data) {
 			if (data=="") {
 				//window.location.href = window.location.href;	
 				window.location.href='calibrate-service-edit.php?id=<?php echo $id; ?>';
@@ -404,22 +427,26 @@ function validate(formData, jqForm, options) {
 };
 
 function validate_edit_csr(formData, jqForm, options) {		
-	  if ($('#quotation_no').val() == "") {
-		alert("กรุณาเลือก Quotation No.");
-		$("#quotation_no").focus();
-		return false;	
-	  } else if ($('#contact_name').val() == "") {
-		alert("กรุณาใส่ชื่อผู้ติดต่อ");
-		$("#contact_name").focus();
-		return false;	
-	  } else if ($('#sale_code').val() == "") {
+	  if ($('#sale_code').val() == "") {
 			alert("กรุณาระบุชื่อพนักงานขาย");
 			$("#sale_code").focus();
-			return false;	
+			return false;
+	} else if ($('#department_id').val() == "") {
+			alert("กรุณาเลือก Lab");
+			$("#department_id").focus();
+			return false;
+	} else if ($('#on_status').val() == "") {
+			alert("กรุณาเลือก Status");
+			$("#on_status").focus();			
+			return false;
+	 } else if ($('#contact_name').val() == "") {
+		alert("กรุณาใส่ชื่อผู้ติดต่อ");
+		$("#contact_name").focus();
+		return false;
 	} else if ($('#customer_id').val() == "") {
 			alert("กรุณาเลือกบริษัท");
-			$("#customer_id").focus();
-			return false;		
+			$("#customer_id").focus();				
+			return false;
 	} else {
 		
 		var flag_serial=true;

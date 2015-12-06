@@ -558,7 +558,7 @@ include_once("header.php");
 									if (re=='add') {
 										window.location.href='calibrate-service-add.php';
 									} else { //edit
-										window.location.href='calibrate-service-dit.php?id=<?php echo $_GET['csrid']; ?>';	
+										window.location.href='calibrate-service-edit.php?id=<?php echo $_GET['csrid']; ?>';	
 									}
 									
 							} else if (result=='102') { //save ไม่ได้

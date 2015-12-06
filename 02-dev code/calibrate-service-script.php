@@ -21,10 +21,6 @@ if ($action=='session_keep_data') {
 		$_SESSION['ss_cert_for']=$_POST['cert_for'];
 		$_SESSION['ss_address']=$_POST['address'];
 		
-		
-		
-		
-		
 						
 }
 
@@ -58,17 +54,59 @@ if ($action=="add_new_csr") {
 	//----Genelate CSR No -------
 	
 	$code_year=date("y");
+
+	$flag_reuse=false;
 	
-			//ตรวจสอบค่ามากสุดของ Quotation 
-				$sql="	SELECT MAX(code_no) AS max_code FROM "._TB_CSR." 
-							WHERE code_year='$code_year' 
-						";
-		
-				$re=mysql_query($sql);
-				$max_csr_code =mysql_result($re,0);
-				$new_csr_no=($max_csr_code+1);
+	//ตรวจสอบสถานะนี้เป็น 0 หรือไม่ ถ้าเป็น 0 แสดงว่าถูกลบไปแล้ว 	
+	$sql_publish="SELECT code_no, code_year FROM "._TB_CSR." WHERE publish='0' ORDER BY code_year, CONVERT(code_no,UNSIGNED INTEGER) ";
+	$re_publish=mysql_query($sql_publish);
+	if (mysql_num_rows($re_publish)>0) { //ถ้ามี record ที่ถูกลบ
+	
+			while ($rs_publis=mysql_fetch_array($re_publish)) {
+				
+					$old_code_no=$rs_publis['code_no'];
+					$old_code_year=$rs_publis['code_year'];
+					
+					//เอา csr no มาตรวจสอบว่ามีหรือยังโดยที่ publish ต้องไม่เป็น 0
+					$re_exist=mysql_query("SELECT id FROM "._TB_CSR." 
+														WHERE code_no='$old_code_no' AND code_year='$old_code_year' AND publish<>'0' 
+														ORDER BY code_year, CONVERT(code_no,UNSIGNED INTEGER) LIMIT 1; "); 
+					
+					if (mysql_num_rows($re_exist)<=0) { //แสดงว่าไม่มีการ reuse ก็ให้ใช้ รหัสเดิมมา reuse ใหม่
+						$flag_reuse=true;
+						
+						$new_code_no=	$old_code_no;
+						$new_code_year=	$old_code_year;
+																
+						break;
+					}
+					 //ถ้ามีแสดงว่ามี csr no ที่ถูกลบ และมีการ Reuse ใหม่แล้ว
+					 
+			}//end while
+	}
+	
+	if ($flag_reuse) {
+		$code_no=$new_code_no;
+		$code_year=$new_code_year;
+	} else {
+			   //ตรวจสอบค่ามากสุดของ CSR 
+			   //$sql="	SELECT MAX(code_no) AS max_code FROM "._TB_CSR." WHERE code_year='$code_year' ";
+			   	 $sql="	SELECT MAX(CONVERT(code_no,UNSIGNED INTEGER)) AS max_code FROM "._TB_CSR." WHERE code_year='$code_year' ";
+			
+				$re=mysql_query($sql);		
+				if (mysql_num_rows($re)>0) { //ถ้ามีเลข CSR No นี้แล้ว
+					
+					$max_csr_code =mysql_result($re,0);
+					$new_csr_no=($max_csr_code+1);
+					
+				} else { //ถ้ายังไม่มีเลย
+					$new_csr_no=1;	
+				}
 	
 				$code_no= str_pad($new_csr_no,6,"0",STR_PAD_LEFT);
+	}
+				
+	//----End of Genelate CSR No -------
 	
 	
 	$sql2=" INSERT INTO "._TB_CSR." (id, code_no, code_year, code_sale, quotation_no, contact_name, cert_for, address,  create_dttm, update_dttm, publish, customer_id, department_id, session_csr, status, create_person) 

@@ -76,7 +76,7 @@ if (isset($_GET['id']) && $id!="") {
 									WHERE csr_id='".$id."'
 										AND publish='1' 
 									ORDER BY id 
-										
+									
 								 ";
 									
    			
@@ -87,17 +87,30 @@ if (isset($_GET['id']) && $id!="") {
 						
 						if ($num_items>0) {
 								$n=1;
+								$j=1;
+								
+								$table='<div class="table-item">';
+								$table.='<div class="row">
+												<div class="head">No.</div>
+												<div class="head">Description</div>
+												<div class="head">Manufacturer</div>
+												<div class="head">Model</div>
+												<div class="head">Serial No.</div>
+												<div class="head">ID No.</div>
+												<div class="head">Calibration Point</div>
+												<div class="head">Cert No.</div>
+												<div class="head">Quotation</div>
+												<div class="head" style="width:230px;">Barcode</div>
+											</div>';
 								
 								while ($rs2=mysql_fetch_array($re2)) {
 									
 										$item_id=$rs2['id'];
-										$quotation_no=$rs2['quotation_no'];										
-									
+										$quotation_no=$rs2['quotation_no'];
 										
 										$create_dttm=$rs2['create_dttm'];
 										$update_dttm=$rs2['update_dttm'];
-										
-										
+																				
 										$item_code_prefix=$rs2['item_code_prefix'];
 										$item_code_day=$rs2['item_code_day'];
 										$item_code_month=$rs2['item_code_month'];
@@ -127,9 +140,14 @@ if (isset($_GET['id']) && $id!="") {
 										
 										//$quotation_no=$db->quotation_format_from_id($quotation_no);
 										$item_no=$db->item_no_format($item_code_prefix,$item_code_day,$item_code_month,$item_code,$item_code_year);
-									
+										
+										$tt='';
+										if ($j==13) {
+											$tt=' class="page-break" ';	
+										}
+										
 										$item_in_list.='   
-										  <tr style="text-align: center;">
+										  <tr style="text-align: center;" '.$tt.'>
 											<td>'.$n.'</td><!-- NO. -->
 											<td>'.$equipment_name.'</td><!-- description -->
 											<td>'.($manufacturer!="" ? $manufacturer : '-').'</td><!-- manufacturer -->
@@ -143,24 +161,44 @@ if (isset($_GET['id']) && $id!="") {
 										</tr>';
 										
 										
+										$table.='   
+										  <div class="row">
+											<div>'.$n.'</div><!-- NO. -->
+											<div>'.$equipment_name.'</div><!-- description -->
+											<div>'.($manufacturer!="" ? $manufacturer : '-').'</div><!-- manufacturer -->
+											<div>'.($model!="" ? $model : '-').'</div><!-- model -->
+											<div>'.($serial_no!="" ? $serial_no : 'n/a').'</div><!-- serial no. -->
+											<div>'.($id_no!="" ? $id_no : '-').'</div><!-- id no. -->
+											<div>'.($calibrate_result!="" ? $calibrate_result : '-').'</div><!-- calibrate point -->
+											<div><div id="item_no_'.$n.'">'.$item_no.'</div></div><!-- cert no. -->
+											<div>'.$quotation_no.'</div><!-- quotation no. -->
+											<div style="text-align: center;"><div id="barcode_'.$n.'"></div></div><!-- barcode -->
+										</div>';
+										
+										
 										
 						
 										$n++;
 										
+										$j++;	
+										if ($j>=13 || $j>=$num_items) {
+											$j=1;	
+										}
 									
-								}
+								} //end while
+								
+								$table.='</div>';
 						}
 						
 			//end get item
 		}//end csr info
 
 } else {
-$db->close();
-exit;	
+	$db->close();
+	exit;	
 }
 
-
- $pages="1/$total_page";
+$pages="1/$total_page";
  
 ?>
 <!DOCTYPE html>
@@ -193,9 +231,75 @@ exit;
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+@media print {
+    @page {
+      margin: 2.5cm;   
+    }
+
+	.table-item {
+		display: table;
+		border-spacing: 0px;
+		width:100%;
+		border-collapse:collapse;
+		width: 1320px; margin: 10px 0 10px 0;
+	}
+	.row {
+		display: table-row;
+	}
+	.row > div {
+		display: table-cell;
+		border: solid 1px #000;
+		padding: 2px;
+	   text-align:center;
+	   vertical-align:middle;
+	}	
+	.row > div.head {
+		display: table-cell;
+		border: solid 1px #000;
+		padding: 2px;
+		text-align:center;
+		font-weight:bold;
+	}	
+	
+	 footer {page-break-after: always;}
+	
+}
+
+
+.table-item {
+    display: table;
+    border-spacing: 0px;
+	
+	border-collapse:collapse;
+	width: 1330px; margin: 10px 0 10px 0;
+}
+.row {
+    display: table-row;
+}
+.row > div {
+    display: table-cell;
+    border: solid 1px #000;
+    padding: 2px;
+	text-align:center;
+	vertical-align:middle;
+}	
+.row > div.head {
+    display: table-cell;
+    border: solid 1px #000;
+    padding: 2px;
+	text-align:center;
+	font-weight:bold;
+}	
+
+
+
+</style>
 </head>
 
 <body>
+
+
 <table class="table" width="1330" style="border: none;"><!-- main table container -->
     <tr><!-- header content -->
         <td>
@@ -300,30 +404,17 @@ exit;
                     </td>
                 </tr>
             </table><!-- END : customer content -->
-            <table class="table " style="margin: 30px 0 10px 0;"><!-- item summary content -->
+            <table class="table " style="margin: 20px 0 10px 0;"><!-- item summary content -->
                 <tr>
                     <td width="150px"><b>2) รายละเอียดเครื่องมือ : </b></td>
                     <td width="900px"></td>
                     <td width="250px"></td>
                 </tr>
             </table><!-- END : item summary content -->
-            <table class="table table_border" style="width: 1330px; margin: 10px 0 10px 0;"><!-- item content -->
-                <thead>
-                        <th style="width: 30px;">No.</th>
-                        <th style="width: 300px;">Description</th>
-                        <th style="width: 100px;">Manufacturer</th>
-                        <th style="width: 100px;">Model</th>
-                        <th style="width: 100px;">Serial No.</th>
-                        <th style="width: 100px;">ID No.</th>
-                        <th style="width: 300px;">Calibration Point</th>
-                        <th style="width: 100px;">Cert No.</th>
-                        <th style="width: 100px;">Quotation</th>
-                        <th style="width: 100px;">Barcode</th>
-                </thead>
-                <tbody>
-                  <?php echo $item_in_list; ?>
-                </tbody>
-            </table><!-- END : customer content -->
+           
+          <?php echo $table; ?><!-- END : customer content -->
+          
+          
             <table class="table table_border" style="width: 100%; margin: 0; float: right;">
                 <tr>
                     <td style="width: 75%; padding: 10px;">
@@ -432,7 +523,7 @@ $(function() {
 	if (n_item>0) {
 		for (n=1;n<n_item;n++) {
 			var item_no=$("#item_no_"+n).html();
-			$("#barcode_"+n).barcode(item_no, "code128",{barWidth:1, barHeight:25, fontSize:12,});     
+			$("#barcode_"+n).barcode(item_no, "code128",{barWidth:1, barHeight:23, fontSize:12,});     
 		}
 	
 	}

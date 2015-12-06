@@ -16,6 +16,7 @@ $re=mysql_query($sql);
 
 
 //	//`id`, `code_no`, `code_year`, `code_sale`, `quotation_no`, `contact_name`, `cert_for`, `address`, `fax`, `telephone`, `create_dttm`, `update_dttm`, `publish`, `customer_id`, `create_person`
+
 $Num=mysql_num_rows($re);
 if ($Num>0) {
 		while ($rs=mysql_fetch_array($re)) {
@@ -89,7 +90,7 @@ if ($Num>0) {
 function count_item($csr_id) {
 	global $conn;
 
-	$re=mysql_query("SELECT COUNT(id) AS NumItem FROM "._TB_ITEM." WHERE csr_id='$csr_id' ");
+	$re=mysql_query("SELECT COUNT(id) AS NumItem FROM "._TB_ITEM." WHERE csr_id='$csr_id' AND publish<>'0' ");
 	$num_item=mysql_result($re,0);
 	return $num_item;
 
@@ -165,7 +166,7 @@ include_once("footer.php");
 		var chk=confirm("คำเตือน!!\nCSR จะถูกลบถาวร และ CSR No. นี้จะถูกแทนที่เมื่อมีการเพิ่ม CSR ใหม่\n\nโปรดยืนยันการลบ CSR No. ["+title+"] !!\n\n");
 		if (chk) {
 			$.post("calibrate-service-script.php",{'act':'delete-csr','id':id},function(data) {
-				window.location.href="calibarte-service-list.php";
+				window.location.href="calibrate-service-list.php";
 			});
 		} else { return false; }
 	}
@@ -174,7 +175,7 @@ include_once("footer.php");
 		var chk=confirm("โปรดยืนยันการยกเลิก CSR No.  ["+title+"] !!\n\n");
 		if (chk) {
 			$.post("calibrate-service-script.php",{'act':'cancel-csr','id':id},function(data) {
-				window.location.href="calibarte-service-list.php";				
+				window.location.href="calibrate-service-list.php";				
 			});
 		} else { return false; }
 	}

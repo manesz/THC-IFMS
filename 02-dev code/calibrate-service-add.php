@@ -254,6 +254,7 @@ if ($num_items>0) {
                     <div class="col-lg-12">
                         <div class="content-panel col-lg-12">
                             <div class="form-group" style="padding: 0; margin: 0;">
+                            <a name="itemzone"></a>
                              	<input type="hidden" name="act" id="act" value="">
                                 <button type="submit" id="btn_add_csr" name="btn_add_qoutation" class="btn btn-success btn-lg col-md-6" style="float: right; margin: 0 5px 0 5px;">บันทึกข้อมูล</button>
                             	<button type="button" class="btn btn-default btn-lg col-md-3" style="float: right; margin: 0 5px 0 5px;" onclick="window.location.href=window.location.href">เคลียร์ข้อมูล</button>
@@ -396,7 +397,7 @@ function clone_item(id,item_name) {
 			clone_item(id,item_name);	
 	}  else if (clone_qty>0) {			
 	
-			$.post("item-script.php",{'act':'clone-item','id':id,'clone_qty':clone_qty},function(data) {
+			$.post("item-script.php",{'act':'clone-item','id':id,'clone_qty':clone_qty,'department_id':$("#department_id").val()},function(data) {
 				if (data=="") {
 					window.location.href = "calibrate-service-add.php";
 				} else {
@@ -434,7 +435,7 @@ function validate_add_csr(formData, jqForm, options) {
 			return false;
 		} else if ($('#customer_id').val() == "") {
 				alert("กรุณาเลือกบริษัท");
-				$("#customer_id").focus();		
+				$("#customer_id").focus();	
 				return false;
 	} else {
 		

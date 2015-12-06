@@ -137,6 +137,26 @@ class db_class extends database {
 		return $item_list;
 	}
 	
+	
+	function auto_new_item_code($prefix, $year, $month, $day, $department_id) {
+		
+				//ตรวจสอบค่ามากสุด
+				$sql="	SELECT MAX(CONVERT(item_code,UNSIGNED INTEGER)) AS max_code FROM "._TB_ITEM." 
+							WHERE  item_code_year='$year' 
+							AND item_code_month='$month' 
+							AND item_code_day='$day'
+							AND department_id='$department_id'
+						";
+						
+				$re=mysql_query($sql);
+				$max_item_code =mysql_result($re,0);
+				$auto_item_code=($max_item_code+1);
+				
+				return $auto_item_code;
+		
+	}
+	
+	/*
 	function auto_new_item_code($prefix, $year, $month, $day) {
 		
 		//ตรวจสอบค่ามากสุด
@@ -148,8 +168,9 @@ class db_class extends database {
 		$re=mysql_query($sql);
 		$max_item_code =mysql_result($re,0);
 		$auto_item_code=($max_item_code+1);
-		return $auto_item_code;
+		return $auto_item_code;		
 	}
+	*/
 	
 	
 	
@@ -201,6 +222,7 @@ class db_class extends database {
 		$prefix='';
 		$sql="SELECT code, is_in_lab, is_on_site  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$department_id' LIMIT 1; ";
 		$re=mysql_query($sql);
+		
 		if (mysql_num_rows($re)>0) {
 			$rs=mysql_fetch_array($re);
 			
