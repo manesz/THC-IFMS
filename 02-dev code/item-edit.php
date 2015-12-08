@@ -35,7 +35,7 @@ if ($num>0) {
 		$department_id=$rs['department_id'];	
 		$model=stripslashes($rs['model']);	
 		$resolution=stripslashes($rs['resolution']);	
-		$calibration_range=stripslashes($rs['calibration_range']);	
+		$calibration_point=stripslashes($rs['calibration_point']);	
 		$serial_no=stripslashes($rs['serial_no']);	
 		$id_no=$rs['id_no'];
 		
@@ -321,9 +321,9 @@ include_once("header.php");
                                     </div>
                                 </div><!-- /Resolution -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
-                                    <label class="col-sm-12 col-md-4 control-label">จุดสอบเทียบ / <br/>Calibration Range</label>
+                                    <label class="col-sm-12 col-md-4 control-label">จุดสอบเทียบ / <br/>Calibration Point</label>
                                     <div class="col-sm-12 col-md-8">
-                                        <input type="text" class="form-control" name="calibration_range" id="calibration_range"  value="<?php echo $calibration_range; ?>">
+                                        <input type="text" class="form-control" name="calibration_point" id="calibration_point"  value="<?php echo $calibration_point; ?>">
                                     </div>
                                 </div><!-- /Calibration Range -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
@@ -557,8 +557,10 @@ include_once("header.php");
 									var re="<?php echo $_GET['return']; ?>";
 									if (re=='add') {
 										window.location.href='calibrate-service-add.php';
-									} else { //edit
+									} else if (re=='edit')  { //edit
 										window.location.href='calibrate-service-edit.php?id=<?php echo $_GET['csrid']; ?>';	
+									} else {
+										window.location.href='item-edit.php?id=<?php echo $id; ?>';	
 									}
 									
 							} else if (result=='102') { //save ไม่ได้

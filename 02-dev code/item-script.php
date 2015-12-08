@@ -263,7 +263,7 @@ if ($action=='add') {
 					$manufacturer=addslashes($_POST['manufacturer']);
 					$model=$_POST['model'];
 					$resolution=addslashes($_POST['resolution']);	
-					$calibration_range=addslashes($_POST['calibration_range']);	
+					$calibration_point=addslashes($_POST['calibration_point']);	
 					$serial_no=addslashes($_POST['serial_no']);	
 					$id_no=addslashes($_POST['id_no']);
 					
@@ -369,7 +369,7 @@ if ($action=='add') {
 								(
 										id, item_code_prefix, item_code_day, item_code_month, item_code, item_code_year,						
 										equipment_name, description, qty, department_id, customer_id, 
-										manufacturer, model, resolution, calibration_range, serial_no, id_no, 
+										manufacturer, model, resolution, calibration_point, serial_no, id_no, 
 										item_accessories,
 										iso017025,
 										create_dttm, receive_dttm, update_dttm, 
@@ -381,7 +381,7 @@ if ($action=='add') {
 								VALUES (
 									NULL, '$prefix', '$day', '$month', '$item_code', '$year',		
 									'$equipment_name', '$description', '$qty', '$department_id', '$customer_id', 
-									'$manufacturer', '$model', '$resolution', '$calibration_range', '$serial_no', '$id_no', 
+									'$manufacturer', '$model', '$resolution', '$calibration_point', '$serial_no', '$id_no', 
 									'$item_accessories',
 									'$iso017025', 
 									'$create_dttm', '$receive_dttm', '$update_dttm', 
@@ -418,7 +418,7 @@ if ($action=='edit') {
 	$manufacturer=addslashes($_POST['manufacturer']);
 	$model=$_POST['model'];
 	$resolution=addslashes($_POST['resolution']);	
-	$calibration_range=addslashes($_POST['calibration_range']);	
+	$calibration_point=addslashes($_POST['calibration_point']);	
 	$serial_no=addslashes($_POST['serial_no']);	
 	$id_no=addslashes($_POST['id_no']);
 	
@@ -473,7 +473,7 @@ if ($action=='edit') {
 																			department_id = '$department_id',
 																			model = '$model',
 																			resolution = '$resolution',
-																			calibration_range = '$calibration_range',
+																			calibration_point = '$calibration_point',
 																			serial_no = '$serial_no',
 																			id_no = '$id_no',
 																			item_accessories='$item_accessories',
@@ -516,7 +516,7 @@ if ($action=='edit') {
 							department_id = '$department_id',
 							model = '$model',
 							resolution = '$resolution',
-							calibration_range = '$calibration_range',
+							calibration_point = '$calibration_point',
 							serial_no = '$serial_no',
 							id_no = '$id_no',
 							item_accessories='$item_accessories',

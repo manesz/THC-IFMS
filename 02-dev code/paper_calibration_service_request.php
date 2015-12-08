@@ -45,6 +45,12 @@ if (isset($_GET['id']) && $id!="") {
 						$CSR_NO=$db->csr_no_format($code_no,$code_year);
 						
 						$is_status=$rs['status'];
+						
+						$create_dttm=$rs2['create_dttm'];
+						$update_dttm=$rs2['update_dttm'];
+						
+						$PaperDate = date("d/m/Y");
+										
 
 						if ($is_status=='1') {
 							$Status='In-Lab';	
@@ -89,8 +95,8 @@ if (isset($_GET['id']) && $id!="") {
 								$n=1;
 								$j=1;
 								
-								$table='<div class="table-item">';
-								$table.='<div class="row">
+								$item_in_list='<div class="table-item">';
+								$item_in_list.='<div class="row">
 												<div class="head">No.</div>
 												<div class="head">Description</div>
 												<div class="head">Manufacturer</div>
@@ -108,8 +114,6 @@ if (isset($_GET['id']) && $id!="") {
 										$item_id=$rs2['id'];
 										$quotation_no=$rs2['quotation_no'];
 										
-										$create_dttm=$rs2['create_dttm'];
-										$update_dttm=$rs2['update_dttm'];
 																				
 										$item_code_prefix=$rs2['item_code_prefix'];
 										$item_code_day=$rs2['item_code_day'];
@@ -122,6 +126,7 @@ if (isset($_GET['id']) && $id!="") {
 										$equipment_name=stripslashes($rs2['equipment_name']);
 										$model=stripslashes($rs2['model']);
 										$resolution=stripslashes($rs2['resolution']);
+										$calibration_point=stripslashes($rs2['calibration_point']);
 										
 										$serial_no=stripslashes($rs2['serial_no']);
 										$id_no=stripslashes($rs2['id_no']);
@@ -145,23 +150,10 @@ if (isset($_GET['id']) && $id!="") {
 										if ($j==13) {
 											$tt=' class="page-break" ';	
 										}
+					
+										
 										
 										$item_in_list.='   
-										  <tr style="text-align: center;" '.$tt.'>
-											<td>'.$n.'</td><!-- NO. -->
-											<td>'.$equipment_name.'</td><!-- description -->
-											<td>'.($manufacturer!="" ? $manufacturer : '-').'</td><!-- manufacturer -->
-											<td>'.($model!="" ? $model : '-').'</td><!-- model -->
-											<td>'.($serial_no!="" ? $serial_no : 'n/a').'</td><!-- serial no. -->
-											<td>'.($id_no!="" ? $id_no : '-').'</td><!-- id no. -->
-											<td>'.($calibrate_result!="" ? $calibrate_result : '-').'</td><!-- calibrate point -->
-											<td><div id="item_no_'.$n.'">'.$item_no.'</div></td><!-- cert no. -->
-											<td>'.$quotation_no.'</td><!-- quotation no. -->
-											<td style="text-align: center;"><div id="barcode_'.$n.'"></div></td><!-- barcode -->
-										</tr>';
-										
-										
-										$table.='   
 										  <div class="row">
 											<div>'.$n.'</div><!-- NO. -->
 											<div>'.$equipment_name.'</div><!-- description -->
@@ -169,7 +161,7 @@ if (isset($_GET['id']) && $id!="") {
 											<div>'.($model!="" ? $model : '-').'</div><!-- model -->
 											<div>'.($serial_no!="" ? $serial_no : 'n/a').'</div><!-- serial no. -->
 											<div>'.($id_no!="" ? $id_no : '-').'</div><!-- id no. -->
-											<div>'.($calibrate_result!="" ? $calibrate_result : '-').'</div><!-- calibrate point -->
+											<div>'.($calibration_point!="" ? $calibration_point : '-').'</div><!-- calibrate point -->
 											<div><div id="item_no_'.$n.'">'.$item_no.'</div></div><!-- cert no. -->
 											<div>'.$quotation_no.'</div><!-- quotation no. -->
 											<div style="text-align: center;"><div id="barcode_'.$n.'"></div></div><!-- barcode -->
@@ -187,7 +179,7 @@ if (isset($_GET['id']) && $id!="") {
 									
 								} //end while
 								
-								$table.='</div>';
+								$item_in_list.='</div>';
 						}
 						
 			//end get item
@@ -360,7 +352,7 @@ $pages="1/$total_page";
                     </td>
                     <td>
                         <span style="width: 100px; border-bottom: none; float: left;">วันที่ : </span>
-                        <span class="seperator" style="width: 500px; float: left; text-align: left;">&nbsp;</span>
+                        <span class="seperator" style="width: 500px; float: left; text-align: left;"><?php echo $PaperDate; ?></span>
                     </td>
                 </tr>
                 <tr>
@@ -412,7 +404,7 @@ $pages="1/$total_page";
                 </tr>
             </table><!-- END : item summary content -->
            
-          <?php echo $table; ?><!-- END : customer content -->
+          <?php echo $item_in_list; ?><!-- END : customer content -->
           
           
             <table class="table table_border" style="width: 100%; margin: 0; float: right;">

@@ -12,115 +12,140 @@
  
  
  $id=$_GET['id'];
- $sql="SELECT * FROM "._TB_QUOTATION." 
- 			WHERE publish='1' 
-			AND id='$id' 
-			LIMIT 1; ";
-			
-$re=mysql_query($sql);
-
-if (mysql_num_rows($re)>0) {
-		while ($rs=mysql_fetch_array($re)) {
-			$id=$rs['id'];
-			$code_sale=$rs['code_sale'];
-			$code_year=$rs['code_year'];
-			$code_month=$rs['code_month'];
-			$code_no=$rs['code_no'];
-			$code_revise=$rs['code_revise'];
-			
-			$quotaton_no=$db->quotation_no_format($code_sale,$code_year,$code_month,$code_no,$code_revise);
-			
-			
-			$contact_name=$rs['contact_name'];
-			$department_name=$rs['department_name'];
-			$position_name=$rs['position_name'];
-			
-			$customer_id=$rs['customer_id'];			
-			$update_dttm=date("Y-m-d",strtotime($rs['update_dttm']));
+	$sql="SELECT * FROM "._TB_CSR." WHERE id='$id' AND publish<>'0' LIMIT 1; ";
+		$re=mysql_query($sql);
+		
+		if (mysql_num_rows($re)>0) {
+					$rs=mysql_fetch_array($re);
+						
+						$code_year=$rs['code_year'];
+						$code_no=$rs['code_no'];
+						
+						$quotation_no=$rs['quotation_no'];
+						$customer_id=$rs['customer_id'];
+						$department_id=$rs['department_id'];	
+						
+						$contact_name=stripslashes($rs['contact_name']);									
+						$department_name='-';
+						$position_name='-';
+						
+						$CSR_NO=$db->csr_no_format($code_no,$code_year);
+						
+						$update_dttm=date("Y-m-d",strtotime($rs['update_dttm']));
+						
+						if ($is_status=='1') {
+							$Status='In-Lab';	
+							$LabCode='00';
+						} else {
+							$Status='On-Site';
+							$LabCode='01';
+						}
+						
 				
 			
-			//Get company information -----------------
-			//$company_name=$db->customer_name($customer_id);
-			$sql1="SELECT company_name, company_address, phone_no, fax_no, email FROM "._TB_CUSTOMER." WHERE id='$customer_id' LIMIT 1; ";
-			$re1=mysql_query($sql1);
-			if (mysql_num_rows($re1)>0) {
-					$rs1=mysql_fetch_array($re1);
-					
-					$company_name=stripslashes($rs1['company_name']);
-					$company_address=stripslashes($rs1['company_address']);
-					$phone_no=stripslashes($rs1['phone_no']);
-					$fax_no=stripslashes($rs1['fax_no']);
-					$email=stripslashes($rs1['email']);
-			}
-			
-			//Get All Item ---------------------------
-			$sql2="	SELECT A.*, 
-							B.equipment_name, B.model, B.resolution, B.serial_no, B.id_no , B.manufacturer, B.calibrate_result, B.iso017025
-						FROM "._TB_QUOTATION_ITEM." AS A, "._TB_ITEM." AS B 
-						WHERE A.item_id=B.id 
-							AND A.publish='1' 
-							AND A.quotation_id='$id' 
-							ORDER BY A.quotation_id 
+					//Get company information -----------------
+					//$company_name=$db->customer_name($customer_id);
+					$sql1="SELECT company_name, company_address, phone_no, fax_no, email FROM "._TB_CUSTOMER." WHERE id='$customer_id' LIMIT 1; ";
+					$re1=mysql_query($sql1);
+					if (mysql_num_rows($re1)>0) {
+							$rs1=mysql_fetch_array($re1);
 							
-						";
-						
-			$re2=mysql_query($sql2);
-			$num_items=mysql_num_rows($re2);
-			
-			if ($num_items>0) {
-					$n=1;
-					
-					while ($rs2=mysql_fetch_array($re2)) {
-							$quotation_id=$rs2['quotation_id'];
-							$item_id=$rs2['item_id'];
-							$quantity=$rs2['quantity'];
-							$is_status=$rs2['is_status'];
-							
-							$create_dttm=$rs2['create_dttm'];
-							$update_dttm=$rs2['update_dttm'];
-							
-							$equipment_name=stripslashes($rs2['equipment_name']);
-							$model=stripslashes($rs2['model']);
-							$resolution=stripslashes($rs2['resolution']);
-							
-							$serial_no=stripslashes($rs2['serial_no']);
-							$id_no=stripslashes($rs2['id_no']);
-							
-							$manufacturer=stripslashes($rs2['manufacturer']);
-							$calibrate_result=stripslashes($rs2['calibrate_result']);
-							$iso017025=$rs2['iso017025'];
-					
-							$ISO=($iso017025=='1' ? 'Yes' : '-');
-							
-							if ($calibrate_result=='D') { $Calibrate="Done"; }
-							if ($calibrate_result=='R') { $Calibrate="Repairing"; }
-							if ($calibrate_result=='B') { $Calibrate="Broken"; }
-							
-							$Status=($is_status=='i' ? ' InLab ' : 'Onsite');
-							
-							
-						
-							$item_in_list.='   <tr style="text-align: center;">
-														<td class="height-30"> '.$n.' </td>
-														<td class="height-30">'.$equipment_name.' </td>
-														<td class="height-30">'.($manufacturer!="" ? $manufacturer : '-').'</td>
-														<td class="height-30">'.($model!="" ? $model : '-').' </td>
-														<td class="height-30">'.($id_no!="" ? $id_no : '-').' </td>
-														<td class="height-30">'.($serial_no!="" ? $serial_no : '-').'</td>
-														<td class="height-30">'.$Calibrate.'</td>
-														<td class="height-30">'.number_format($quantity).'</td>
-														<td class="height-30"> '.$Status.' </td>
-														<td class="height-30">'.$ISO.'</td>
-													</tr>';
-							$n++;
-							
-						
+							$company_name=stripslashes($rs1['company_name']);
+							$company_address=stripslashes($rs1['company_address']);
+							$phone_no=stripslashes($rs1['phone_no']);
+							$fax_no=stripslashes($rs1['fax_no']);
+							$email=stripslashes($rs1['email']);
 					}
-			}
 			
-			//end get item
 			
-		}//end while quotation
+					//Get All Item ---------------------------
+					$sql2="	SELECT * 	FROM "._TB_ITEM." 
+								WHERE csr_id='".$id."'
+									AND publish='1' 
+								ORDER BY id 
+								
+						 ";
+							
+					$re2=mysql_query($sql2);
+					$num_items=mysql_num_rows($re2);
+					$total_page=ceil($num_items/$item_per_page);
+					
+					if ($num_items>0) {
+								$n=1;
+								$j=1;
+								
+						
+											
+							$item_in_list='<div class="table-item">';
+							$item_in_list.='							
+               <div class="row">
+                    <div class="head" style="width: 30px;">ลำดับ<br/>No.</div>
+                    <div class="head" style="width: 350px;">รายการ<br/>Description</div>
+                    <div class="head" style="width: 150px;">ผู้ผลิต<br/>Manufacturer</div>
+                    <div class="head" style="width: 80px;">รุ่น<span style="color: red;">*</span><br/>Model</div>
+                    <div class="head" style="width: 80px;">ID No.</div>
+                    <div class="head" style="width: 80px;">หมายเลขเครื่อง<br/>S/N</div>
+                    <div class="head" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Range</div>
+                    <div class="head" style="width: 60px;">จำนวน<br/>Quantity</div>
+                    <div class="head" style="width: 80px;">Status</div>
+                    <div class="head"  style="width: 80px;">ISO 17025<br/>Accredited</div>
+                </div>';	
+							
+							while ($rs2=mysql_fetch_array($re2)) {
+									$item_id=$rs2['id'];
+									$quotation_no=$rs2['quotation_no'];
+									
+																			
+									$item_code_prefix=$rs2['item_code_prefix'];
+									$item_code_day=$rs2['item_code_day'];
+									$item_code_month=$rs2['item_code_month'];
+									$item_code=$rs2['item_code'];
+									$item_code_year=$rs2['item_code_year'];
+																			
+									$quantity=$rs2['qty'];
+									$is_status=$rs2['is_status'];
+									
+									
+									$equipment_name=stripslashes($rs2['equipment_name']);
+									$model=stripslashes($rs2['model']);
+									$resolution=stripslashes($rs2['resolution']);
+									$calibration_point=stripslashes($rs2['calibration_point']);
+									
+									$serial_no=stripslashes($rs2['serial_no']);
+									$id_no=stripslashes($rs2['id_no']);
+									
+									$manufacturer=stripslashes($rs2['manufacturer']);
+									$calibrate_result=stripslashes($rs2['calibrate_result']);
+									$iso017025=$rs2['iso017025'];
+							
+									$ISO=($iso017025=='1' ? 'Yes' : '-');
+									
+									if ($calibrate_result=='D') { $Calibrate="Done"; }
+									if ($calibrate_result=='R') { $Calibrate="Repairing"; }
+									if ($calibrate_result=='B') { $Calibrate="Broken"; }
+													
+											$item_in_list.='   
+												  <div class="row">
+																<div> '.$n.' </div>
+																<div>'.$equipment_name.' </div>
+																<div>'.($manufacturer!="" ? $manufacturer : '-').'</div>
+																<div>'.($model!="" ? $model : '-').' </div>
+																<div>'.($id_no!="" ? $id_no : '-').' </div>
+																<div>'.($serial_no!="" ? $serial_no : '-').'</div>
+																<div>'.$calibration_point.'</div>
+																<div>'.number_format($quantity).'</div>
+																<div> '.$Status.' </div>
+																<div>'.$ISO.'</div>
+													</div>';
+													
+									$n++;
+									
+								
+							} // end while
+							
+							$item_in_list.='</div>';
+					} //end item
+					
 }
 
 
@@ -156,6 +181,76 @@ if (mysql_num_rows($re)>0) {
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+@media print {
+    @page {
+      margin: 2.5cm;   
+    }
+
+	.table-item {
+		display: table;
+		border-spacing: 0px;
+		width:100%;
+		border-collapse:collapse;
+		width: 1320px; margin: -1px 0 10px 0;
+	}
+	.row {
+		display: table-row;
+	}
+	.row > div {
+		display: table-cell;
+		border: solid 1px #000;
+		padding: 2px;
+	   text-align:center;
+	   vertical-align:middle;
+	   height:30px;
+	}	
+	.row > div.head {
+		display: table-cell;
+		border: solid 1px #000;
+		padding: 2px;
+		text-align:center;
+		font-weight:normal;
+		height:50px;
+		background:#fafafa;
+	}	
+	
+	 footer {page-break-after: always;}
+	
+}
+
+
+.table-item {
+    display: table;
+    border-spacing: 0px;
+	
+	border-collapse:collapse;
+	width: 1330px; margin: -1px 0 10px 0;
+}
+.row {
+    display: table-row;
+}
+.row > div {
+    display: table-cell;
+    border: solid 1px #000;
+    padding: 2px;
+	text-align:center;
+	vertical-align:middle;
+	height:30px;
+}	
+.row > div.head {
+    display: table-cell;
+    border: solid 1px #000;
+    
+	text-align:center;
+	font-weight:normal;
+	height:50px;
+	background:#fafafa;
+}	
+
+
+
+</style>
 </head>
 
 <body>
@@ -219,27 +314,13 @@ if (mysql_num_rows($re)>0) {
                     </td>
                 </tr>
             </table><!-- END : customer content -->
-            <table class="table table_border" style="width: 1330px; margin: 10px 0 20px 0;"><!-- item content -->
+            <table class="table table_border" style="width: 1331px; margin: 10px 0 0 0;"><!-- item content -->
                 <tr>
-                    <td colspan="8" class="text-center height-50 bg-f0f0f0" style="">ส่วนของลูกค้า</td>
-                    <td colspan="3" class="text-center height-50 bg-f0f0f0" style="">ส่วนของเจ้าหน้าที่</td>
+                    <td class="text-center" style=" height:50px; background:#f0f0f0;">ส่วนของลูกค้า</td>
+                    <td class="text-center" style="width:181px; height:50px; background:#f0f0f0;">ส่วนของเจ้าหน้าที่</td>
                 </tr>
-                <tr>
-                    <td class="text-center height-50 bg-fafafa" style="width: 30px;">ลำดับ<br/>No.</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 350px;">รายการ<br/>Description</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 150px;">ผู้ผลิต<br/>Manufacturer</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">รุ่น<span style="color: red;">*</span><br/>Model</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">ID No.</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">หมายเลขเครื่อง<br/>S/N</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Range</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 60px;">จำนวน<br/>Quantity</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">Status</td>
-                    <td class="text-center height-50 bg-fafafa" style="width: 80px;">ISO 17025<br/>Accredited</td>
-                </tr>
-                <tbody>
-                  <?php echo $item_in_list; ?>
-                </tbody>
-            </table><!-- END : item content -->
+               </table>
+               <?php echo $item_in_list; ?><!-- END : item content -->
             <p style="text-align: right;">จำนวนหน้า 1/5</p>
             <p style="color: red;">หมายเหตุ : กรุณาใส่ข้อมูลให้ครบถ้วน โดยเฉพาะอย่างยิ่งช่องที่มีเครื่องหมาย * เพื่อประโยชน์ในการประเมินงานสอบเทียบ</p>
         </td>
@@ -247,7 +328,7 @@ if (mysql_num_rows($re)>0) {
     <tr><!-- footer content -->
         <td>
             <p style="float: left;"></p>
-            <p style="float: left;"><span style="border-bottom: none; float: left;">ข้อคิดเห็นเพิ่มเติม / Comment : </span><span class="seperator" style="width: 500px; float: right; ">&nbsp;</span></p>
+            <p style="float: left;"><span style="border-bottom: none; float: left;">ข้อคิดเห็นเพิ่มเติม / Comment : </span><span class="seperator" style="width: 500px; float: right; "><?php echo " { CSR No. $CSR_NO }"; ?>&nbsp;</span></p>
             <p style="float: right;"><span style="border-bottom: none; float: left;">ร้องขอโดย / Request By : </span><span class="seperator" style="width: 500px; float: right; ">&nbsp;</span></p>
         </td>
     </tr><!-- END : footer content -->

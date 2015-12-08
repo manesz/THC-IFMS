@@ -72,9 +72,10 @@ if ($Num>0) {
                                                 <i class="fa fa-cog"> จัดการ</i>
                                                 <span class="caret"></span>
                                             </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
                                                 <!--   <li><a href="paper_item_description.php"><i class="fa fa-eye"> ดู</i></a></li>-->
-                                                <li><a class="fancybox" href="paper_calibration_service_request.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดู</i></a></li>
+                                                <li><a class="fancybox" href="paper_calibration_service_request.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดูใบ CSR</i></a></li>
+												<li><a class="fancybox" href="paper_request_for_quotation.php?id='.$id.'" target="_blank"><i class="fa fa-eye"> ดูใบขอทราบราคาสอบเทียบ</i></a></li>
                                                 <li><a href="calibrate-service-edit.php?id='.$id.'"><i class="fa fa-pencil-square-o"> แก้ไข</i></a></li>   
 												<li><a href="#" onclick="cancel_item(\''.$id.'\',\''.htmlspecialchars("$csr_code").'\');return false;"><i class="fa fa-times" style="color: red;"> ยกเลิก</i></a></li>                                          
 												<li><a href="#" onclick="delete_item(\''.$id.'\',\''.htmlspecialchars("$csr_code").'\');return false;"><i class="fa fa-times" style="color: red;"> ลบ</i></a></li>

@@ -41,7 +41,7 @@ if ($num>0) {
 		$department_id=$rs['department_id'];	
 		$model=stripslashes($rs['model']);	
 		$resolution=stripslashes($rs['resolution']);	
-		$calibration_range=stripslashes($rs['calibration_range']);	
+		$calibration_point=stripslashes($rs['calibration_point']);	
 		$serial_no=stripslashes($rs['serial_no']);	
 		$id_no=$rs['id_no'];
 		
@@ -266,7 +266,7 @@ $db->close();
                 <tr><!-- Calibration Points -->
                     <td style="width: 100px;">Calibration Points</td>
                     <td style="width: 10px;">:</td>
-                    <td style="width: 140px;"><?php echo ($calibration_range!="" ? $calibration_range : '-'); ?></td>
+                    <td style="width: 140px;"><?php echo ($calibration_point!="" ? $calibration_point : '-'); ?></td>
                 </tr><!-- END : Calibration Points -->
                 <tr><!-- Lot No. -->
                     <td style="width: 100px;">CSR No.</td>

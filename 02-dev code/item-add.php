@@ -201,7 +201,7 @@ include_once("header.php");
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
                                     <label class="col-sm-12 col-md-4 control-label">จุดสอบเทียบ / <br/>Calibration Range</label>
                                     <div class="col-sm-12 col-md-8">
-                                        <input type="text" class="form-control" name="calibration_range" id="calibration_range">
+                                        <input type="text" class="form-control" name="calibration_point" id="calibration_point">
                                     </div>
                                 </div><!-- /Calibration Range -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
