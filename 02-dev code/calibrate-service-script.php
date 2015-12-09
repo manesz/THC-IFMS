@@ -11,6 +11,7 @@ if ($action=='session_keep_data') {
 		$_SESSION['ss_sale_code']=$_POST['sale_code'];
 		$_SESSION['ss_create_date']=$_POST['create_date'];
 		$_SESSION['ss_quotation_no']=$_POST['quotation_no'];
+		$_SESSION['ss_invoice_no']=$_POST['invoice_no'];
 		$_SESSION['ss_department_id']=$_POST['department_id'];
 		$_SESSION['ss_on_status']=$_POST['on_status'];
 		
@@ -27,6 +28,7 @@ if ($action=='session_keep_data') {
 if ($action=="add_new_csr") {
 	
 	$quotation_no=$_POST['quotation_no'];
+	$invoice_no=$_POST['invoice_no'];
 	$code_sale=$_POST['sale_code'];
 	$contact_name=addslashes($_POST['contact_name']);
 	$cert_for=addslashes($_POST['cert_for']);
@@ -109,13 +111,14 @@ if ($action=="add_new_csr") {
 	//----End of Genelate CSR No -------
 	
 	
-	$sql2=" INSERT INTO "._TB_CSR." (id, code_no, code_year, code_sale, quotation_no, contact_name, cert_for, address,  create_dttm, update_dttm, publish, customer_id, department_id, session_csr, status, create_person) 
+	$sql2=" INSERT INTO "._TB_CSR." (id, code_no, code_year, code_sale, quotation_no, invoice_no, contact_name, cert_for, address,  create_dttm, update_dttm, publish, customer_id, department_id, session_csr, status, create_person) 
 				VALUES (
 						NULL,
 						'$code_no',
 						'$code_year',
 						'$code_sale',
 						'$quotation_no',
+						'$invoice_no',
 						'$contact_name',
 						'$cert_for',
 						'$address',						
@@ -142,7 +145,7 @@ if ($action=="add_new_csr") {
 					$item_serial2=$item_serial[$j];
 					$item_id_no2=$item_id_no[$j];
 					
-					mysql_query("UPDATE "._TB_ITEM." SET  serial_no='$item_serial2', id_no='$item_id_no2', quotation_no='$quotation_no', csr_id='$new_csr_id' WHERE id='$item_id2' LIMIT 1; ");
+					mysql_query("UPDATE "._TB_ITEM." SET  serial_no='$item_serial2', id_no='$item_id_no2', quotation_no='$quotation_no', invoice_no='$invoice_no', csr_id='$new_csr_id' WHERE id='$item_id2' LIMIT 1; ");
 					
 				} //for
 		}
@@ -154,6 +157,7 @@ if ($action=="add_new_csr") {
 			$_SESSION['ss_sale_code'],
 			$_SESSION['ss_create_date'],
 			$_SESSION['ss_quotation_no'],
+			$_SESSION['ss_invoice_no'],
 			$_SESSION['ss_department_id'],
 			$_SESSION['ss_on_status'],
 			$_SESSION['ss_contact_name'],
@@ -174,6 +178,7 @@ if ($action=="edit_csr") {
 	$csr_id=$_POST['csr_id'];
 	
 	$quotation_no=$_POST['quotation_no'];
+	$invoice_no=$_POST['invoice_no'];
 	$code_sale=$_POST['sale_code'];
 	$contact_name=addslashes($_POST['contact_name']);
 	$cert_for=addslashes($_POST['cert_for']);
@@ -198,6 +203,7 @@ if ($action=="edit_csr") {
 				SET
 					code_sale='$code_sale',
 					quotation_no='$quotation_no', 
+					invoice_no='$invoice_no',
 					contact_name='$contact_name',
 					cert_for='$cert_for',
 					address='$address',					
@@ -222,7 +228,7 @@ if ($action=="edit_csr") {
 						$item_serial2=$item_serial[$j];
 						$item_id_no2=$item_id_no[$j];
 						
-						mysql_query("UPDATE "._TB_ITEM." SET  serial_no='$item_serial2', id_no='$item_id_no2', quotation_no='$quotation_no' WHERE id='$item_id2' LIMIT 1; ");
+						mysql_query("UPDATE "._TB_ITEM." SET  serial_no='$item_serial2', id_no='$item_id_no2', quotation_no='$quotation_no', invoice_no='$invoice_no' WHERE id='$item_id2' LIMIT 1; ");
 						
 					} //for
 			}

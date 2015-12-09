@@ -10,8 +10,12 @@ include("check-permission.php");
 $content='';
 
 
-$SQL="	SELECT id, equipment_name, model, serial_no, id_no, customer_id,  update_dttm , publish
-			FROM "._TB_ITEM." WHERE publish<>'0' ";
+$SQL="	SELECT A.id, A.equipment_name, A.model, A.serial_no, A.id_no, A.customer_id,  A.update_dttm , A.publish
+						, B.id, B.code_no, B.code_year 
+			FROM "._TB_ITEM." AS A, "._TB_CSR." AS B 
+			WHERE A.csr_id=B.id 
+				AND A.publish<>'0' 
+			ORDER BY A.id DESC ";
 
 $re=mysql_query($SQL);
 $num=mysql_num_rows($re);
@@ -26,6 +30,11 @@ if ($num>0) {
 		$customer_id=stripslashes($rs['customer_id']);		
 		$latest_update=$rs['update_dttm'];
 		$publish=$rs['publish'];
+		
+		$code_no=$rs['code_no'];
+		$code_year=$rs['code_year'];
+		
+		$CSR_NO="$code_no/$code_year";
 		
 		$customer_name=$db->customer_name($customer_id);
 		
@@ -43,7 +52,7 @@ if ($num>0) {
 					<td '.$td_bg.'>'.$model.'</td>
 					<td '.$td_bg.'>'.$serial_no.'</td>
 					<td '.$td_bg.'> '.$id_no.' </td>
-					<td '.$td_bg.'> - </td>
+					<td '.$td_bg.'> '.$CSR_NO.' </td>
 					<td '.$td_bg.'>'.$customer_name.'</td>
 					<td '.$td_bg.'> - </td>
 					<td '.$td_bg.'>'.$latest_update.'</td>
@@ -140,7 +149,7 @@ include_once("header.php");
                                 <th class="text-center" width="80">รุ่น</th>
                                 <th class="text-center" width="100">S/N</th>
                                 <th class="text-center" width="100">ID No.</th>
-                                <th class="text-center" width="100">Lot no.</th>
+                                <th class="text-center" width="100">CSR no.</th>
                                 <th class="text-center" width="300">ลูกค้า</th>
                                 <th class="text-center" width="100">Step</th><!-- 1.N/A, 2.Store, 3.Lab, 4.Certificate, 5.Account, 6.Closed -->
                                 <th class="text-center" width="50">last updated</th>

@@ -26,6 +26,7 @@ if ($Num>0) {
 			$code_sale=$rs['code_sale'];
 			
 			$quotation_no=$rs['quotation_no'];
+			$invoice_no=$rs['invoice_no'];
 			$contact_name=stripslashes($rs['contact_name']);
 			$cert_for=stripslashes($rs['cert_for']);
 			
@@ -46,7 +47,7 @@ if ($Num>0) {
 			
 			$LotNo='-';
 			$QuotationNo=$quotation_no;
-			$InvoiceNo='-';
+			$InvoiceNo=$invoice_no;
 			
 			$LotNo=$csr_code;
 			
@@ -131,7 +132,7 @@ include_once("header.php");
                             <thead>
                             <th width="30">#</th>
                             <th width="500">ชื่อลูกค้า</th>
-                            <th width="300">Lot No.</th>
+                            <th width="300">CSR No.</th>
                             <th width="130">Quotation No.</th>
                             <th width="100">Invoice No.</th>
                             <th width="80">จำนวนอุปกรณ์</th>

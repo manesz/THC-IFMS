@@ -25,6 +25,7 @@ if (isset($_GET['id']) && $id!="") {
 						$code_sale=$rs['code_sale'];
 						
 						$quotation_no=$rs['quotation_no'];
+						$invoice_no=$rs['invoice_no'];
 						$contact_name=stripslashes($rs['contact_name']);
 						$cert_for=stripslashes($rs['cert_for']);
 						
@@ -170,9 +171,9 @@ include_once("header.php");
                             </div>
                             
                            <div class="row">
-                                <label class="col-sm-12 col-md-4 control-label">วันที่สร้าง</label>
+                                <label class="col-sm-12 col-md-4 control-label">วันที่สร้าง  (d-m-Y H:i:s)</label>
                                 <div class="col-lg-8">
-                                 <input type="text" name="create_date" id="create_date" value="<?php echo date("d-m-Y", strtotime($create_dttm)); ?>" class="form-control" /> (d-m-Y H:i:s)
+                                 <input type="text" name="create_date" id="create_date" value="<?php echo date("d-m-Y", strtotime($create_dttm)); ?>" class="form-control" />
                                 </div>
                             </div>
                             
@@ -180,6 +181,13 @@ include_once("header.php");
                                 <label class="col-sm-12 col-md-4 control-label">Quotation No.</label>
                                 <div class="col-lg-8">
                                     <input type="text" name="quotation_no" id="quotation_no" class="form-control" value="<?php echo $quotation_no ?>">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">Invoice No.</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="invoice_no" id="invoice_no" class="form-control" value="<?php echo $invoice_no ?>">
                                 </div>
                             </div>
                             
@@ -207,12 +215,7 @@ include_once("header.php");
                             
                             <hr />
                             
-                            <div class="row">
-                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
-                                <div class="col-lg-8">
-                                   <input type="text" name="contact_name" id="contact_name" class="form-control" value="<?php echo $contact_name; ?>">
-                                </div>
-                            </div>
+                           
                             
                               <div class="row">
                                 <label class="col-sm-12 col-md-4 control-label">ชื่อบริษัท</label>
@@ -221,6 +224,13 @@ include_once("header.php");
                                           <!--option value="">-- โปรดเลือก --</option -->
                                             <?php echo $customer_listbox; ?>
                                         </select>
+                                </div>
+                            </div>
+                            
+                             <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ</label>
+                                <div class="col-lg-8">
+                                   <input type="text" name="contact_name" id="contact_name" class="form-control" value="<?php echo $contact_name; ?>">
                                 </div>
                             </div>
                             

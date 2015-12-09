@@ -131,9 +131,9 @@ if ($num_items>0) {
                             </div>
                             
                                 <div class="row">
-                                <label class="col-sm-12 col-md-4 control-label">วันที่สร้าง</label>
+                                <label class="col-sm-12 col-md-4 control-label">วันที่สร้าง  (d-m-Y H:i:s)</label>
                                 <div class="col-lg-8">
-                                 <input type="text" name="create_date" id="create_date" value="<?php echo date("d-m-Y"); ?>" class="form-control" /> (d-m-Y H:i:s)
+                                 <input type="text" name="create_date" id="create_date" value="<?php echo date("d-m-Y"); ?>" class="form-control" />
                                 </div>
                             </div>
                             
@@ -141,6 +141,13 @@ if ($num_items>0) {
                                 <label class="col-sm-12 col-md-4 control-label">Quotation No.</label>
                                 <div class="col-lg-8">
                                 	<input type="text" name="quotation_no" id="quotation_no" class="form-control" value="<?php echo $_SESSION['ss_quotation_no']; ?>">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">Invoice No.</label>
+                                <div class="col-lg-8">
+                                	<input type="text" name="invoice_no" id="invoice_no" class="form-control" value="<?php echo $_SESSION['ss_invoice_no']; ?>">
                                 </div>
                             </div>
                             
@@ -170,12 +177,7 @@ if ($num_items>0) {
                         
                             
                             
-                        	 <div class="row">
-                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ<span style="color:red;">*</span></label>
-                                <div class="col-lg-8">
-                                   <input type="text" name="contact_name" id="contact_name" class="form-control" value="<?php echo $_SESSION['ss_contact_name']; ?>">
-                                </div>
-                            </div>
+                        	
                                                         
                             <div class="row">
                                 <label class="col-sm-12 col-md-4 control-label">ชื่อบริษัทลูกค้า<span style="color:red;">*</span></label>
@@ -184,6 +186,13 @@ if ($num_items>0) {
                                            <option value="">-- โปรดเลือก --</option>
                                             <?php echo $customer_listbox; ?>
                                         </select>
+                                </div>
+                            </div>
+                            
+                             <div class="row">
+                                <label class="col-sm-12 col-md-4 control-label">ชื่อผู้ติดต่อ<span style="color:red;">*</span></label>
+                                <div class="col-lg-8">
+                                   <input type="text" name="contact_name" id="contact_name" class="form-control" value="<?php echo $_SESSION['ss_contact_name']; ?>">
                                 </div>
                             </div>
                             
@@ -328,6 +337,7 @@ $(document).ready(function() {
 								'sale_code':$('#sale_code').val(),								
 								'create_date':$('#create_date').val(),
 								'quotation_no':$('#quotation_no').val(),
+								'invoice_no':$('#invoice_no').val(),
 								'department_id':$('#department_id').val(),
 								'on_status':$('#on_status').val(),
 								
