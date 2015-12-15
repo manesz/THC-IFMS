@@ -23,11 +23,13 @@
 						
 						$quotation_no=$rs['quotation_no'];
 						$customer_id=$rs['customer_id'];
+						
 						$department_id=$rs['department_id'];	
 						
 						$contact_name=stripslashes($rs['contact_name']);									
 						$department_name='-';
 						$position_name='-';
+						$is_status=$rs['status'];
 						
 						$CSR_NO=$db->csr_no_format($code_no,$code_year);
 						
@@ -85,7 +87,7 @@
                     <div class="head" style="width: 80px;">รุ่น<span style="color: red;">*</span><br/>Model</div>
                     <div class="head" style="width: 80px;">ID No.</div>
                     <div class="head" style="width: 80px;">หมายเลขเครื่อง<br/>S/N</div>
-                    <div class="head" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Range</div>
+                    <div class="head" style="width: 200px;">จุดสอบเทียบ<span style="color: red;">*</span><br/>Calibration Point</div>
                     <div class="head" style="width: 60px;">จำนวน<br/>Quantity</div>
                     <div class="head" style="width: 80px;">Status</div>
                     <div class="head"  style="width: 80px;">ISO 17025<br/>Accredited</div>
@@ -103,7 +105,7 @@
 									$item_code_year=$rs2['item_code_year'];
 																			
 									$quantity=$rs2['qty'];
-									$is_status=$rs2['is_status'];
+									//$is_status=$rs2['is_status'];
 									
 									
 									$equipment_name=stripslashes($rs2['equipment_name']);

@@ -21,6 +21,7 @@ $re=mysql_query($SQL);
 $num=mysql_num_rows($re);
 
 if ($num>0) {
+	$n=1;
 	while ($rs=mysql_fetch_array($re)) {
 		$id=$rs['id'];
 		$equipment_name=stripslashes($rs['equipment_name']);
@@ -47,7 +48,7 @@ if ($num>0) {
 		
 		$content.='
 			     <tr>
-					<td '.$td_bg.'>'.$id.'</td>
+					<td '.$td_bg.'>'.$n.'</td>
 					<td '.$td_bg.'>'.$equipment_name.' '.$text_status.'</td>
 					<td '.$td_bg.'>'.$model.'</td>
 					<td '.$td_bg.'>'.$serial_no.'</td>
@@ -72,7 +73,7 @@ if ($num>0) {
 					</td>
 				</tr>
 		';
-		
+		$n++;
 	} //end whiel
 }
 

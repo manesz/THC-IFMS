@@ -217,11 +217,11 @@ class db_class extends database {
 		return $image;
 	}
 	
-	
 	function create_item_code_prefix($department_id) {
 		$prefix='';
 		$sql="SELECT code, is_in_lab, is_on_site  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$department_id' LIMIT 1; ";
 		$re=mysql_query($sql);
+		
 		
 		if (mysql_num_rows($re)>0) {
 			$rs=mysql_fetch_array($re);
@@ -243,6 +243,34 @@ class db_class extends database {
 		}
 		return $prefix;
 	}
+	
+	/*
+	function create_item_code_prefix($department_id) {
+		$prefix='';
+		$sql="SELECT code, is_in_lab, is_on_site  FROM "._TB_DEPARTMENT." WHERE publish='1' AND  id='$department_id' LIMIT 1; ";
+		$re=mysql_query($sql);
+		
+		
+		if (mysql_num_rows($re)>0) {
+			$rs=mysql_fetch_array($re);
+			
+			$code=stripslashes($rs['code']);
+			$is_in_lab=$rs['is_in_lab'];
+			$is_on_site=$rs['is_on_site'];
+			
+			if ($is_in_lab=='1' && $is_on_site=="") {
+				$lab="00";	
+			} elseif ($is_in_lab=="" && $is_on_site=='1') {
+				$lab='01';	
+			} else {
+				$lab='02';
+			}
+			
+			
+			$prefix="$code-$lab";
+		}
+		return $prefix;
+	}*/
 	
 	
 	//แผนก ----------------

@@ -199,11 +199,11 @@ include_once("header.php");
                                     </div>
                                 </div><!-- /Resolution -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
-                                    <label class="col-sm-12 col-md-4 control-label">จุดสอบเทียบ / <br/>Calibration Range</label>
+                                    <label class="col-sm-12 col-md-4 control-label">จุดสอบเทียบ / <br/>Calibration Point</label>
                                     <div class="col-sm-12 col-md-8">
                                         <input type="text" class="form-control" name="calibration_point" id="calibration_point">
                                     </div>
-                                </div><!-- /Calibration Range -->
+                                </div><!-- /Calibration Point -->
                                 <div class="form-group col-sm-12 col-md-6" style="height: 60px;">
                                     <label class="col-sm-12 col-md-4 control-label">Serial No.</label>
                                     <div class="col-sm-12 col-md-8">

@@ -303,6 +303,7 @@ $pages="1/$total_page";
                 <p style="width: 100%; text-align: center;">2299/12-13 Moo4, Thepharak, Muang, Samut Prakan 10270 Tel: 0-2394-2162, 0-2757-8435, 0-2757-9496 Fax: 0-2757-8507</p>
             </div>
             <div style="width: 400px; float: right; margin: 25px 0 0 0;">
+            	<div id="CSR_Barcode" style="margin:-25px 0 10px 0;"></div>
                 <table class="table table_border" style="float: right; margin: 0 0 0 0;">
                     <tr>
                         <td colspan="4" style="padding: 5px; text-align: center;">
@@ -516,9 +517,11 @@ $(function() {
 		for (n=1;n<n_item;n++) {
 			var item_no=$("#item_no_"+n).html();
 			$("#barcode_"+n).barcode(item_no, "code128",{barWidth:1, barHeight:23, fontSize:12,});     
-		}
-	
+		}	
 	}
+	
+	$("#CSR_Barcode").barcode("<?php echo $CSR_NO; ?>", "code128",{barWidth:1, barHeight:30, fontSize:0,});
+	
 	//{barWidth:2, barHeight:30}
 });
 </script>
